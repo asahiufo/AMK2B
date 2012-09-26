@@ -1,0 +1,137 @@
+﻿<Window x:Class="KinectDataSender.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Kinect Data Sender" Width="900" Height="700">
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="ファイル" />
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Kinect Start" Height="23" Margin="5,0" />
+            <Button Content="Draw On" Height="23" Margin="5,0" />
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            ステータスバー
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Canvas Width="320" Height="240" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="全体設定" Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Content="サイズ比率" Grid.Column="0" Grid.Row="0" Height="28" Margin="5" />
+                        <Label Content="中心座標" Grid.Column="0" Grid.Row="1" Height="28" Margin="5" />
+                        <TextBox Grid.Column="1" Grid.Row="0" Height="24" HorizontalAlignment="Left" Margin="5" Width="100" />
+                        <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False">
+                            <Label Content="x" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                            <Label Content="y" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                            <Label Content="z" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="詳細設定" Grid.Row="1">
+                    <Canvas>
+                        <DockPanel Canvas.Left="113" Canvas.Top="7">
+                            <Label Content="Head" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="113" Canvas.Top="41">
+                            <Label Content="ShoulderCenter" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="86">
+                            <Label Content="ShoulderRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="120">
+                            <Label Content="ElbowRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="154">
+                            <Label Content="WristRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="188">
+                            <Label Content="HandRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="249" Canvas.Top="88">
+                            <Label Content="ShoulderLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="122">
+                            <Label Content="ElbowLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="156">
+                            <Label Content="WristLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="260" Canvas.Top="190">
+                            <Label Content="HandLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="147" Canvas.Top="233">
+                            <Label Content="Spine" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="132" Canvas.Top="267">
+                            <Label Content="HipCenter" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="15" Canvas.Top="301">
+                            <Label Content="HipRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="14" Canvas.Top="337">
+                            <Label Content="KneeRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="8" Canvas.Top="371">
+                            <Label Content="AnkleRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="6" Canvas.Top="403">
+                            <Label Content="FootRight" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="270" Canvas.Top="303">
+                            <Label Content="HipLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="401">
+                            <Label Content="FootLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="369">
+                            <Label Content="AnkleLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="260" Canvas.Top="335">
+                            <Label Content="KneeLeft" Height="28" />
+                            <TextBox Height="24" Width="120" />
+                        </DockPanel>
+                    </Canvas>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
