@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Canvas Width="320" Height="240" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
+            <Image Width="320" Height="240" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Name="imgDepth" />
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
