@@ -60,10 +60,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ColorUpdateEventArgs.cs" />
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="DepthUpdateEventArgs.cs" />
     <Compile Include="BlenderJoints.cs" />
+    <Compile Include="KinectDataSenderView.xaml.cs">
+      <DependentUpon>KinectDataSenderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KinectDataSenderViewModel.cs" />
     <Compile Include="SkeletonDataSender.cs" />
     <Compile Include="SkeletonUpdateEventArgs.cs" />
+    <Page Include="KinectDataSenderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

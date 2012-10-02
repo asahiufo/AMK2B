@@ -11,7 +11,7 @@ namespace KinectDataSender
     /// <summary>
     /// スケルトンデータセンダー
     /// </summary>
-    class SkeletonDataSender
+    public class SkeletonDataSender
     {
         private IPEndPoint _sourceEndPoint;
         private IPEndPoint _destinationEndPoint;

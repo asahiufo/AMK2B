@@ -6,7 +6,7 @@ using Microsoft.Kinect;
 
 namespace KinectDataSender
 {
-    class DepthUpdateEventArgs : EventArgs
+    public class DepthUpdateEventArgs : EventArgs
     {
         private KinectSensor _kinect;
         private DepthImageFrame _depthFrame;

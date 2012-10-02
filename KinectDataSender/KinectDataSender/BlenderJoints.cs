@@ -9,190 +9,351 @@ namespace KinectDataSender
     /// <summary>
     /// Blender 上での Joint 名
     /// </summary>
-    class BlenderJoints
+    public class BlenderJoints
     {
-        private StringBuilder _headName;
-        private StringBuilder _shoulderCenterName;
-        private StringBuilder _shoulderRightName;
-        private StringBuilder _elbowRightName;
-        private StringBuilder _wristRightName;
-        private StringBuilder _handRightName;
-        private StringBuilder _shoulderLeftName;
-        private StringBuilder _elbowLeftName;
-        private StringBuilder _wristLeftName;
-        private StringBuilder _handLeftName;
-        private StringBuilder _spineName;
-        private StringBuilder _hipCenterName;
-        private StringBuilder _hipRightName;
-        private StringBuilder _kneeRightName;
-        private StringBuilder _ankleRightName;
-        private StringBuilder _footRightName;
-        private StringBuilder _hipLeftName;
-        private StringBuilder _kneeLeftName;
-        private StringBuilder _ankleLeftName;
-        private StringBuilder _footLeftName;
+        private JointSetting _head;
+        private JointSetting _shoulderCenter;
+        private JointSetting _shoulderRight;
+        private JointSetting _elbowRight;
+        private JointSetting _wristRight;
+        private JointSetting _handRight;
+        private JointSetting _shoulderLeft;
+        private JointSetting _elbowLeft;
+        private JointSetting _wristLeft;
+        private JointSetting _handLeft;
+        private JointSetting _spine;
+        private JointSetting _hipCenter;
+        private JointSetting _hipRight;
+        private JointSetting _kneeRight;
+        private JointSetting _ankleRight;
+        private JointSetting _footRight;
+        private JointSetting _hipLeft;
+        private JointSetting _kneeLeft;
+        private JointSetting _ankleLeft;
+        private JointSetting _footLeft;
 
-        private IDictionary<JointType, StringBuilder> _jointMap;
+        private IDictionary<JointType, JointSetting> _jointMap;
 
         /// <summary>
-        /// 頭
+        /// 頭名
         /// </summary>
         public string HeadName
         {
-            get { return _headName.ToString();  }
-            set { _headName.Length = 0; _headName.Clear(); _headName.Append(value); }
+            get { return _head.Name; }
+            set { _head.Name = value; }
         }
         /// <summary>
-        /// 肩中央
+        /// 肩中央名
         /// </summary>
         public string ShoulderCenterName
         {
-            get { return _shoulderCenterName.ToString(); }
-            set { _shoulderCenterName.Length = 0; _shoulderCenterName.Clear(); _shoulderCenterName.Append(value); }
+            get { return _shoulderCenter.Name; }
+            set { _shoulderCenter.Name = value; }
         }
         /// <summary>
-        /// 右肩
+        /// 右肩名
         /// </summary>
         public string ShoulderRightName
         {
-            get { return _shoulderRightName.ToString(); }
-            set { _shoulderRightName.Length = 0; _shoulderRightName.Clear(); _shoulderRightName.Append(value); }
+            get { return _shoulderRight.Name; }
+            set { _shoulderRight.Name = value; }
         }
         /// <summary>
-        /// 右肘
+        /// 右肘名
         /// </summary>
         public string ElbowRightName
         {
-            get { return _elbowRightName.ToString(); }
-            set { _elbowRightName.Length = 0; _elbowRightName.Clear(); _elbowRightName.Append(value); }
+            get { return _elbowRight.Name; }
+            set { _elbowRight.Name = value; }
         }
         /// <summary>
-        /// 右手首
+        /// 右手首名
         /// </summary>
         public string WristRightName
         {
-            get { return _wristRightName.ToString(); }
-            set { _wristRightName.Length = 0; _wristRightName.Clear(); _wristRightName.Append(value); }
+            get { return _wristRight.Name; }
+            set { _wristRight.Name = value; }
         }
         /// <summary>
-        /// 右手のひら
+        /// 右手のひら名
         /// </summary>
         public string HandRightName
         {
-            get { return _handRightName.ToString(); }
-            set { _handRightName.Length = 0; _handRightName.Clear(); _handRightName.Append(value); }
+            get { return _handRight.Name; }
+            set { _handRight.Name = value; }
         }
         /// <summary>
-        /// 左肩
+        /// 左肩名
         /// </summary>
         public string ShoulderLeftName
         {
-            get { return _shoulderLeftName.ToString(); }
-            set { _shoulderLeftName.Length = 0; _shoulderLeftName.Clear(); _shoulderLeftName.Append(value); }
+            get { return _shoulderLeft.Name; }
+            set { _shoulderLeft.Name = value; }
         }
         /// <summary>
-        /// 左肘
+        /// 左肘名
         /// </summary>
         public string ElbowLeftName
         {
-            get { return _elbowLeftName.ToString(); }
-            set { _elbowLeftName.Length = 0; _elbowLeftName.Clear(); _elbowLeftName.Append(value); }
+            get { return _elbowLeft.Name; }
+            set { _elbowLeft.Name = value; }
         }
         /// <summary>
-        /// 左手首
+        /// 左手首名
         /// </summary>
         public string WristLeftName
         {
-            get { return _wristLeftName.ToString(); }
-            set { _wristLeftName.Length = 0; _wristLeftName.Clear(); _wristLeftName.Append(value); }
+            get { return _wristLeft.Name; }
+            set { _wristLeft.Name = value; }
         }
         /// <summary>
-        /// 左手のひら
+        /// 左手のひら名
         /// </summary>
         public string HandLeftName
         {
-            get { return _handLeftName.ToString(); }
-            set { _handLeftName.Length = 0; _handLeftName.Clear(); _handLeftName.Append(value); }
+            get { return _handLeft.Name; }
+            set { _handLeft.Name = value; }
         }
         /// <summary>
-        /// 鳩尾（背骨）
+        /// 鳩尾（背骨）名
         /// </summary>
         public string SpineName
         {
-            get { return _spineName.ToString(); }
-            set { _spineName.Length = 0; _spineName.Clear(); _spineName.Append(value); }
+            get { return _spine.Name; }
+            set { _spine.Name = value; }
         }
         /// <summary>
-        /// おしり中心
+        /// おしり中心名
         /// </summary>
         public string HipCenterName
         {
-            get { return _hipCenterName.ToString(); }
-            set { _hipCenterName.Length = 0; _hipCenterName.Clear(); _hipCenterName.Append(value); }
+            get { return _hipCenter.Name; }
+            set { _hipCenter.Name = value; }
         }
         /// <summary>
-        /// おしりの右
+        /// おしりの右名
         /// </summary>
         public string HipRightName
         {
-            get { return _hipRightName.ToString(); }
-            set { _hipRightName.Length = 0; _hipRightName.Clear(); _hipRightName.Append(value); }
+            get { return _hipRight.Name; }
+            set { _hipRight.Name = value; }
         }
         /// <summary>
-        /// 右膝
+        /// 右膝名
         /// </summary>
         public string KneeRightName
         {
-            get { return _kneeRightName.ToString(); }
-            set { _kneeRightName.Length = 0; _kneeRightName.Clear(); _kneeRightName.Append(value); }
+            get { return _kneeRight.Name; }
+            set { _kneeRight.Name = value; }
         }
         /// <summary>
-        /// 右足首
+        /// 右足首名
         /// </summary>
         public string AnkleRightName
         {
-            get { return _ankleRightName.ToString(); }
-            set { _ankleRightName.Length = 0; _ankleRightName.Clear(); _ankleRightName.Append(value); }
+            get { return _ankleRight.Name; }
+            set { _ankleRight.Name = value; }
         }
         /// <summary>
-        /// 右足
+        /// 右足名
         /// </summary>
         public string FootRightName
         {
-            get { return _footRightName.ToString(); }
-            set { _footRightName.Length = 0; _footRightName.Clear(); _footRightName.Append(value); }
+            get { return _footRight.Name; }
+            set { _footRight.Name = value; }
         }
         /// <summary>
-        /// おしりの左
+        /// おしりの左名
         /// </summary>
         public string HipLeftName
         {
-            get { return _hipLeftName.ToString(); }
-            set { _hipLeftName.Length = 0; _hipLeftName.Clear(); _hipLeftName.Append(value); }
+            get { return _hipLeft.Name; }
+            set { _hipLeft.Name = value; }
         }
         /// <summary>
-        /// 左膝
+        /// 左膝名
         /// </summary>
         public string KneeLeftName
         {
-            get { return _kneeLeftName.ToString(); }
-            set { _kneeLeftName.Length = 0; _kneeLeftName.Clear(); _kneeLeftName.Append(value); }
+            get { return _kneeLeft.Name; }
+            set { _kneeLeft.Name = value; }
         }
         /// <summary>
-        /// 左足首
+        /// 左足首名
         /// </summary>
         public string AnkleLeftName
         {
-            get { return _ankleLeftName.ToString(); }
-            set { _ankleLeftName.Length = 0; _ankleLeftName.Clear(); _ankleLeftName.Append(value); }
+            get { return _ankleLeft.Name; }
+            set { _ankleLeft.Name = value; }
         }
         /// <summary>
-        /// 左足
+        /// 左足名
         /// </summary>
         public string FootLeftName
         {
-            get { return _footLeftName.ToString(); }
-            set { _footLeftName.Length = 0; _footLeftName.Clear(); _footLeftName.Append(value); }
+            get { return _footLeft.Name; }
+            set { _footLeft.Name = value; }
+        }
+
+        /// <summary>
+        /// 頭を利用するなら true
+        /// </summary>
+        public bool HeadEnable
+        {
+            get { return _head.Enable; }
+            set { _head.Enable = value; }
+        }
+        /// <summary>
+        /// 肩中央を利用するなら true
+        /// </summary>
+        public bool ShoulderCenterEnable
+        {
+            get { return _shoulderCenter.Enable; }
+            set { _shoulderCenter.Enable = value; }
+        }
+        /// <summary>
+        /// 右肩を利用するなら true
+        /// </summary>
+        public bool ShoulderRightEnable
+        {
+            get { return _shoulderRight.Enable; }
+            set { _shoulderRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右肘を利用するなら true
+        /// </summary>
+        public bool ElbowRightEnable
+        {
+            get { return _elbowRight.Enable; }
+            set { _elbowRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右手首を利用するなら true
+        /// </summary>
+        public bool WristRightEnable
+        {
+            get { return _wristRight.Enable; }
+            set { _wristRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右手のひらを利用するなら true
+        /// </summary>
+        public bool HandRightEnable
+        {
+            get { return _handRight.Enable; }
+            set { _handRight.Enable = value; }
+        }
+        /// <summary>
+        /// 左肩を利用するなら true
+        /// </summary>
+        public bool ShoulderLeftEnable
+        {
+            get { return _shoulderLeft.Enable; }
+            set { _shoulderLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左肘を利用するなら true
+        /// </summary>
+        public bool ElbowLeftEnable
+        {
+            get { return _elbowLeft.Enable; }
+            set { _elbowLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左手首を利用するなら true
+        /// </summary>
+        public bool WristLeftEnable
+        {
+            get { return _wristLeft.Enable; }
+            set { _wristLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左手のひらを利用するなら true
+        /// </summary>
+        public bool HandLeftEnable
+        {
+            get { return _handLeft.Enable; }
+            set { _handLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 鳩尾（背骨）を利用するなら true
+        /// </summary>
+        public bool SpineEnable
+        {
+            get { return _spine.Enable; }
+            set { _spine.Enable = value; }
+        }
+        /// <summary>
+        /// おしり中心を利用するなら true
+        /// </summary>
+        public bool HipCenterEnable
+        {
+            get { return _hipCenter.Enable; }
+            set { _hipCenter.Enable = value; }
+        }
+        /// <summary>
+        /// おしりの右を利用するなら true
+        /// </summary>
+        public bool HipRightEnable
+        {
+            get { return _hipRight.Enable; }
+            set { _hipRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右膝を利用するなら true
+        /// </summary>
+        public bool KneeRightEnable
+        {
+            get { return _kneeRight.Enable; }
+            set { _kneeRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右足首を利用するなら true
+        /// </summary>
+        public bool AnkleRightEnable
+        {
+            get { return _ankleRight.Enable; }
+            set { _ankleRight.Enable = value; }
+        }
+        /// <summary>
+        /// 右足を利用するなら true
+        /// </summary>
+        public bool FootRightEnable
+        {
+            get { return _footRight.Enable; }
+            set { _footRight.Enable = value; }
+        }
+        /// <summary>
+        /// おしりの左を利用するなら true
+        /// </summary>
+        public bool HipLeftEnable
+        {
+            get { return _hipLeft.Enable; }
+            set { _hipLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左膝を利用するなら true
+        /// </summary>
+        public bool KneeLeftEnable
+        {
+            get { return _kneeLeft.Enable; }
+            set { _kneeLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左足首を利用するなら true
+        /// </summary>
+        public bool AnkleLeftEnable
+        {
+            get { return _ankleLeft.Enable; }
+            set { _ankleLeft.Enable = value; }
+        }
+        /// <summary>
+        /// 左足を利用するなら true
+        /// </summary>
+        public bool FootLeftEnable
+        {
+            get { return _footLeft.Enable; }
+            set { _footLeft.Enable = value; }
         }
 
         /// <summary>
@@ -200,50 +361,48 @@ namespace KinectDataSender
         /// </summary>
         public BlenderJoints()
         {
-            _headName           = new StringBuilder();
-            _shoulderCenterName = new StringBuilder();
-            _shoulderRightName  = new StringBuilder();
-            _elbowRightName     = new StringBuilder();
-            _wristRightName     = new StringBuilder();
-            _handRightName      = new StringBuilder();
-            _shoulderLeftName   = new StringBuilder();
-            _elbowLeftName      = new StringBuilder();
-            _wristLeftName      = new StringBuilder();
-            _handLeftName       = new StringBuilder();
-            _spineName          = new StringBuilder();
-            _hipCenterName      = new StringBuilder();
-            _hipRightName       = new StringBuilder();
-            _kneeRightName      = new StringBuilder();
-            _ankleRightName     = new StringBuilder();
-            _footRightName      = new StringBuilder();
-            _hipLeftName        = new StringBuilder();
-            _kneeLeftName       = new StringBuilder();
-            _ankleLeftName      = new StringBuilder();
-            _footLeftName       = new StringBuilder();
+            _head = new JointSetting();
+            _shoulderCenter = new JointSetting();
+            _shoulderRight = new JointSetting();
+            _elbowRight = new JointSetting();
+            _wristRight = new JointSetting();
+            _handRight = new JointSetting();
+            _shoulderLeft = new JointSetting();
+            _elbowLeft = new JointSetting();
+            _wristLeft = new JointSetting();
+            _handLeft = new JointSetting();
+            _spine = new JointSetting();
+            _hipCenter = new JointSetting();
+            _hipRight = new JointSetting();
+            _kneeRight = new JointSetting();
+            _ankleRight = new JointSetting();
+            _footRight = new JointSetting();
+            _hipLeft = new JointSetting();
+            _kneeLeft = new JointSetting();
+            _ankleLeft = new JointSetting();
+            _footLeft = new JointSetting();
 
-            _jointMap = new SortedDictionary<JointType, StringBuilder>();
-            _jointMap.Add(JointType.Head, _headName);
-            _jointMap.Add(JointType.ShoulderCenter, _shoulderCenterName);
-            _jointMap.Add(JointType.ShoulderRight, _shoulderRightName);
-            _jointMap.Add(JointType.ElbowRight, _elbowRightName);
-            _jointMap.Add(JointType.WristRight, _wristRightName);
-            _jointMap.Add(JointType.HandRight, _handRightName);
-            _jointMap.Add(JointType.ShoulderLeft, _shoulderLeftName);
-            _jointMap.Add(JointType.ElbowLeft, _elbowLeftName);
-            _jointMap.Add(JointType.WristLeft, _wristLeftName);
-            _jointMap.Add(JointType.HandLeft, _handLeftName);
-            _jointMap.Add(JointType.Spine, _spineName);
-            _jointMap.Add(JointType.HipCenter, _hipCenterName);
-            _jointMap.Add(JointType.HipRight, _hipRightName);
-            _jointMap.Add(JointType.KneeRight, _kneeRightName);
-            _jointMap.Add(JointType.AnkleRight, _ankleRightName);
-            _jointMap.Add(JointType.FootRight, _footRightName);
-            _jointMap.Add(JointType.HipLeft, _hipLeftName);
-            _jointMap.Add(JointType.KneeLeft, _kneeLeftName);
-            _jointMap.Add(JointType.AnkleLeft, _ankleLeftName);
-            _jointMap.Add(JointType.FootLeft, _footLeftName);
-
-            // TODO: 各Jointを使用するかどうかのフラグも必要なはず。
+            _jointMap = new SortedDictionary<JointType, JointSetting>();
+            _jointMap.Add(JointType.Head, _head);
+            _jointMap.Add(JointType.ShoulderCenter, _shoulderCenter);
+            _jointMap.Add(JointType.ShoulderRight, _shoulderRight);
+            _jointMap.Add(JointType.ElbowRight, _elbowRight);
+            _jointMap.Add(JointType.WristRight, _wristRight);
+            _jointMap.Add(JointType.HandRight, _handRight);
+            _jointMap.Add(JointType.ShoulderLeft, _shoulderLeft);
+            _jointMap.Add(JointType.ElbowLeft, _elbowLeft);
+            _jointMap.Add(JointType.WristLeft, _wristLeft);
+            _jointMap.Add(JointType.HandLeft, _handLeft);
+            _jointMap.Add(JointType.Spine, _spine);
+            _jointMap.Add(JointType.HipCenter, _hipCenter);
+            _jointMap.Add(JointType.HipRight, _hipRight);
+            _jointMap.Add(JointType.KneeRight, _kneeRight);
+            _jointMap.Add(JointType.AnkleRight, _ankleRight);
+            _jointMap.Add(JointType.FootRight, _footRight);
+            _jointMap.Add(JointType.HipLeft, _hipLeft);
+            _jointMap.Add(JointType.KneeLeft, _kneeLeft);
+            _jointMap.Add(JointType.AnkleLeft, _ankleLeft);
+            _jointMap.Add(JointType.FootLeft, _footLeft);
         }
 
         /// <summary>
@@ -260,7 +419,44 @@ namespace KinectDataSender
         /// <returns>Blender の Joint 名</returns>
         public string GetName(JointType jointType)
         {
-            return _jointMap[jointType].ToString();
+            return _jointMap[jointType].Name;
+        }
+
+        /// <summary>
+        /// Kinect の JointType から Joint の利用有無を取得
+        /// </summary>
+        /// <param name="jointType">Kinect の JointType</param>
+        /// <returns>Joint を利用するなら true</returns>
+        public bool GetEnable(JointType jointType)
+        {
+            return _jointMap[jointType].Enable;
+        }
+    }
+
+    /// <summary>
+    /// Joint 設定
+    /// </summary>
+    class JointSetting
+    {
+        private string _name;
+        private bool _enable;
+
+        /// <summary>
+        /// 名前
+        /// </summary>
+        public string Name
+        {
+            get { return _name;  }
+            set { _name = value; }
+        }
+
+        /// <summary>
+        /// この Joint を利用するなら true
+        /// </summary>
+        public bool Enable
+        {
+            get { return _enable;  }
+            set { _enable = value; }
         }
     }
 }

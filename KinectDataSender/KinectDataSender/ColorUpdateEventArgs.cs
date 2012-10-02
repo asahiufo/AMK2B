@@ -6,7 +6,7 @@ using Microsoft.Kinect;
 
 namespace KinectDataSender
 {
-    class ColorUpdateEventArgs : EventArgs
+    public class ColorUpdateEventArgs : EventArgs
     {
         private KinectSensor _kinect;
         private ColorImageFrame _colorFrame;

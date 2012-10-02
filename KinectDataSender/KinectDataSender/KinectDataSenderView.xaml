@@ -1,0 +1,160 @@
+﻿<UserControl x:Class="KinectDataSender.KinectDataSenderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="900">
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="ファイル" />
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Kinect Start" Height="23" Margin="5,0" />
+            <Button Content="Draw On" Height="23" Margin="5,0" />
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            ステータスバー
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Width="320" Height="240" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Name="imgDepth" />
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="全体設定" Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Content="サイズ比率" Grid.Column="0" Grid.Row="0" Height="28" Margin="5" />
+                        <Label Content="中心座標" Grid.Column="0" Grid.Row="1" Height="28" Margin="5" />
+                        <TextBox Grid.Column="1" Grid.Row="0" Height="24" HorizontalAlignment="Left" Margin="5" Width="100" />
+                        <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False">
+                            <Label Content="x" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                            <Label Content="y" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                            <Label Content="z" Height="28" DockPanel.Dock="Left" />
+                            <TextBox Height="24" Width="50" DockPanel.Dock="Left" />
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="詳細設定" Grid.Row="1">
+                    <Canvas>
+                        <DockPanel Canvas.Left="113" Canvas.Top="7">
+                            <CheckBox Height="16" Name="HeadEnable" />
+                            <Label Content="Head" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HeadName" Text="{Binding Path=HeadName,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="113" Canvas.Top="41">
+                            <CheckBox Height="16" Name="ShoulderCenterEnable" />
+                            <Label Content="ShoulderCenter" Height="28" />
+                            <TextBox Height="24" Width="120" Name="ShoulderCenterName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="14" Canvas.Top="86">
+                            <CheckBox Height="16" Name="ShoulderRightEnable" />
+                            <Label Content="ShoulderRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="ShoulderRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="120">
+                            <CheckBox Height="16" Name="ElbowRightEnable" />
+                            <Label Content="ElbowRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="ElbowRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="154">
+                            <CheckBox Height="16" Name="WristRightEnable" />
+                            <Label Content="WristRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="WristRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="23" Canvas.Top="188">
+                            <CheckBox Height="16" Name="HandRightEnable" />
+                            <Label Content="HandRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HandRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="249" Canvas.Top="88">
+                            <CheckBox Height="16" Name="ShoulderLeftEnable" />
+                            <Label Content="ShoulderLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="ShoulderLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="122">
+                            <CheckBox Height="16" Name="ElbowLeftEnable" />
+                            <Label Content="ElbowLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="ElbowLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="156">
+                            <CheckBox Height="16" Name="WristLeftEnable" />
+                            <Label Content="WristLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="WristLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="260" Canvas.Top="190">
+                            <CheckBox Height="16" Name="HandLeftEnable" />
+                            <Label Content="HandLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HandLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="147" Canvas.Top="233">
+                            <CheckBox Height="16" Name="SpineEnable" />
+                            <Label Content="Spine" Height="28" />
+                            <TextBox Height="24" Width="120" Name="SpineName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="132" Canvas.Top="267">
+                            <CheckBox Height="16" Name="HipCenterEnable" />
+                            <Label Content="HipCenter" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HipCenterName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="15" Canvas.Top="301">
+                            <CheckBox Height="16" Name="HipRightEnable" />
+                            <Label Content="HipRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HipRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="14" Canvas.Top="337">
+                            <CheckBox Height="16" Name="KneeRightEnable" />
+                            <Label Content="KneeRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="KneeRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="8" Canvas.Top="371">
+                            <CheckBox Height="16" Name="AnkleRightEnable" />
+                            <Label Content="AnkleRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="AnkleRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="6" Canvas.Top="403">
+                            <CheckBox Height="16" Name="FootRightEnable" />
+                            <Label Content="FootRight" Height="28" />
+                            <TextBox Height="24" Width="120" Name="FootRightName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="270" Canvas.Top="303">
+                            <CheckBox Height="16" Name="HipLeftEnable" />
+                            <Label Content="HipLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="HipLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="401">
+                            <CheckBox Height="16" Name="FootLeftEnable" />
+                            <Label Content="FootLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="FootLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="257" Canvas.Top="369">
+                            <CheckBox Height="16" Name="AnkleLeftEnable" />
+                            <Label Content="AnkleLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="AnkleLeftName" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="260" Canvas.Top="335">
+                            <CheckBox Height="16" Name="KneeLeftEnable" />
+                            <Label Content="KneeLeft" Height="28" />
+                            <TextBox Height="24" Width="120" Name="KneeLeftName" />
+                        </DockPanel>
+                    </Canvas>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

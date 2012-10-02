@@ -6,7 +6,7 @@ using Microsoft.Kinect;
 
 namespace KinectDataSender
 {
-    class SkeletonUpdateEventArgs : EventArgs
+    public class SkeletonUpdateEventArgs : EventArgs
     {
         private KinectSensor _kinect;
         private SkeletonFrame _skeletonFrame;

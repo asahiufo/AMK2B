@@ -11,7 +11,7 @@ namespace KinectDataSender
     /// <summary>
     /// Kinectマネージャー
     /// </summary>
-    class KinectManager
+    public class KinectManager
     {
         private static readonly int Bgr32BytesPerPixel = PixelFormats.Bgr32.BitsPerPixel / 8;
 
