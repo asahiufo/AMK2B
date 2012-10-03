@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Kinect;
 
 namespace KinectDataSender
@@ -361,26 +358,26 @@ namespace KinectDataSender
         /// </summary>
         public BlenderJoints()
         {
-            _head = new JointSetting();
-            _shoulderCenter = new JointSetting();
-            _shoulderRight = new JointSetting();
-            _elbowRight = new JointSetting();
-            _wristRight = new JointSetting();
-            _handRight = new JointSetting();
-            _shoulderLeft = new JointSetting();
-            _elbowLeft = new JointSetting();
-            _wristLeft = new JointSetting();
-            _handLeft = new JointSetting();
-            _spine = new JointSetting();
-            _hipCenter = new JointSetting();
-            _hipRight = new JointSetting();
-            _kneeRight = new JointSetting();
-            _ankleRight = new JointSetting();
-            _footRight = new JointSetting();
-            _hipLeft = new JointSetting();
-            _kneeLeft = new JointSetting();
-            _ankleLeft = new JointSetting();
-            _footLeft = new JointSetting();
+            _head = new JointSetting("ctl_Head", false);
+            _shoulderCenter = new JointSetting("ctl_Neck", false);
+            _shoulderRight = new JointSetting("ctl_Shoulder_R", false);
+            _elbowRight = new JointSetting("ctl_Elbow_R", false);
+            _wristRight = new JointSetting("ctl_Wrist_R", false);
+            _handRight = new JointSetting("ctl_Hand_R", false);
+            _shoulderLeft = new JointSetting("ctl_Shoulder_L", false);
+            _elbowLeft = new JointSetting("ctl_Elbow_L", false);
+            _wristLeft = new JointSetting("ctl_Wrist_L", false);
+            _handLeft = new JointSetting("ctl_Hand_L", false);
+            _spine = new JointSetting("ctl_Torso", false);
+            _hipCenter = new JointSetting("ctl_Hip_Center", false);
+            _hipRight = new JointSetting("ctl_Hip_R", false);
+            _kneeRight = new JointSetting("ctl_Knee_R", false);
+            _ankleRight = new JointSetting("ctl_Ankle_R", false);
+            _footRight = new JointSetting("ctl_Foot_R", false);
+            _hipLeft = new JointSetting("ctl_Hip_L", false);
+            _kneeLeft = new JointSetting("ctl_Knee_L", false);
+            _ankleLeft = new JointSetting("ctl_Ankle_L", false);
+            _footLeft = new JointSetting("ctl_Foot_L", false);
 
             _jointMap = new SortedDictionary<JointType, JointSetting>();
             _jointMap.Add(JointType.Head, _head);
@@ -457,6 +454,24 @@ namespace KinectDataSender
         {
             get { return _enable;  }
             set { _enable = value; }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="name">名前</param>
+        /// <param name="enable">この Joint を利用するなら true</param>
+        public JointSetting(string name = "", bool enable = false)
+        {
+            _name = name;
+            _enable = enable;
+        }
+
+        /// <summary>
+        /// デストラクタ
+        /// </summary>
+        ~JointSetting()
+        {
         }
     }
 }

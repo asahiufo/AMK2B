@@ -67,6 +67,7 @@
       <DependentUpon>KinectDataSenderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="KinectDataSenderViewModel.cs" />
+    <Compile Include="KinectDataManager.cs" />
     <Compile Include="SkeletonDataSender.cs" />
     <Compile Include="SkeletonUpdateEventArgs.cs" />
     <Page Include="KinectDataSenderView.xaml">

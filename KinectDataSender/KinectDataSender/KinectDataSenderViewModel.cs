@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace KinectDataSender
 {
@@ -12,7 +9,9 @@ namespace KinectDataSender
     /// </summary>
     public class KinectDataSenderViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
+        private KinectManager _kinectManager;
         private BlenderJoints _blenderJoints;
+        private KinectDataManager _kinectDataManager;
 
         /// <summary>
         /// 頭名
@@ -657,11 +656,28 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// RGB カメラの画像データ
+        /// </summary>
+        public BitmapSource ColorSource
+        {
+            get { return _kinectDataManager.ColorSource; }
+        }
+        /// <summary>
+        /// 深度カメラの画像データ
+        /// </summary>
+        public BitmapSource DepthSource
+        {
+            get { return _kinectDataManager.DepthSource; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public KinectDataSenderViewModel()
         {
+            _kinectManager = new KinectManager();
             _blenderJoints = new BlenderJoints();
+            _kinectDataManager = new KinectDataManager(_blenderJoints);
         }
 
         /// <summary>
@@ -697,29 +713,145 @@ namespace KinectDataSender
             {
                 try
                 {
-                    if (
-                        HeadEnable && string.IsNullOrEmpty(HeadName) ||
-                        ShoulderCenterEnable && string.IsNullOrEmpty(ShoulderCenterName) ||
-                        ShoulderRightEnable && string.IsNullOrEmpty(ShoulderRightName) ||
-                        ElbowRightEnable && string.IsNullOrEmpty(ElbowRightName) ||
-                        WristRightEnable && string.IsNullOrEmpty(WristRightName) ||
-                        HandRightEnable && string.IsNullOrEmpty(HandRightName) ||
-                        ShoulderLeftEnable && string.IsNullOrEmpty(ShoulderLeftName) ||
-                        ElbowLeftEnable && string.IsNullOrEmpty(ElbowLeftName) ||
-                        WristLeftEnable && string.IsNullOrEmpty(WristLeftName) ||
-                        HandLeftEnable && string.IsNullOrEmpty(HandLeftName) ||
-                        SpineEnable && string.IsNullOrEmpty(SpineName) ||
-                        HipCenterEnable && string.IsNullOrEmpty(HipCenterName) ||
-                        HipRightEnable && string.IsNullOrEmpty(HipRightName) ||
-                        KneeRightEnable && string.IsNullOrEmpty(KneeRightName) ||
-                        AnkleRightEnable && string.IsNullOrEmpty(AnkleRightName) ||
-                        FootRightEnable && string.IsNullOrEmpty(FootRightName) ||
-                        HipLeftEnable && string.IsNullOrEmpty(HipLeftName) ||
-                        KneeLeftEnable && string.IsNullOrEmpty(KneeLeftName) ||
-                        AnkleLeftEnable && string.IsNullOrEmpty(AnkleLeftName) ||
-                        FootLeftEnable && string.IsNullOrEmpty(FootLeftName)
-                    ) {
-                        return "利用する Joint に名前が入力されていません。";
+                    if (columnName == "HeadName")
+                    {
+                        if (HeadEnable && string.IsNullOrEmpty(HeadName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderCenterName")
+                    {
+                        if (ShoulderCenterEnable && string.IsNullOrEmpty(ShoulderCenterName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderRightName")
+                    {
+                        if (ShoulderRightEnable && string.IsNullOrEmpty(ShoulderRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ElbowRightName")
+                    {
+                        if (ElbowRightEnable && string.IsNullOrEmpty(ElbowRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "WristRightName")
+                    {
+                        if (WristRightEnable && string.IsNullOrEmpty(WristRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HandRightName")
+                    {
+                        if (HandRightEnable && string.IsNullOrEmpty(HandRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderLeftName")
+                    {
+                        if (ShoulderLeftEnable && string.IsNullOrEmpty(ShoulderLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ElbowLeftName")
+                    {
+                        if (ElbowLeftEnable && string.IsNullOrEmpty(ElbowLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "WristLeftName")
+                    {
+                        if (WristLeftEnable && string.IsNullOrEmpty(WristLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HandLeftName")
+                    {
+                        if (HandLeftEnable && string.IsNullOrEmpty(HandLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "SpineName")
+                    {
+                        if (SpineEnable && string.IsNullOrEmpty(SpineName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipCenterName")
+                    {
+                        if (HipCenterEnable && string.IsNullOrEmpty(HipCenterName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipRightName")
+                    {
+                        if (HipRightEnable && string.IsNullOrEmpty(HipRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "KneeRightName")
+                    {
+                        if (KneeRightEnable && string.IsNullOrEmpty(KneeRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "AnkleRightName")
+                    {
+                        if (AnkleRightEnable && string.IsNullOrEmpty(AnkleRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "FootRightName")
+                    {
+                        if (FootRightEnable && string.IsNullOrEmpty(FootRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipLeftName")
+                    {
+                        if (HipLeftEnable && string.IsNullOrEmpty(HipLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "KneeLeftName")
+                    {
+                        if (KneeLeftEnable && string.IsNullOrEmpty(KneeLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "AnkleLeftName")
+                    {
+                        if (AnkleLeftEnable && string.IsNullOrEmpty(AnkleLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "FootLeftName")
+                    {
+                        if (FootLeftEnable && string.IsNullOrEmpty(FootLeftName))
+                        {
+                            return "*";
+                        }
                     }
                     return null;
                 }
@@ -728,9 +860,9 @@ namespace KinectDataSender
                     // CanExecuteChanged イベントの発行
                     CommandManager.InvalidateRequerySuggested();
                 }
-
-                // TODO: コマンド作成
             }
+
+            // TODO: コマンド作成
         }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Kinect;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using Microsoft.Kinect;
 
 namespace KinectDataSender
 {
@@ -13,20 +9,23 @@ namespace KinectDataSender
     /// </summary>
     public class KinectManager
     {
-        private static readonly int Bgr32BytesPerPixel = PixelFormats.Bgr32.BitsPerPixel / 8;
-
-        public event EventHandler<ColorUpdateEventArgs>    ColorUpdate;
-        public event EventHandler<DepthUpdateEventArgs>    DepthUpdate;
+        /// <summary>
+        /// RGB カメラのデータ更新イベント
+        /// </summary>
+        public event EventHandler<ColorUpdateEventArgs> ColorUpdate;
+        /// <summary>
+        /// 深度カメラのデータ更新イベント
+        /// </summary>
+        public event EventHandler<DepthUpdateEventArgs> DepthUpdate;
+        /// <summary>
+        /// スケルトンデータ更新イベント
+        /// </summary>
         public event EventHandler<SkeletonUpdateEventArgs> SkeletonUpdate;
 
         private uint _kinectNo;       // 利用する Kinect の番号
         private KinectSensor _kinect; // 利用する Kinect の KinectSensor
 
         private bool _drawEnable; // 描画情報を更新するなら true
-
-        // TODO:
-        //private BitmapSource _colorSource; // RGB カメラの画像データ
-        //private BitmapSource _depthSource; // 深度の画像データ
 
         /// <summary>
         /// 描画情報を更新するなら true
@@ -163,7 +162,7 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// RGB カメラフレーム更新イベント
+        /// RGB カメラフレーム更新イベントハンドラ
         /// </summary>
         /// <param name="sender">Kinect センサー</param>
         /// <param name="e">イベント</param>
@@ -196,28 +195,14 @@ namespace KinectDataSender
                     args.ColorFrame = colorFrame;
                     eventHandler(this, args);
                 }
-
-                // TODO:
-                /*
-                byte[] colorPixel = new byte[colorFrame.PixelDataLength];
-                colorFrame.CopyPixelDataTo(colorPixel);
-                _colorSource = BitmapSource.Create(
-                    colorFrame.Width, colorFrame.Height,
-                    96, 96,
-                    PixelFormats.Bgr32,
-                    null,
-                    colorPixel,
-                    colorFrame.Width * colorFrame.BytesPerPixel
-                );
-                */
             }
         }
 
         /// <summary>
-        /// 深度カメラフレーム更新イベント
+        /// 深度カメラフレーム更新イベントハンドラ
         /// </summary>
-        /// <param name="sender">Kinect センサー</param>
-        /// <param name="e">イベント</param>
+        /// <param name="sender">イベント送信元</param>
+        /// <param name="e">イベント引数</param>
         private void _kinect_DepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
         {
             if (!_drawEnable)
@@ -247,18 +232,6 @@ namespace KinectDataSender
                     args.DepthFrame = depthFrame;
                     eventHandler(this, args);
                 }
-
-                // TODO:
-                /*
-                _depthSource = BitmapSource.Create(
-                    depthFrame.Width, depthFrame.Height,
-                    96, 96,
-                    PixelFormats.Bgr32,
-                    null,
-                    _ConvertDepthColor(kinect, depthFrame),
-                    depthFrame.Width * Bgr32BytesPerPixel
-                );
-                */
             }
         }
 
@@ -291,93 +264,7 @@ namespace KinectDataSender
                     args.SkeletonFrame = skeletonFrame;
                     eventHandler(this, args);
                 }
-
-                /*
-                // TODO: スケルトンデータ送信
-
-                // スケルトン情報描画
-                if (!_drawEnable)
-                {
-                    return;
-                }
-                _DrawSkeleton(kinect, skeletonFrame);
-                */
             }
         }
-
-        /*
-        /// <summary>
-        /// 距離データの画像変換
-        /// </summary>
-        /// <param name="kinect">Kinect センサー</param>
-        /// <param name="depthFrame">深度フレームデータ</param>
-        /// <returns>距離データの画像データ</returns>
-        private byte[] _ConvertDepthColor(KinectSensor kinect, DepthImageFrame depthFrame)
-        {
-            ColorImageStream colorStream = kinect.ColorStream;
-            DepthImageStream depthStream = kinect.DepthStream;
-
-            // 距離カメラのピクセル毎のデータを取得する
-            short[] depthPixel = new short[depthFrame.PixelDataLength];
-            depthFrame.CopyPixelDataTo(depthPixel);
-
-            // 距離カメラの座標に対する RGB カメラ座標を取得する（座標合わせ）
-            ColorImagePoint[] colorPoint = new ColorImagePoint[depthFrame.PixelDataLength];
-            kinect.MapDepthFrameToColorFrame(depthStream.Format, depthPixel, colorStream.Format, colorPoint);
-
-            byte[] depthColor = new byte[depthFrame.PixelDataLength * Bgr32BytesPerPixel];
-            int pxLen = depthPixel.Length;
-            for (int i = 0; i < pxLen; i++)
-            {
-                int distance = depthPixel[i] >> DepthImageFrame.PlayerIndexBitmaskWidth;
-
-                // 変換した結果がフレームサイズを超えないよう、小さい方を採用
-                int x = Math.Min(colorPoint[i].X, colorStream.FrameWidth - 1);
-                int y = Math.Min(colorPoint[i].Y, colorStream.FrameHeight - 1);
-                int colorIndex = ((y * depthFrame.Width) + x) * Bgr32BytesPerPixel;
-
-                // サポート外 0-40cm
-                if (distance == depthStream.UnknownDepth)
-                {
-                    depthColor[colorIndex] = 0;
-                    depthColor[colorIndex + 1] = 0;
-                    depthColor[colorIndex + 2] = 255;
-                }
-                // 近すぎ 40cm-80cm（Default）
-                else if (distance == depthStream.TooNearDepth)
-                {
-                    depthColor[colorIndex] = 0;
-                    depthColor[colorIndex + 1] = 255;
-                    depthColor[colorIndex + 2] = 0;
-                }
-                // 遠すぎ 3m（Near）, 4m（Default）-8m
-                else if (distance == depthStream.TooFarDepth)
-                {
-                    depthColor[colorIndex] = 255;
-                    depthColor[colorIndex + 1] = 0;
-                    depthColor[colorIndex + 2] = 0;
-                }
-                // 有効な距離データ
-                else
-                {
-                    depthColor[colorIndex] = 0;
-                    depthColor[colorIndex + 1] = 255;
-                    depthColor[colorIndex + 2] = 255;
-                }
-            }
-
-            return depthColor;
-        }
-
-        /// <summary>
-        /// スケルトンデータの画像変換
-        /// </summary>
-        /// <param name="kinect"></param>
-        /// <param name="skeletonFrame"></param>
-        private void _DrawSkeleton(KinectSensor kinect, SkeletonFrame skeletonFrame)
-        {
-            // TODO: どうやって View へ連携するか
-        }
-        */
     }
 }
