@@ -3,6 +3,8 @@ using System.Net;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace KinectDataSender
 {
@@ -17,7 +19,9 @@ namespace KinectDataSender
 
         private BitmapSource _colorSource; // RGB カメラの画像データ
         private BitmapSource _depthSource; // 深度カメラの画像データ
+        private ObservableCollection<JointDrawPosition> _jointDrawPositions; // ジョイント描画位置リスト
 
+        private BlenderOptions _blenderOptions;
         private BlenderJoints _blenderJoints;
         private SkeletonDataSender _skeletonDataSender;
 
@@ -40,16 +44,28 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// ジョイント描画位置リスト
+        /// </summary>
+        public ObservableCollection<JointDrawPosition> JointDrawPositions
+        {
+            get { return _jointDrawPositions;  }
+            set { _jointDrawPositions = value; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
+        /// <param name="blenderOptions">Blender 側へ反映する際のオプション</param>
         /// <param name="blenderJoints">Blender 上での Joint 名</param>
-        public KinectDataManager(BlenderJoints blenderJoints)
+        public KinectDataManager(BlenderOptions blenderOptions, BlenderJoints blenderJoints)
         {
             _addedEventListener = false;
 
             _colorSource = null;
             _depthSource = null;
+            _jointDrawPositions = null;
 
+            _blenderOptions = blenderOptions;
             _blenderJoints = blenderJoints;
             _skeletonDataSender = new SkeletonDataSender(IPAddress.Loopback, 38040);
         }
@@ -140,20 +156,50 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         void kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
+            KinectSensor kinect = e.Kinect;
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
 
             Skeleton[] skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
             skeletonFrame.CopySkeletonDataTo(skeletons);
 
+            IList<JointDrawPosition> jointDrawPositionList = new List<JointDrawPosition>();
+
             uint userNo = 1;
             foreach (Skeleton skeleton in skeletons)
             {
-                if (SkeletonTrackingState.Tracked == skeleton.TrackingState)
+                if (skeleton.TrackingState != SkeletonTrackingState.Tracked)
                 {
-                    _skeletonDataSender.Send(skeleton, userNo, _blenderJoints);
-                    userNo++;
+                    continue;
                 }
+
+                // 描画
+                foreach (Joint joint in skeleton.Joints)
+                {
+                    if (joint.TrackingState == JointTrackingState.NotTracked)
+                    {
+                        continue;
+                    }
+
+                    // スケルトンの座標を RGB カメラの座標に変換する
+                    ColorImagePoint point = kinect.MapSkeletonPointToColor(skeleton.Position, kinect.ColorStream.Format);
+                    // 座標を画面のサイズに変換する
+                    // TODO: ダメなハードコーディング
+                    point.X = (int)((point.X * 320) / kinect.ColorStream.FrameWidth);
+                    point.Y = (int)((point.Y * 240) / kinect.ColorStream.FrameHeight);
+
+                    JointDrawPosition jointDrawPosition = new JointDrawPosition();
+                    jointDrawPosition.X = point.X;
+                    jointDrawPosition.Y = point.Y;
+                    jointDrawPositionList.Add(jointDrawPosition);
+                }
+
+                // 送信
+                _skeletonDataSender.Send(skeleton, userNo, _blenderOptions, _blenderJoints);
+
+                userNo++;
             }
+
+            _jointDrawPositions = new ObservableCollection<JointDrawPosition>(jointDrawPositionList);
         }
 
         /// <summary>

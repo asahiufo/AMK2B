@@ -35,13 +35,22 @@ namespace KinectDataSender
         /// </summary>
         /// <param name="skeleton">スケルトンデータ</param>
         /// <param name="userNo">ユーザー No（Kinect で認識された人物を識別する番号）</param>
+        /// <param name="blenderOptions">Blender 側へ反映する際のオプション</param>
         /// <param name="blenderJoints">Blender 上での Joint 名</param>
-        public void Send(Skeleton skeleton, uint userNo, BlenderJoints blenderJoints)
+        public void Send(Skeleton skeleton, uint userNo, BlenderOptions blenderOptions, BlenderJoints blenderJoints)
         {
             OscMessage message = new OscMessage(_sourceEndPoint, "/skeleton");
             message.Append(userNo.ToString());
+            message.Append(blenderOptions.SizeProportion.ToString());
+            message.Append(blenderOptions.CenterX.ToString());
+            message.Append(blenderOptions.CenterY.ToString());
+            message.Append(blenderOptions.CenterZ.ToString());
             foreach (Joint joint in skeleton.Joints)
             {
+                if (joint.TrackingState == JointTrackingState.NotTracked)
+                {
+                    continue;
+                }
                 if (blenderJoints.GetEnable(joint.JointType))
                 {
                     message.Append(blenderJoints.GetName(joint.JointType));

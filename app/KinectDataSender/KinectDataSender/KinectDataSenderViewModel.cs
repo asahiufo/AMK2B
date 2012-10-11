@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System;
+using System.Collections.ObjectModel;
 
 namespace KinectDataSender
 {
@@ -11,7 +13,11 @@ namespace KinectDataSender
     {
         private KinectManager _kinectManager;
         private BlenderJoints _blenderJoints;
+        private BlenderOptions _blenderOptions;
         private KinectDataManager _kinectDataManager;
+
+        private ICommand _startKinectCommand; // Kinect スタートコマンド
+        private ICommand _stopKinectCommand;  // Kinect 停止コマンド
 
         /// <summary>
         /// 頭名
@@ -656,6 +662,72 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// サイズ比率
+        /// </summary>
+        public double SizeProportion
+        {
+            get { return _blenderOptions.SizeProportion; }
+            set
+            {
+                if (_blenderOptions.SizeProportion == value)
+                {
+                    return;
+                }
+                _blenderOptions.SizeProportion = value;
+                OnPropertyChanged("SizeProportion");
+            }
+        }
+
+        /// <summary>
+        /// 中心 x 座標
+        /// </summary>
+        public double CenterX
+        {
+            get { return _blenderOptions.CenterX; }
+            set
+            {
+                if (_blenderOptions.CenterX == value)
+                {
+                    return;
+                }
+                _blenderOptions.CenterX = value;
+                OnPropertyChanged("CenterX");
+            }
+        }
+        /// <summary>
+        /// 中心 y 座標
+        /// </summary>
+        public double CenterY
+        {
+            get { return _blenderOptions.CenterY; }
+            set
+            {
+                if (_blenderOptions.CenterY == value)
+                {
+                    return;
+                }
+                _blenderOptions.CenterY = value;
+                OnPropertyChanged("CenterY");
+            }
+        }
+        /// <summary>
+        /// 中心 z 座標
+        /// </summary>
+        public double CenterZ
+        {
+            get { return _blenderOptions.CenterZ; }
+            set
+            {
+                if (_blenderOptions.CenterZ == value)
+                {
+                    return;
+                }
+                _blenderOptions.CenterZ = value;
+                OnPropertyChanged("CenterZ");
+            }
+        }
+
+        /// <summary>
         /// RGB カメラの画像データ
         /// </summary>
         public BitmapSource ColorSource
@@ -669,6 +741,29 @@ namespace KinectDataSender
         {
             get { return _kinectDataManager.DepthSource; }
         }
+        /// <summary>
+        /// ジョイント描画位置リスト
+        /// </summary>
+        public ObservableCollection<JointDrawPosition> JointDrawPositions
+        {
+            get { return _kinectDataManager.JointDrawPositions; }
+        }
+
+        /// <summary>
+        /// Kinect スタートコマンド
+        /// </summary>
+        public ICommand StartKinectCommand
+        {
+            get { return _startKinectCommand; }
+        }
+
+        /// <summary>
+        /// Kinect 停止コマンド
+        /// </summary>
+        public ICommand StopKinectCommand
+        {
+            get { return _stopKinectCommand; }
+        }
 
         /// <summary>
         /// コンストラクタ
@@ -677,7 +772,62 @@ namespace KinectDataSender
         {
             _kinectManager = new KinectManager();
             _blenderJoints = new BlenderJoints();
-            _kinectDataManager = new KinectDataManager(_blenderJoints);
+            _blenderOptions = new BlenderOptions();
+            _kinectDataManager = new KinectDataManager(_blenderOptions, _blenderJoints);
+
+            _startKinectCommand = new DelegateCommand(
+                new Action<object>(_StartKinect),
+                new Func<object, bool>(_CanStartKinect)
+            );
+            _stopKinectCommand = new DelegateCommand(
+                new Action<object>(_StopKinect),
+                new Func<object, bool>(_CanStopKinect)
+            );
+
+            _kinectDataManager.AddEventListenerTo(_kinectManager);
+            _kinectManager.ColorUpdate += new EventHandler<ColorUpdateEventArgs>(_kinectManager_ColorUpdate);
+            _kinectManager.DepthUpdate += new EventHandler<DepthUpdateEventArgs>(_kinectManager_DepthUpdate);
+            _kinectManager.SkeletonUpdate += new EventHandler<SkeletonUpdateEventArgs>(_kinectManager_SkeletonUpdate);
+        }
+
+        /// <summary>
+        /// デストラクタ
+        /// </summary>
+        ~KinectDataSenderViewModel()
+        {
+            _kinectManager.SkeletonUpdate -= _kinectManager_SkeletonUpdate;
+            _kinectManager.DepthUpdate -= _kinectManager_DepthUpdate;
+            _kinectManager.ColorUpdate -= _kinectManager_ColorUpdate;
+            _kinectDataManager.RemoveEventListenerTo(_kinectManager);
+        }
+
+        /// <summary>
+        /// RGB カメラのデータ更新イベントハンドラ
+        /// </summary>
+        /// <param name="sender">イベント送信元</param>
+        /// <param name="e">イベント引数</param>
+        void _kinectManager_ColorUpdate(object sender, ColorUpdateEventArgs e)
+        {
+            OnPropertyChanged("ColorSource");
+        }
+        /// <summary>
+        /// 深度カメラのデータ更新イベントハンドラ
+        /// </summary>
+        /// <param name="sender">イベント送信元</param>
+        /// <param name="e">イベント引数</param>
+        void _kinectManager_DepthUpdate(object sender, DepthUpdateEventArgs e)
+        {
+            OnPropertyChanged("DepthSource");
+        }
+        /// <summary>
+        /// スケルトンデータ更新イベントハンドラ
+        /// </summary>
+        /// <param name="sender">イベント送信元</param>
+        /// <param name="e">イベント引数</param>
+        void _kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
+        {
+            // TODO: クソ重くてまだ使えない様子。
+            //OnPropertyChanged("JointDrawPositions");
         }
 
         /// <summary>
@@ -695,7 +845,7 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// 
+        /// エラー処理
         /// </summary>
         public string Error
         {
@@ -703,10 +853,10 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// 
+        /// エラーチェック
         /// </summary>
-        /// <param name="columnName"></param>
-        /// <returns></returns>
+        /// <param name="columnName">項目名</param>
+        /// <returns>エラーメッセージ</returns>
         public string this[string columnName]
         {
             get
@@ -861,8 +1011,44 @@ namespace KinectDataSender
                     CommandManager.InvalidateRequerySuggested();
                 }
             }
+        }
 
-            // TODO: コマンド作成
+        /// <summary>
+        /// Kinect スタート
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        private void _StartKinect(object param)
+        {
+            _kinectManager.Initialize();
+            _kinectManager.Start();
+        }
+        /// <summary>
+        /// Kinect スタート実行可能判定
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        /// <returns>実行可能なら true</returns>
+        private bool _CanStartKinect(object param)
+        {
+            return !_kinectManager.Started;
+        }
+
+        /// <summary>
+        /// Kinect 停止
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        private void _StopKinect(object param)
+        {
+            _kinectManager.Stop();
+            _kinectManager.Terminate();
+        }
+        /// <summary>
+        /// Kinect 停止実行可能判定
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        /// <returns>実行可能なら true</returns>
+        private bool _CanStopKinect(object param)
+        {
+            return _kinectManager.Started;
         }
     }
 }

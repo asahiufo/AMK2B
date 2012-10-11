@@ -1,3 +1,5 @@
-/KinectDataSender/KinectDataSender/obj
-/KinectDataSender/KinectDataSender/bin
-/KinectDataSender/KinectDataSender.suo
+app/KinectDataSender/KinectDataSender/obj
+app/KinectDataSender/KinectDataSender/bin
+app/KinectDataSender/KinectDataSender.suo
+/blender/*.blend1
+/blender/*.blend2

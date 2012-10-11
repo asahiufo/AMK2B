@@ -138,7 +138,7 @@ namespace KinectDataSender
                 throw new InvalidOperationException("初期化されていません。");
             }
             _kinect.ColorStream.Enable();
-            _kinect.DepthStream.Enable();
+            // TODO: _kinect.DepthStream.Enable();
             _kinect.SkeletonStream.Enable();
 
             _kinect.Start();
@@ -155,9 +155,9 @@ namespace KinectDataSender
             }
 
             _kinect.Stop();
-            _kinect.Dispose();
+            // TODO: _kinect.Dispose();
             _kinect.SkeletonStream.Disable();
-            _kinect.DepthStream.Disable();
+            // TODO: _kinect.DepthStream.Disable();
             _kinect.ColorStream.Disable();
         }
 
@@ -182,7 +182,7 @@ namespace KinectDataSender
             // RGB カメラのフレームデータを取得する
             using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
             {
-                if (colorFrame != null)
+                if (colorFrame == null)
                 {
                     return;
                 }
