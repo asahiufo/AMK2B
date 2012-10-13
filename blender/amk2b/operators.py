@@ -8,11 +8,12 @@ class KinectDataReceivingOperator(bpy.types.Operator):
 
     def execute(self, context):
         if not bpy.amk2b.kinect_data_receiving_started:
+            bpy.amk2b.blender_data_manager.set_target_object()
             bpy.amk2b.kinect_data_receiver.start()
             bpy.amk2b.kinect_data_receiving_started = True
         else:
-            self._stop_draw(context)
             bpy.amk2b.kinect_data_receiver.stop()
+            bpy.amk2b.blender_data_manager.unset_target_object()
             bpy.amk2b.kinect_data_receiving_started = False
         return {"FINISHED"}
 

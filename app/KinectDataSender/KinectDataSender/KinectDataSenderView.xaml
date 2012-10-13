@@ -22,28 +22,48 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Image Width="320" Height="240" Source="{Binding Path=ColorSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Name="RGBImage" />
-            <Image Width="320" Height="240" Source="{Binding Path=DepthSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Opacity="0.5" />
-            <!--<Canvas Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" />-->
-            <ItemsControl ItemsSource="{Binding Path=JointDrawPositions}" Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Ellipse Fill="Red" Width="10" Height="10" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Top" Value="{Binding Path=Top}" />
-                        <Setter Property="Canvas.Left" Value="{Binding Path=Left}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-            <!---->
+            <DockPanel Grid.Column="0" Grid.Row="0">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Width="320" Height="240" Source="{Binding Path=ColorSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Name="RGBImage" />
+                    <Image Width="320" Height="240" Source="{Binding Path=DepthSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Opacity="0.5" />
+                    <!--<Canvas Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" />-->
+                    <ItemsControl ItemsSource="{Binding Path=JointDrawPositions}" Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Ellipse Fill="Red" Width="10" Height="10" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="Canvas.Top" Value="{Binding Path=Top}" />
+                                <Setter Property="Canvas.Left" Value="{Binding Path=Left}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </Grid>
+                <GroupBox Header="カメラ設定">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Column="0" Grid.Row="0">
+                            <Label Content="角度" Height="28" Margin="5,2" />
+                            <TextBox Height="24" HorizontalAlignment="Right" Margin="5,2" Width="50" Text="{Binding Path=KinectElevationAngle}" />
+                            <Slider HorizontalAlignment="Left" Margin="5,2" Width="200" Height="24" Value="{Binding Path=KinectElevationAngle}" Minimum="-27" Maximum="27" SmallChange="1" LargeChange="3" />
+                            <Button Content="適用" Height="23" Margin="5,0" Command="{Binding Path=ApplyKinectElevationAngleCommand}" />
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+            </DockPanel>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

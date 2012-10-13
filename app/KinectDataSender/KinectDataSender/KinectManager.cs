@@ -166,7 +166,7 @@ namespace KinectDataSender
         /// </summary>
         /// <param name="sender">Kinect センサー</param>
         /// <param name="e">イベント</param>
-        void _kinect_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
+        private void _kinect_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
             if (!_drawEnable)
             {
@@ -265,6 +265,19 @@ namespace KinectDataSender
                     eventHandler(this, args);
                 }
             }
+        }
+
+        /// <summary>
+        /// カメラ角度設定
+        /// </summary>
+        /// <param name="angle">角度</param>
+        public void SetElevationAngle(int angle)
+        {
+            if (!Started)
+            {
+                throw new InvalidOperationException("開始されていません。");
+            }
+            _kinect.ElevationAngle = angle;
         }
     }
 }

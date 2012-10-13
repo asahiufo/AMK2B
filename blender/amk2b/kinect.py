@@ -1,6 +1,7 @@
 from mathutils import Vector
 from .osc.oscd import Method
 from .osc.oscd import ThreadingServer
+import bpy
 import threading
 
 
@@ -25,7 +26,6 @@ class KinectDataReceiver(object):
     def stop(self):
         if not self._started:
             return
-        self._thread.stop()
         self._server.shutdown()
         self._started = False
 
@@ -84,6 +84,7 @@ class KinectDataReceiver(object):
                     joint_name,
                     [position_x, position_y, position_z]
                 )
+        bpy.amk2b.blender_data_manager.apply_location(user)
 
     class OSCCallback(Method):
 
@@ -103,26 +104,35 @@ class KinectUser(object):
         self._size_proportion = 0
         self._center_position = None
 
-        self._joints = None
+        self.joints = None
 
     def set_adjustment_value(self, size_proportion, center_position):
         self._size_proportion = size_proportion
         self._center_position = Vector(center_position)
 
     def reset_joints(self):
-        self._joints = dict()
+        self.joints = dict()
 
     def set_joint_location(self, joint_name, position):
-        if not joint_name in self._joints.keys():
-            self._joints[joint_name] = KinectUser.Joint()
+        if not joint_name in self.joints.keys():
+            self.joints[joint_name] = KinectJoint()
 
-        joint = self._joints[joint_name]
+        joint = self.joints[joint_name]
         position_vec = Vector(position)
+        joint.name = joint_name
         joint.location.x = position_vec.x
         joint.location.y = position_vec.y
         joint.location.z = position_vec.z
+        joint.location.x = joint.location.x * self._size_proportion
+        joint.location.y = joint.location.y * self._size_proportion
+        joint.location.z = joint.location.z * self._size_proportion
+        joint.location.x = joint.location.x + self._center_position.x
+        joint.location.y = joint.location.y + self._center_position.y
+        joint.location.z = joint.location.z + self._center_position.z
 
-    class Joint(object):
 
-        def __init__(self):
-            self.location = Vector((0, 0, 0))
+class KinectJoint(object):
+
+    def __init__(self):
+        self.name = ""
+        self.location = Vector((0, 0, 0))

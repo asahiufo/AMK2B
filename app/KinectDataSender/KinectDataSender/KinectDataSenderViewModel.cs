@@ -16,8 +16,11 @@ namespace KinectDataSender
         private BlenderOptions _blenderOptions;
         private KinectDataManager _kinectDataManager;
 
+        private int _kinectElevationAngle;
+
         private ICommand _startKinectCommand; // Kinect スタートコマンド
         private ICommand _stopKinectCommand;  // Kinect 停止コマンド
+        private ICommand _applyKinectElevationAngleCommand; // Kinect カメラ角度設定
 
         /// <summary>
         /// 頭名
@@ -728,6 +731,23 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// Kinect のカメラ角度
+        /// </summary>
+        public int KinectElevationAngle
+        {
+            get { return _kinectElevationAngle; }
+            set
+            {
+                if (_kinectElevationAngle == value)
+                {
+                    return;
+                }
+                _kinectElevationAngle = value;
+                OnPropertyChanged("KinectElevationAngle");
+            }
+        }
+
+        /// <summary>
         /// RGB カメラの画像データ
         /// </summary>
         public BitmapSource ColorSource
@@ -766,6 +786,14 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// Kinect カメラ適用コマンド
+        /// </summary>
+        public ICommand ApplyKinectElevationAngleCommand
+        {
+            get { return _applyKinectElevationAngleCommand; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public KinectDataSenderViewModel()
@@ -775,12 +803,18 @@ namespace KinectDataSender
             _blenderOptions = new BlenderOptions();
             _kinectDataManager = new KinectDataManager(_blenderOptions, _blenderJoints);
 
+            _kinectElevationAngle = 0;
+
             _startKinectCommand = new DelegateCommand(
                 new Action<object>(_StartKinect),
                 new Func<object, bool>(_CanStartKinect)
             );
             _stopKinectCommand = new DelegateCommand(
                 new Action<object>(_StopKinect),
+                new Func<object, bool>(_CanStopKinect)
+            );
+            _applyKinectElevationAngleCommand = new DelegateCommand(
+                new Action<object>(_ApplyKinectElevationAngle),
                 new Func<object, bool>(_CanStopKinect)
             );
 
@@ -1049,6 +1083,15 @@ namespace KinectDataSender
         private bool _CanStopKinect(object param)
         {
             return _kinectManager.Started;
+        }
+
+        /// <summary>
+        /// Kinect カメラ角度適用
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        private void _ApplyKinectElevationAngle(object param)
+        {
+            _kinectManager.SetElevationAngle(_kinectElevationAngle);
         }
     }
 }
