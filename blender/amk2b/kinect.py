@@ -53,13 +53,9 @@ class KinectDataReceiver(object):
     def _receive_callback(self, address, data):
         length = len(data)
         i = 0
-        if length >= 5:
+        if length >= 1:
             user_no = data[0]
-            size_proportion = float(data[1])
-            center_x = float(data[2])
-            center_y = float(data[3])
-            center_z = float(data[4])
-            i = i + 5
+            i = i + 1
         else:
             return
 
@@ -67,10 +63,6 @@ class KinectDataReceiver(object):
             self._users[user_no] = KinectUser(user_no)
 
         user = self._users[user_no]
-        user.set_adjustment_value(
-            size_proportion,
-            [center_x, center_y, center_z]
-        )
         user.reset_joints()
 
         while i < length:
@@ -100,15 +92,7 @@ class KinectUser(object):
 
     def __init__(self, no):
         self._no = no
-
-        self._size_proportion = 0
-        self._center_position = None
-
         self.joints = None
-
-    def set_adjustment_value(self, size_proportion, center_position):
-        self._size_proportion = size_proportion
-        self._center_position = Vector(center_position)
 
     def reset_joints(self):
         self.joints = dict()
@@ -118,17 +102,8 @@ class KinectUser(object):
             self.joints[joint_name] = KinectJoint()
 
         joint = self.joints[joint_name]
-        position_vec = Vector(position)
         joint.name = joint_name
-        joint.location.x = position_vec.x
-        joint.location.y = position_vec.y
-        joint.location.z = position_vec.z
-        joint.location.x = joint.location.x * self._size_proportion
-        joint.location.y = joint.location.y * self._size_proportion
-        joint.location.z = joint.location.z * self._size_proportion
-        joint.location.x = joint.location.x + self._center_position.x
-        joint.location.y = joint.location.y + self._center_position.y
-        joint.location.z = joint.location.z + self._center_position.z
+        joint.location = Vector(position)
 
 
 class KinectJoint(object):

@@ -12,29 +12,31 @@ namespace KinectDataSender
     public class KinectDataSenderViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private KinectManager _kinectManager;
-        private BlenderJoints _blenderJoints;
+        private JointsOption _jointsOption;
         private BlenderOptions _blenderOptions;
+        private OriginPositionAutoSetter _originPositionAutoSetter;
         private KinectDataManager _kinectDataManager;
 
         private int _kinectElevationAngle;
 
         private ICommand _startKinectCommand; // Kinect スタートコマンド
         private ICommand _stopKinectCommand;  // Kinect 停止コマンド
-        private ICommand _applyKinectElevationAngleCommand; // Kinect カメラ角度設定
+        private ICommand _applyKinectElevationAngleCommand; // Kinect カメラ角度設定コマンド
+        private ICommand _setOriginPositionCommand; // 原点座標設定コマンド
 
         /// <summary>
         /// 頭名
         /// </summary>
         public string HeadName
         {
-            get { return _blenderJoints.HeadName; }
+            get { return _jointsOption.HeadName; }
             set
             {
-                if (_blenderJoints.HeadName == value)
+                if (_jointsOption.HeadName == value)
                 {
                     return;
                 }
-                _blenderJoints.HeadName = value;
+                _jointsOption.HeadName = value;
                 OnPropertyChanged("HeadName");
             }
         }
@@ -43,14 +45,14 @@ namespace KinectDataSender
         /// </summary>
         public string ShoulderCenterName
         {
-            get { return _blenderJoints.ShoulderCenterName; }
+            get { return _jointsOption.ShoulderCenterName; }
             set
             {
-                if (_blenderJoints.ShoulderCenterName == value)
+                if (_jointsOption.ShoulderCenterName == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderCenterName = value;
+                _jointsOption.ShoulderCenterName = value;
                 OnPropertyChanged("ShoulderCenterName");
             }
         }
@@ -59,14 +61,14 @@ namespace KinectDataSender
         /// </summary>
         public string ShoulderRightName
         {
-            get { return _blenderJoints.ShoulderRightName; }
+            get { return _jointsOption.ShoulderRightName; }
             set
             {
-                if (_blenderJoints.ShoulderRightName == value)
+                if (_jointsOption.ShoulderRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderRightName = value;
+                _jointsOption.ShoulderRightName = value;
                 OnPropertyChanged("ShoulderRightName");
             }
         }
@@ -75,14 +77,14 @@ namespace KinectDataSender
         /// </summary>
         public string ElbowRightName
         {
-            get { return _blenderJoints.ElbowRightName; }
+            get { return _jointsOption.ElbowRightName; }
             set
             {
-                if (_blenderJoints.ElbowRightName == value)
+                if (_jointsOption.ElbowRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.ElbowRightName = value;
+                _jointsOption.ElbowRightName = value;
                 OnPropertyChanged("ElbowRightName");
             }
         }
@@ -91,14 +93,14 @@ namespace KinectDataSender
         /// </summary>
         public string WristRightName
         {
-            get { return _blenderJoints.WristRightName; }
+            get { return _jointsOption.WristRightName; }
             set
             {
-                if (_blenderJoints.WristRightName == value)
+                if (_jointsOption.WristRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.WristRightName = value;
+                _jointsOption.WristRightName = value;
                 OnPropertyChanged("WristRightName");
             }
         }
@@ -107,14 +109,14 @@ namespace KinectDataSender
         /// </summary>
         public string HandRightName
         {
-            get { return _blenderJoints.HandRightName; }
+            get { return _jointsOption.HandRightName; }
             set
             {
-                if (_blenderJoints.HandRightName == value)
+                if (_jointsOption.HandRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.HandRightName = value;
+                _jointsOption.HandRightName = value;
                 OnPropertyChanged("HandRightName");
             }
         }
@@ -123,14 +125,14 @@ namespace KinectDataSender
         /// </summary>
         public string ShoulderLeftName
         {
-            get { return _blenderJoints.ShoulderLeftName; }
+            get { return _jointsOption.ShoulderLeftName; }
             set
             {
-                if (_blenderJoints.ShoulderLeftName == value)
+                if (_jointsOption.ShoulderLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderLeftName = value;
+                _jointsOption.ShoulderLeftName = value;
                 OnPropertyChanged("ShoulderLeftName");
             }
         }
@@ -139,14 +141,14 @@ namespace KinectDataSender
         /// </summary>
         public string ElbowLeftName
         {
-            get { return _blenderJoints.ElbowLeftName; }
+            get { return _jointsOption.ElbowLeftName; }
             set
             {
-                if (_blenderJoints.ElbowLeftName == value)
+                if (_jointsOption.ElbowLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.ElbowLeftName = value;
+                _jointsOption.ElbowLeftName = value;
                 OnPropertyChanged("ElbowLeftName");
             }
         }
@@ -155,14 +157,14 @@ namespace KinectDataSender
         /// </summary>
         public string WristLeftName
         {
-            get { return _blenderJoints.WristLeftName; }
+            get { return _jointsOption.WristLeftName; }
             set
             {
-                if (_blenderJoints.WristLeftName == value)
+                if (_jointsOption.WristLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.WristLeftName = value;
+                _jointsOption.WristLeftName = value;
                 OnPropertyChanged("WristLeftName");
             }
         }
@@ -171,14 +173,14 @@ namespace KinectDataSender
         /// </summary>
         public string HandLeftName
         {
-            get { return _blenderJoints.HandLeftName; }
+            get { return _jointsOption.HandLeftName; }
             set
             {
-                if (_blenderJoints.HandLeftName == value)
+                if (_jointsOption.HandLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.HandLeftName = value;
+                _jointsOption.HandLeftName = value;
                 OnPropertyChanged("HandLeftName");
             }
         }
@@ -187,14 +189,14 @@ namespace KinectDataSender
         /// </summary>
         public string SpineName
         {
-            get { return _blenderJoints.SpineName; }
+            get { return _jointsOption.SpineName; }
             set
             {
-                if (_blenderJoints.SpineName == value)
+                if (_jointsOption.SpineName == value)
                 {
                     return;
                 }
-                _blenderJoints.SpineName = value;
+                _jointsOption.SpineName = value;
                 OnPropertyChanged("SpineName");
             }
         }
@@ -203,14 +205,14 @@ namespace KinectDataSender
         /// </summary>
         public string HipCenterName
         {
-            get { return _blenderJoints.HipCenterName; }
+            get { return _jointsOption.HipCenterName; }
             set
             {
-                if (_blenderJoints.HipCenterName == value)
+                if (_jointsOption.HipCenterName == value)
                 {
                     return;
                 }
-                _blenderJoints.HipCenterName = value;
+                _jointsOption.HipCenterName = value;
                 OnPropertyChanged("HipCenterName");
             }
         }
@@ -219,14 +221,14 @@ namespace KinectDataSender
         /// </summary>
         public string HipRightName
         {
-            get { return _blenderJoints.HipRightName; }
+            get { return _jointsOption.HipRightName; }
             set
             {
-                if (_blenderJoints.HipRightName == value)
+                if (_jointsOption.HipRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.HipRightName = value;
+                _jointsOption.HipRightName = value;
                 OnPropertyChanged("HipRightName");
             }
         }
@@ -235,14 +237,14 @@ namespace KinectDataSender
         /// </summary>
         public string KneeRightName
         {
-            get { return _blenderJoints.KneeRightName; }
+            get { return _jointsOption.KneeRightName; }
             set
             {
-                if (_blenderJoints.KneeRightName == value)
+                if (_jointsOption.KneeRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.KneeRightName = value;
+                _jointsOption.KneeRightName = value;
                 OnPropertyChanged("KneeRightName");
             }
         }
@@ -251,14 +253,14 @@ namespace KinectDataSender
         /// </summary>
         public string AnkleRightName
         {
-            get { return _blenderJoints.AnkleRightName; }
+            get { return _jointsOption.AnkleRightName; }
             set
             {
-                if (_blenderJoints.AnkleRightName == value)
+                if (_jointsOption.AnkleRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.AnkleRightName = value;
+                _jointsOption.AnkleRightName = value;
                 OnPropertyChanged("AnkleRightName");
             }
         }
@@ -267,14 +269,14 @@ namespace KinectDataSender
         /// </summary>
         public string FootRightName
         {
-            get { return _blenderJoints.FootRightName; }
+            get { return _jointsOption.FootRightName; }
             set
             {
-                if (_blenderJoints.FootRightName == value)
+                if (_jointsOption.FootRightName == value)
                 {
                     return;
                 }
-                _blenderJoints.FootRightName = value;
+                _jointsOption.FootRightName = value;
                 OnPropertyChanged("FootRightName");
             }
         }
@@ -283,14 +285,14 @@ namespace KinectDataSender
         /// </summary>
         public string HipLeftName
         {
-            get { return _blenderJoints.HipLeftName; }
+            get { return _jointsOption.HipLeftName; }
             set
             {
-                if (_blenderJoints.HipLeftName == value)
+                if (_jointsOption.HipLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.HipLeftName = value;
+                _jointsOption.HipLeftName = value;
                 OnPropertyChanged("HipLeftName");
             }
         }
@@ -299,14 +301,14 @@ namespace KinectDataSender
         /// </summary>
         public string KneeLeftName
         {
-            get { return _blenderJoints.KneeLeftName; }
+            get { return _jointsOption.KneeLeftName; }
             set
             {
-                if (_blenderJoints.KneeLeftName == value)
+                if (_jointsOption.KneeLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.KneeLeftName = value;
+                _jointsOption.KneeLeftName = value;
                 OnPropertyChanged("KneeLeftName");
             }
         }
@@ -315,14 +317,14 @@ namespace KinectDataSender
         /// </summary>
         public string AnkleLeftName
         {
-            get { return _blenderJoints.AnkleLeftName; }
+            get { return _jointsOption.AnkleLeftName; }
             set
             {
-                if (_blenderJoints.AnkleLeftName == value)
+                if (_jointsOption.AnkleLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.AnkleLeftName = value;
+                _jointsOption.AnkleLeftName = value;
                 OnPropertyChanged("AnkleLeftName");
             }
         }
@@ -331,14 +333,14 @@ namespace KinectDataSender
         /// </summary>
         public string FootLeftName
         {
-            get { return _blenderJoints.FootLeftName; }
+            get { return _jointsOption.FootLeftName; }
             set
             {
-                if (_blenderJoints.FootLeftName == value)
+                if (_jointsOption.FootLeftName == value)
                 {
                     return;
                 }
-                _blenderJoints.FootLeftName = value;
+                _jointsOption.FootLeftName = value;
                 OnPropertyChanged("FootLeftName");
             }
         }
@@ -348,14 +350,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HeadEnable
         {
-            get { return _blenderJoints.HeadEnable; }
+            get { return _jointsOption.HeadEnable; }
             set
             {
-                if (_blenderJoints.HeadEnable == value)
+                if (_jointsOption.HeadEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HeadEnable = value;
+                _jointsOption.HeadEnable = value;
                 OnPropertyChanged("HeadEnable");
             }
         }
@@ -364,14 +366,14 @@ namespace KinectDataSender
         /// </summary>
         public bool ShoulderCenterEnable
         {
-            get { return _blenderJoints.ShoulderCenterEnable; }
+            get { return _jointsOption.ShoulderCenterEnable; }
             set
             {
-                if (_blenderJoints.ShoulderCenterEnable == value)
+                if (_jointsOption.ShoulderCenterEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderCenterEnable = value;
+                _jointsOption.ShoulderCenterEnable = value;
                 OnPropertyChanged("ShoulderCenterEnable");
             }
         }
@@ -380,14 +382,14 @@ namespace KinectDataSender
         /// </summary>
         public bool ShoulderRightEnable
         {
-            get { return _blenderJoints.ShoulderRightEnable; }
+            get { return _jointsOption.ShoulderRightEnable; }
             set
             {
-                if (_blenderJoints.ShoulderRightEnable == value)
+                if (_jointsOption.ShoulderRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderRightEnable = value;
+                _jointsOption.ShoulderRightEnable = value;
                 OnPropertyChanged("ShoulderRightEnable");
             }
         }
@@ -396,14 +398,14 @@ namespace KinectDataSender
         /// </summary>
         public bool ElbowRightEnable
         {
-            get { return _blenderJoints.ElbowRightEnable; }
+            get { return _jointsOption.ElbowRightEnable; }
             set
             {
-                if (_blenderJoints.ElbowRightEnable == value)
+                if (_jointsOption.ElbowRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.ElbowRightEnable = value;
+                _jointsOption.ElbowRightEnable = value;
                 OnPropertyChanged("ElbowRightEnable");
             }
         }
@@ -412,14 +414,14 @@ namespace KinectDataSender
         /// </summary>
         public bool WristRightEnable
         {
-            get { return _blenderJoints.WristRightEnable; }
+            get { return _jointsOption.WristRightEnable; }
             set
             {
-                if (_blenderJoints.WristRightEnable == value)
+                if (_jointsOption.WristRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.WristRightEnable = value;
+                _jointsOption.WristRightEnable = value;
                 OnPropertyChanged("WristRightEnable");
             }
         }
@@ -428,14 +430,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HandRightEnable
         {
-            get { return _blenderJoints.HandRightEnable; }
+            get { return _jointsOption.HandRightEnable; }
             set
             {
-                if (_blenderJoints.HandRightEnable == value)
+                if (_jointsOption.HandRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HandRightEnable = value;
+                _jointsOption.HandRightEnable = value;
                 OnPropertyChanged("HandRightEnable");
             }
         }
@@ -444,14 +446,14 @@ namespace KinectDataSender
         /// </summary>
         public bool ShoulderLeftEnable
         {
-            get { return _blenderJoints.ShoulderLeftEnable; }
+            get { return _jointsOption.ShoulderLeftEnable; }
             set
             {
-                if (_blenderJoints.ShoulderLeftEnable == value)
+                if (_jointsOption.ShoulderLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.ShoulderLeftEnable = value;
+                _jointsOption.ShoulderLeftEnable = value;
                 OnPropertyChanged("ShoulderLeftEnable");
             }
         }
@@ -460,14 +462,14 @@ namespace KinectDataSender
         /// </summary>
         public bool ElbowLeftEnable
         {
-            get { return _blenderJoints.ElbowLeftEnable; }
+            get { return _jointsOption.ElbowLeftEnable; }
             set
             {
-                if (_blenderJoints.ElbowLeftEnable == value)
+                if (_jointsOption.ElbowLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.ElbowLeftEnable = value;
+                _jointsOption.ElbowLeftEnable = value;
                 OnPropertyChanged("ElbowLeftEnable");
             }
         }
@@ -476,14 +478,14 @@ namespace KinectDataSender
         /// </summary>
         public bool WristLeftEnable
         {
-            get { return _blenderJoints.WristLeftEnable; }
+            get { return _jointsOption.WristLeftEnable; }
             set
             {
-                if (_blenderJoints.WristLeftEnable == value)
+                if (_jointsOption.WristLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.WristLeftEnable = value;
+                _jointsOption.WristLeftEnable = value;
                 OnPropertyChanged("WristLeftEnable");
             }
         }
@@ -492,14 +494,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HandLeftEnable
         {
-            get { return _blenderJoints.HandLeftEnable; }
+            get { return _jointsOption.HandLeftEnable; }
             set
             {
-                if (_blenderJoints.HandLeftEnable == value)
+                if (_jointsOption.HandLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HandLeftEnable = value;
+                _jointsOption.HandLeftEnable = value;
                 OnPropertyChanged("HandLeftEnable");
             }
         }
@@ -508,14 +510,14 @@ namespace KinectDataSender
         /// </summary>
         public bool SpineEnable
         {
-            get { return _blenderJoints.SpineEnable; }
+            get { return _jointsOption.SpineEnable; }
             set
             {
-                if (_blenderJoints.SpineEnable == value)
+                if (_jointsOption.SpineEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.SpineEnable = value;
+                _jointsOption.SpineEnable = value;
                 OnPropertyChanged("SpineEnable");
             }
         }
@@ -524,14 +526,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HipCenterEnable
         {
-            get { return _blenderJoints.HipCenterEnable; }
+            get { return _jointsOption.HipCenterEnable; }
             set
             {
-                if (_blenderJoints.HipCenterEnable == value)
+                if (_jointsOption.HipCenterEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HipCenterEnable = value;
+                _jointsOption.HipCenterEnable = value;
                 OnPropertyChanged("HipCenterEnable");
             }
         }
@@ -540,14 +542,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HipRightEnable
         {
-            get { return _blenderJoints.HipRightEnable; }
+            get { return _jointsOption.HipRightEnable; }
             set
             {
-                if (_blenderJoints.HipRightEnable == value)
+                if (_jointsOption.HipRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HipRightEnable = value;
+                _jointsOption.HipRightEnable = value;
                 OnPropertyChanged("HipRightEnable");
             }
         }
@@ -556,14 +558,14 @@ namespace KinectDataSender
         /// </summary>
         public bool KneeRightEnable
         {
-            get { return _blenderJoints.KneeRightEnable; }
+            get { return _jointsOption.KneeRightEnable; }
             set
             {
-                if (_blenderJoints.KneeRightEnable == value)
+                if (_jointsOption.KneeRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.KneeRightEnable = value;
+                _jointsOption.KneeRightEnable = value;
                 OnPropertyChanged("KneeRightEnable");
             }
         }
@@ -572,14 +574,14 @@ namespace KinectDataSender
         /// </summary>
         public bool AnkleRightEnable
         {
-            get { return _blenderJoints.AnkleRightEnable; }
+            get { return _jointsOption.AnkleRightEnable; }
             set
             {
-                if (_blenderJoints.AnkleRightEnable == value)
+                if (_jointsOption.AnkleRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.AnkleRightEnable = value;
+                _jointsOption.AnkleRightEnable = value;
                 OnPropertyChanged("AnkleRightEnable");
             }
         }
@@ -588,14 +590,14 @@ namespace KinectDataSender
         /// </summary>
         public bool FootRightEnable
         {
-            get { return _blenderJoints.FootRightEnable; }
+            get { return _jointsOption.FootRightEnable; }
             set
             {
-                if (_blenderJoints.FootRightEnable == value)
+                if (_jointsOption.FootRightEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.FootRightEnable = value;
+                _jointsOption.FootRightEnable = value;
                 OnPropertyChanged("FootRightEnable");
             }
         }
@@ -604,14 +606,14 @@ namespace KinectDataSender
         /// </summary>
         public bool HipLeftEnable
         {
-            get { return _blenderJoints.HipLeftEnable; }
+            get { return _jointsOption.HipLeftEnable; }
             set
             {
-                if (_blenderJoints.HipLeftEnable == value)
+                if (_jointsOption.HipLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.HipLeftEnable = value;
+                _jointsOption.HipLeftEnable = value;
                 OnPropertyChanged("HipLeftEnable");
             }
         }
@@ -620,14 +622,14 @@ namespace KinectDataSender
         /// </summary>
         public bool KneeLeftEnable
         {
-            get { return _blenderJoints.KneeLeftEnable; }
+            get { return _jointsOption.KneeLeftEnable; }
             set
             {
-                if (_blenderJoints.KneeLeftEnable == value)
+                if (_jointsOption.KneeLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.KneeLeftEnable = value;
+                _jointsOption.KneeLeftEnable = value;
                 OnPropertyChanged("KneeLeftEnable");
             }
         }
@@ -636,14 +638,14 @@ namespace KinectDataSender
         /// </summary>
         public bool AnkleLeftEnable
         {
-            get { return _blenderJoints.AnkleLeftEnable; }
+            get { return _jointsOption.AnkleLeftEnable; }
             set
             {
-                if (_blenderJoints.AnkleLeftEnable == value)
+                if (_jointsOption.AnkleLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.AnkleLeftEnable = value;
+                _jointsOption.AnkleLeftEnable = value;
                 OnPropertyChanged("AnkleLeftEnable");
             }
         }
@@ -652,14 +654,14 @@ namespace KinectDataSender
         /// </summary>
         public bool FootLeftEnable
         {
-            get { return _blenderJoints.FootLeftEnable; }
+            get { return _jointsOption.FootLeftEnable; }
             set
             {
-                if (_blenderJoints.FootLeftEnable == value)
+                if (_jointsOption.FootLeftEnable == value)
                 {
                     return;
                 }
-                _blenderJoints.FootLeftEnable = value;
+                _jointsOption.FootLeftEnable = value;
                 OnPropertyChanged("FootLeftEnable");
             }
         }
@@ -748,6 +750,36 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// 原点座標自動設定情報
+        /// </summary>
+        public string OriginPositionAutoSetInfo
+        {
+            get
+            {
+                if (!_kinectManager.Started)
+                {
+                    return "";
+                }
+                if (_originPositionAutoSetter.Status == OriginPositionAutoSetter.OriginPositionAutoSetterStatus.NOT_STARTING)
+                {
+                    if (!_originPositionAutoSetter.AlreadySet)
+                    {
+                        return "自動設定は行われていません。";
+                    }
+                    else
+                    {
+                        return "前回設定時間: " + _originPositionAutoSetter.LastSetTime.ToString();
+                    }
+                }
+                else if (_originPositionAutoSetter.Status == OriginPositionAutoSetter.OriginPositionAutoSetterStatus.STARTING)
+                {
+                    return _originPositionAutoSetter.RemainingTime.ToString() + " 秒後に実行します。";
+                }
+                return "実行します。";
+            }
+        }
+
+        /// <summary>
         /// RGB カメラの画像データ
         /// </summary>
         public BitmapSource ColorSource
@@ -794,14 +826,23 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// 原点座標設定コマンド
+        /// </summary>
+        public ICommand SetOriginPositionCommand
+        {
+            get { return _setOriginPositionCommand; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public KinectDataSenderViewModel()
         {
             _kinectManager = new KinectManager();
-            _blenderJoints = new BlenderJoints();
+            _jointsOption = new JointsOption();
             _blenderOptions = new BlenderOptions();
-            _kinectDataManager = new KinectDataManager(_blenderOptions, _blenderJoints);
+            _originPositionAutoSetter = new OriginPositionAutoSetter(_jointsOption);
+            _kinectDataManager = new KinectDataManager(_blenderOptions, _jointsOption);
 
             _kinectElevationAngle = 0;
 
@@ -815,8 +856,15 @@ namespace KinectDataSender
             );
             _applyKinectElevationAngleCommand = new DelegateCommand(
                 new Action<object>(_ApplyKinectElevationAngle),
-                new Func<object, bool>(_CanStopKinect)
+                new Func<object, bool>(_CanApplyKinectElevationAngle)
             );
+            _setOriginPositionCommand = new DelegateCommand(
+                new Action<object>(_SetOriginPosition),
+                new Func<object, bool>(_CanSetOriginPosition)
+            );
+
+            _originPositionAutoSetter.AddEventListenerTo(_kinectManager);
+            _originPositionAutoSetter.Update += new EventHandler<EventArgs>(_originPositionAutoSetter_Update);
 
             _kinectDataManager.AddEventListenerTo(_kinectManager);
             _kinectManager.ColorUpdate += new EventHandler<ColorUpdateEventArgs>(_kinectManager_ColorUpdate);
@@ -833,6 +881,7 @@ namespace KinectDataSender
             _kinectManager.DepthUpdate -= _kinectManager_DepthUpdate;
             _kinectManager.ColorUpdate -= _kinectManager_ColorUpdate;
             _kinectDataManager.RemoveEventListenerTo(_kinectManager);
+            _originPositionAutoSetter.RemoveEventListenerTo(_kinectManager);
         }
 
         /// <summary>
@@ -840,7 +889,7 @@ namespace KinectDataSender
         /// </summary>
         /// <param name="sender">イベント送信元</param>
         /// <param name="e">イベント引数</param>
-        void _kinectManager_ColorUpdate(object sender, ColorUpdateEventArgs e)
+        private void _kinectManager_ColorUpdate(object sender, ColorUpdateEventArgs e)
         {
             OnPropertyChanged("ColorSource");
         }
@@ -849,7 +898,7 @@ namespace KinectDataSender
         /// </summary>
         /// <param name="sender">イベント送信元</param>
         /// <param name="e">イベント引数</param>
-        void _kinectManager_DepthUpdate(object sender, DepthUpdateEventArgs e)
+        private void _kinectManager_DepthUpdate(object sender, DepthUpdateEventArgs e)
         {
             OnPropertyChanged("DepthSource");
         }
@@ -858,10 +907,21 @@ namespace KinectDataSender
         /// </summary>
         /// <param name="sender">イベント送信元</param>
         /// <param name="e">イベント引数</param>
-        void _kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
+        private void _kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
             // TODO: クソ重くてまだ使えない様子。
             //OnPropertyChanged("JointDrawPositions");
+        }
+
+        /// <summary>
+        /// 原点座標自動設定更新イベントハンドラ
+        /// </summary>
+        /// <param name="sender">イベント送信元</param>
+        /// <param name="e">イベント引数</param>
+        private void _originPositionAutoSetter_Update(object sender, EventArgs e)
+        {
+            OnPropertyChanged("OriginPositionAutoSetInfo");
+            // TODO: 自動設定ボタンのセンシティビティが自動で元に戻らない。（画面をクリックしたら戻る。）
         }
 
         /// <summary>
@@ -1092,6 +1152,36 @@ namespace KinectDataSender
         private void _ApplyKinectElevationAngle(object param)
         {
             _kinectManager.SetElevationAngle(_kinectElevationAngle);
+        }
+        /// <summary>
+        ///  Kinect カメラ角度適用実行可能判定
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        /// <returns>実行可能なら true</returns>
+        private bool _CanApplyKinectElevationAngle(object param)
+        {
+            return _kinectManager.Started;
+        }
+
+        /// <summary>
+        /// 原点座標設定
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        private void _SetOriginPosition(object param)
+        {
+            _originPositionAutoSetter.StartAutoSetting();
+        }
+        /// <summary>
+        ///  原点座標設定実行可能判定
+        /// </summary>
+        /// <param name="param">パラメータ</param>
+        /// <returns>実行可能なら true</returns>
+        private bool _CanSetOriginPosition(object param)
+        {
+            return (
+                _kinectManager.Started && 
+                _originPositionAutoSetter.Status == OriginPositionAutoSetter.OriginPositionAutoSetterStatus.NOT_STARTING
+            );
         }
     }
 }

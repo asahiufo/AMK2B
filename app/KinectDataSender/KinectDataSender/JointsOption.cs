@@ -4,9 +4,9 @@ using Microsoft.Kinect;
 namespace KinectDataSender
 {
     /// <summary>
-    /// Blender 上での Joint 名
+    /// Joint 単位の設定
     /// </summary>
-    public class BlenderJoints
+    public class JointsOption
     {
         private JointSetting _head;
         private JointSetting _shoulderCenter;
@@ -356,7 +356,7 @@ namespace KinectDataSender
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public BlenderJoints()
+        public JointsOption()
         {
             _head = new JointSetting("ctl_Head", false);
             _shoulderCenter = new JointSetting("ctl_Neck", false);
@@ -405,7 +405,7 @@ namespace KinectDataSender
         /// <summary>
         /// デストラクタ
         /// </summary>
-        ~BlenderJoints()
+        ~JointsOption()
         {
         }
 
@@ -428,6 +428,45 @@ namespace KinectDataSender
         {
             return _jointMap[jointType].Enable;
         }
+
+        /// <summary>
+        /// Kinect の JointType から Joint の原点 x 座標を取得
+        /// </summary>
+        /// <param name="jointType">Kinect の JointType</param>
+        /// <returns>Blender 上での location.x = 0 と対応する Kinect 上での x 座標</returns>
+        public double GetOriginX(JointType jointType)
+        {
+            return _jointMap[jointType].OriginX;
+        }
+        /// <summary>
+        /// Kinect の JointType から Joint の原点 y 座標を取得
+        /// </summary>
+        /// <param name="jointType">Kinect の JointType</param>
+        /// <returns>Blender 上での location.y = 0 と対応する Kinect 上での y 座標</returns>
+        public double GetOriginY(JointType jointType)
+        {
+            return _jointMap[jointType].OriginY;
+        }
+        /// <summary>
+        /// Kinect の JointType から Joint の原点 z 座標を取得
+        /// </summary>
+        /// <param name="jointType">Kinect の JointType</param>
+        /// <returns>Blender 上での location.z = 0 と対応する Kinect 上での z 座標</returns>
+        public double GetOriginZ(JointType jointType)
+        {
+            return _jointMap[jointType].OriginZ;
+        }
+        /// <summary>
+        /// Blender 上での location = (0, 0, 0) と対応する Kinect 上での座標設定
+        /// </summary>
+        /// <param name="jointType">Kinect の JointType</param>
+        /// <param name="x">Blender 上での location.x = 0 と対応する Kinect 上での x 座標</param>
+        /// <param name="y">Blender 上での location.y = 0 と対応する Kinect 上での y 座標</param>
+        /// <param name="z">Blender 上での location.z = 0 と対応する Kinect 上での z 座標</param>
+        public void SetOriginPosition(JointType jointType, double x, double y, double z)
+        {
+            _jointMap[jointType].SetOriginPosition(x, y, z);
+        }
     }
 
     /// <summary>
@@ -437,6 +476,9 @@ namespace KinectDataSender
     {
         private string _name;
         private bool _enable;
+        private double _originX; // Blender 上での location.x = 0 と対応する Kinect 上での x 座標
+        private double _originY; // Blender 上での location.y = 0 と対応する Kinect 上での y 座標
+        private double _originZ; // Blender 上での location.z = 0 と対応する Kinect 上での z 座標
 
         /// <summary>
         /// 名前
@@ -457,6 +499,28 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// Blender 上での location.x = 0 と対応する Kinect 上での x 座標
+        /// </summary>
+        public double OriginX
+        {
+            get { return _originX; }
+        }
+        /// <summary>
+        /// Blender 上での location.y = 0 と対応する Kinect 上での y 座標
+        /// </summary>
+        public double OriginY
+        {
+            get { return _originY; }
+        }
+        /// <summary>
+        /// Blender 上での location.z = 0 と対応する Kinect 上での z 座標
+        /// </summary>
+        public double OriginZ
+        {
+            get { return _originZ; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="name">名前</param>
@@ -465,6 +529,9 @@ namespace KinectDataSender
         {
             _name = name;
             _enable = enable;
+            _originX = 0;
+            _originY = 0;
+            _originZ = 0;
         }
 
         /// <summary>
@@ -472,6 +539,19 @@ namespace KinectDataSender
         /// </summary>
         ~JointSetting()
         {
+        }
+
+        /// <summary>
+        /// Blender 上での location = (0, 0, 0) と対応する Kinect 上での座標設定
+        /// </summary>
+        /// <param name="x">Blender 上での location.x = 0 と対応する Kinect 上での x 座標</param>
+        /// <param name="y">Blender 上での location.y = 0 と対応する Kinect 上での y 座標</param>
+        /// <param name="z">Blender 上での location.z = 0 と対応する Kinect 上での z 座標</param>
+        public void SetOriginPosition(double x, double y, double z)
+        {
+            _originX = x;
+            _originY = y;
+            _originZ = z;
         }
     }
 }

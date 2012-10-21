@@ -36,27 +36,48 @@ namespace KinectDataSender
         /// <param name="skeleton">スケルトンデータ</param>
         /// <param name="userNo">ユーザー No（Kinect で認識された人物を識別する番号）</param>
         /// <param name="blenderOptions">Blender 側へ反映する際のオプション</param>
-        /// <param name="blenderJoints">Blender 上での Joint 名</param>
-        public void Send(Skeleton skeleton, uint userNo, BlenderOptions blenderOptions, BlenderJoints blenderJoints)
+        /// <param name="jointsOption">Joint 単位の設定</param>
+        public void Send(Skeleton skeleton, uint userNo, BlenderOptions blenderOptions, JointsOption jointsOption)
         {
+            double sizeProportion = blenderOptions.SizeProportion;
+            double centerX = blenderOptions.CenterX;
+            double centerY = blenderOptions.CenterY;
+            double centerZ = blenderOptions.CenterZ;
+
             OscMessage message = new OscMessage(_sourceEndPoint, "/skeleton");
             message.Append(userNo.ToString());
-            message.Append(blenderOptions.SizeProportion.ToString());
-            message.Append(blenderOptions.CenterX.ToString());
-            message.Append(blenderOptions.CenterY.ToString());
-            message.Append(blenderOptions.CenterZ.ToString());
+
             foreach (Joint joint in skeleton.Joints)
             {
                 if (joint.TrackingState == JointTrackingState.NotTracked)
                 {
                     continue;
                 }
-                if (blenderJoints.GetEnable(joint.JointType))
+
+                JointType jointType = joint.JointType;
+                if (jointsOption.GetEnable(jointType))
                 {
-                    message.Append(blenderJoints.GetName(joint.JointType));
-                    message.Append(joint.Position.X.ToString());
-                    message.Append(joint.Position.Y.ToString());
-                    message.Append(joint.Position.Z.ToString());
+                    message.Append(jointsOption.GetName(jointType));
+
+                    // Kinect
+                    // x 軸: 横（右が正）
+                    // y 軸: 高さ（上が正）
+                    // z 軸: 奥行き（人間から見てカメラがある方向が正）
+                    //
+                    //  ↓
+                    //
+                    // Blender
+                    // x 軸: 横
+                    // y 軸: 奥行き
+                    // z 軸: 高さ
+
+                    double locationX = (joint.Position.X - centerX - jointsOption.GetOriginX(jointType)) * sizeProportion;
+                    double locationY = (joint.Position.Z - centerZ - jointsOption.GetOriginZ(jointType)) * sizeProportion;
+                    double locationZ = (joint.Position.Y - centerY - jointsOption.GetOriginY(jointType)) * sizeProportion;
+
+                    message.Append(locationX.ToString());
+                    message.Append(locationY.ToString());
+                    message.Append(locationZ.ToString());
                 }
             }
             message.Send(_destinationEndPoint);

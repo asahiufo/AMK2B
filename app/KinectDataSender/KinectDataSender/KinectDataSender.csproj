@@ -63,13 +63,14 @@
     <Compile Include="ColorUpdateEventArgs.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DepthUpdateEventArgs.cs" />
-    <Compile Include="BlenderJoints.cs" />
     <Compile Include="JointDrawPosition.cs" />
+    <Compile Include="JointsOption.cs" />
     <Compile Include="KinectDataSenderView.xaml.cs">
       <DependentUpon>KinectDataSenderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="KinectDataSenderViewModel.cs" />
     <Compile Include="KinectDataManager.cs" />
+    <Compile Include="OriginPositionAutoSetter.cs" />
     <Compile Include="SkeletonDataSender.cs" />
     <Compile Include="SkeletonUpdateEventArgs.cs" />
     <Page Include="KinectDataSenderView.xaml">

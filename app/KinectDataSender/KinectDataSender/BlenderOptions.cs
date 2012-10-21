@@ -50,7 +50,7 @@ namespace KinectDataSender
         /// </summary>
         public BlenderOptions()
         {
-            _sizeProportion = 1;
+            _sizeProportion = 5;
             _centerX = 0;
             _centerY = 0;
             _centerZ = 0;

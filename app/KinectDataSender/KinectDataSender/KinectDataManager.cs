@@ -22,7 +22,7 @@ namespace KinectDataSender
         private ObservableCollection<JointDrawPosition> _jointDrawPositions; // ジョイント描画位置リスト
 
         private BlenderOptions _blenderOptions;
-        private BlenderJoints _blenderJoints;
+        private JointsOption _jointsOption;
         private SkeletonDataSender _skeletonDataSender;
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace KinectDataSender
         /// コンストラクタ
         /// </summary>
         /// <param name="blenderOptions">Blender 側へ反映する際のオプション</param>
-        /// <param name="blenderJoints">Blender 上での Joint 名</param>
-        public KinectDataManager(BlenderOptions blenderOptions, BlenderJoints blenderJoints)
+        /// <param name="jointsOption">Joint 単位の設定</param>
+        public KinectDataManager(BlenderOptions blenderOptions, JointsOption jointsOption)
         {
             _addedEventListener = false;
 
@@ -66,7 +66,7 @@ namespace KinectDataSender
             _jointDrawPositions = null;
 
             _blenderOptions = blenderOptions;
-            _blenderJoints = blenderJoints;
+            _jointsOption = jointsOption;
             _skeletonDataSender = new SkeletonDataSender(IPAddress.Loopback, 38040);
         }
 
@@ -105,9 +105,9 @@ namespace KinectDataSender
             {
                 throw new InvalidOperationException("イベントリスナーが登録されていません。");
             }
-            kinectManager.ColorUpdate -= kinectManager_ColorUpdate;
-            kinectManager.DepthUpdate -= kinectManager_DepthUpdate;
             kinectManager.SkeletonUpdate -= kinectManager_SkeletonUpdate;
+            kinectManager.DepthUpdate -= kinectManager_DepthUpdate;
+            kinectManager.ColorUpdate -= kinectManager_ColorUpdate;
             _addedEventListener = false;
         }
 
@@ -194,7 +194,7 @@ namespace KinectDataSender
                 }
 
                 // 送信
-                _skeletonDataSender.Send(skeleton, userNo, _blenderOptions, _blenderJoints);
+                _skeletonDataSender.Send(skeleton, userNo, _blenderOptions, _jointsOption);
 
                 userNo++;
             }
