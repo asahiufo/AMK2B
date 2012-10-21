@@ -43,6 +43,11 @@ namespace KinectDataSender
             double centerX = blenderOptions.CenterX;
             double centerY = blenderOptions.CenterY;
             double centerZ = blenderOptions.CenterZ;
+            int oppositeAdjust = 1;
+            if (blenderOptions.Opposite)
+            {
+                oppositeAdjust = -1;
+            }
 
             OscMessage message = new OscMessage(_sourceEndPoint, "/skeleton");
             message.Append(userNo.ToString());
@@ -72,7 +77,7 @@ namespace KinectDataSender
                     // z 軸: 高さ
 
                     double locationX = (joint.Position.X - centerX - jointsOption.GetOriginX(jointType)) * sizeProportion;
-                    double locationY = (joint.Position.Z - centerZ - jointsOption.GetOriginZ(jointType)) * sizeProportion;
+                    double locationY = (joint.Position.Z - centerZ - jointsOption.GetOriginZ(jointType)) * sizeProportion * oppositeAdjust;
                     double locationZ = (joint.Position.Y - centerY - jointsOption.GetOriginY(jointType)) * sizeProportion;
 
                     message.Append(locationX.ToString());

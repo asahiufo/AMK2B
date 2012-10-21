@@ -731,6 +731,22 @@ namespace KinectDataSender
                 OnPropertyChanged("CenterZ");
             }
         }
+        /// <summary>
+        /// 向い合っている想定で座標を適用するなら true
+        /// </summary>
+        public bool Opposite
+        {
+            get { return _blenderOptions.Opposite; }
+            set
+            {
+                if (_blenderOptions.Opposite == value)
+                {
+                    return;
+                }
+                _blenderOptions.Opposite = value;
+                OnPropertyChanged("Opposite");
+            }
+        }
 
         /// <summary>
         /// Kinect のカメラ角度
@@ -764,11 +780,11 @@ namespace KinectDataSender
                 {
                     if (!_originPositionAutoSetter.AlreadySet)
                     {
-                        return "自動設定は行われていません。";
+                        return "設定されていません。";
                     }
                     else
                     {
-                        return "前回設定時間: " + _originPositionAutoSetter.LastSetTime.ToString();
+                        return "前回設定時間: " + _originPositionAutoSetter.LastSetTime.ToLongTimeString();
                     }
                 }
                 else if (_originPositionAutoSetter.Status == OriginPositionAutoSetter.OriginPositionAutoSetterStatus.STARTING)

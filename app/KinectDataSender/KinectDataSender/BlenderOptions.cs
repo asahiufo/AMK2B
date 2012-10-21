@@ -10,6 +10,7 @@ namespace KinectDataSender
         private double _centerX;
         private double _centerY;
         private double _centerZ;
+        private bool _opposite;
 
         /// <summary>
         /// サイズ比率
@@ -46,6 +47,15 @@ namespace KinectDataSender
         }
 
         /// <summary>
+        /// 向い合っている想定で座標を適用するなら true
+        /// </summary>
+        public bool Opposite
+        {
+            get { return _opposite;  }
+            set { _opposite = value; }
+        }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public BlenderOptions()
@@ -54,6 +64,7 @@ namespace KinectDataSender
             _centerX = 0;
             _centerY = 0;
             _centerZ = 0;
+            _opposite = false;
         }
 
         /// <summary>
