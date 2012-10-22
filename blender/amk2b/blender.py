@@ -39,3 +39,9 @@ class BlenderDataManager(object):
                     location.z -= parent.location.z
 
                 bone.location = location
+
+                if bpy.amk2b.recording_started:
+                    bone.keyframe_insert(
+                        data_path="location",
+                        frame=bpy.context.scene.frame_current
+                    )

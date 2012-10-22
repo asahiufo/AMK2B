@@ -76,7 +76,11 @@ class KinectDataReceiver(object):
                     joint_name,
                     [position_x, position_y, position_z]
                 )
+
         bpy.amk2b.blender_data_manager.apply_location(user)
+        scene = bpy.context.scene
+        if scene.frame_current > (scene.frame_end - 1):
+            self.recording_started = False
 
     class OSCCallback(Method):
 

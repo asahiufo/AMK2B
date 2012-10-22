@@ -1,4 +1,5 @@
 import bpy
+import time
 
 
 class KinectDataReceivingOperator(bpy.types.Operator):
@@ -16,69 +17,48 @@ class KinectDataReceivingOperator(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class UserDrawingOperator(bpy.types.Operator):
+class RecordingOperator(bpy.types.Operator):
 
-    bl_idname = "amk2b.user_drawing_operator"
-    bl_label = "Receive Start and Stop"
+    bl_idname = "amk2b.recording_operator"
+    bl_label = "Recording Start and Stop"
 
     def __init__(self):
-        self._view_3d_area = None
-        self._window_region = None
-        self._user_drawing_callback_func = None
+        self._waiting_time = 5
+        self._start_time = 0
+
+    @classmethod
+    def poll(cls, context):
+        return bpy.amk2b.kinect_data_receiving_started
 
     def execute(self, context):
-        if not bpy.amk2b.user_drawing_started:
-            self._start_draw(context)
-            bpy.amk2b.user_drawing_started = True
+        if not bpy.amk2b.recording_started:
+            context.scene.frame_current = context.scene.frame_start
+            if not context.screen.is_animation_playing:
+                bpy.ops.screen.animation_play()
+            bpy.amk2b.recording_started = True
         else:
-            self._stop_draw(context)
-            bpy.amk2b.user_drawing_started = False
+            if context.screen.is_animation_playing:
+                bpy.ops.screen.animation_play()
+            bpy.amk2b.recording_started = False
         return {"FINISHED"}
 
-    def _start_draw(self, context):
-        for area in context.screen.areas:
-            if area.type == "VIEW_3D":
-                self._view_3d_area = area
-                break
+    def modal(self, context, event):
+        if bpy.amk2b.recording_started:
+            return self.execute(context)
 
-        for region in self._view_3d_area.regions:
-            if region.type == "WINDOW":
-                self._window_region = region
-                break
+        if not event.type.startswith("TIMER"):
+            return {"PASS_THROUGH"}
 
-        """TODO: 描画処理は後回し"""
-        return
+        t = time.time() - self._start_time
+        if t < self._waiting_time:
+            return {"PASS_THROUGH"}
 
-        self._user_drawing_callback_func = self._window_region.callback_add(
-                _user_drawing_callback, (
-                    self._view_3d_area,
-                    self._window_region
-                ),
-                'POST_PIXEL'
-        )
+        return self.execute(context)
+        return {"PASS_THROUGH"}
 
-        _user_drawing_callback(self._view_3d_area, self._window_region)
-
-    def _stop_draw(self, context):
-        self._window_region.callback_remove(self._user_drawing_callback_func)
-        self._view_3d_area.tag_redraw()
-
-
-def _user_drawing_callback(view_3d_area, window_region):
-    print("_draw_callback")
-    view_3d_area.tag_redraw()
-
-
-class KinectDataApplyingOperator(bpy.types.Operator):
-
-    bl_idname = "amk2b.kinect_data_applying_operator"
-    bl_label = "Kinect Data Applying To Bone Start and Stop"
-
-    def execute(self, context):
-        if not bpy.amk2b.kinect_data_applying_started:
-            self._start_draw(context)
-            bpy.amk2b.kinect_data_applying_started = True
-        else:
-            self._stop_draw(context)
-            bpy.amk2b.kinect_data_applying_started = False
-        return {"FINISHED"}
+    def invoke(self, context, event):
+        if bpy.amk2b.recording_started:
+            return self.execute(context)
+        context.window_manager.modal_handler_add(self)
+        self._start_time = time.time()
+        return {"RUNNING_MODAL"}

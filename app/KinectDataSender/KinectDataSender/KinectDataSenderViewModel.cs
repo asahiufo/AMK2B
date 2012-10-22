@@ -1131,6 +1131,7 @@ namespace KinectDataSender
         {
             _kinectManager.Initialize();
             _kinectManager.Start();
+            OnPropertyChanged("OriginPositionAutoSetInfo");
         }
         /// <summary>
         /// Kinect スタート実行可能判定
@@ -1150,6 +1151,7 @@ namespace KinectDataSender
         {
             _kinectManager.Stop();
             _kinectManager.Terminate();
+            OnPropertyChanged("OriginPositionAutoSetInfo");
         }
         /// <summary>
         /// Kinect 停止実行可能判定
