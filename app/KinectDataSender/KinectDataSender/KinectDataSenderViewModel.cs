@@ -734,17 +734,17 @@ namespace KinectDataSender
         /// <summary>
         /// 向い合っている想定で座標を適用するなら true
         /// </summary>
-        public bool Opposite
+        public bool Mirror
         {
-            get { return _blenderOptions.Opposite; }
+            get { return _blenderOptions.Mirror; }
             set
             {
-                if (_blenderOptions.Opposite == value)
+                if (_blenderOptions.Mirror == value)
                 {
                     return;
                 }
-                _blenderOptions.Opposite = value;
-                OnPropertyChanged("Opposite");
+                _blenderOptions.Mirror = value;
+                OnPropertyChanged("Mirror");
             }
         }
 

@@ -43,11 +43,7 @@ namespace KinectDataSender
             double centerX = blenderOptions.CenterX;
             double centerY = blenderOptions.CenterY;
             double centerZ = blenderOptions.CenterZ;
-            int oppositeAdjust = 1;
-            if (blenderOptions.Opposite)
-            {
-                oppositeAdjust = -1;
-            }
+            bool mirror = blenderOptions.Mirror;
 
             OscMessage message = new OscMessage(_sourceEndPoint, "/skeleton");
             message.Append(userNo.ToString());
@@ -60,6 +56,31 @@ namespace KinectDataSender
                 }
 
                 JointType jointType = joint.JointType;
+
+                double originX = jointsOption.GetOriginX(jointType);
+                double originY = jointsOption.GetOriginY(jointType);
+                double originZ = jointsOption.GetOriginZ(jointType);
+
+                if (mirror)
+                {
+                    if (jointType == JointType.ShoulderRight) { jointType = JointType.ShoulderLeft; }
+                    else if (jointType == JointType.ShoulderLeft) { jointType = JointType.ShoulderRight; }
+                    else if (jointType == JointType.ElbowRight) { jointType = JointType.ElbowLeft; }
+                    else if (jointType == JointType.ElbowLeft) { jointType = JointType.ElbowRight; }
+                    else if (jointType == JointType.WristRight) { jointType = JointType.WristLeft; }
+                    else if (jointType == JointType.WristLeft) { jointType = JointType.WristRight; }
+                    else if (jointType == JointType.HandRight) { jointType = JointType.HandLeft; }
+                    else if (jointType == JointType.HandLeft) { jointType = JointType.HandRight; }
+                    else if (jointType == JointType.HipRight) { jointType = JointType.HipLeft; }
+                    else if (jointType == JointType.HipLeft) { jointType = JointType.HipRight; }
+                    else if (jointType == JointType.KneeRight) { jointType = JointType.KneeLeft; }
+                    else if (jointType == JointType.KneeLeft) { jointType = JointType.KneeRight; }
+                    else if (jointType == JointType.AnkleRight) { jointType = JointType.AnkleLeft; }
+                    else if (jointType == JointType.AnkleLeft) { jointType = JointType.AnkleRight; }
+                    else if (jointType == JointType.FootRight) { jointType = JointType.FootLeft; }
+                    else if (jointType == JointType.FootLeft) { jointType = JointType.FootRight; }
+                }
+
                 if (jointsOption.GetEnable(jointType))
                 {
                     message.Append(jointsOption.GetName(jointType));
@@ -76,9 +97,21 @@ namespace KinectDataSender
                     // y 軸: 奥行き
                     // z 軸: 高さ
 
-                    double locationX = (joint.Position.X - centerX - jointsOption.GetOriginX(jointType)) * sizeProportion;
-                    double locationY = (joint.Position.Z - centerZ - jointsOption.GetOriginZ(jointType)) * sizeProportion * oppositeAdjust;
-                    double locationZ = (joint.Position.Y - centerY - jointsOption.GetOriginY(jointType)) * sizeProportion;
+                    double locationX = 0;
+                    double locationY = 0;
+                    double locationZ = 0;
+                    if (!mirror)
+                    {
+                        locationX = (joint.Position.X - centerX - originX) * sizeProportion;
+                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportion;
+                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportion;
+                    }
+                    else
+                    {
+                        locationX = (joint.Position.X - centerX - originX) * sizeProportion * -1;
+                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportion * -1;
+                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportion;
+                    }
 
                     message.Append(locationX.ToString());
                     message.Append(locationY.ToString());

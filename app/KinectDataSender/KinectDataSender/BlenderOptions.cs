@@ -10,7 +10,7 @@ namespace KinectDataSender
         private double _centerX;
         private double _centerY;
         private double _centerZ;
-        private bool _opposite;
+        private bool _mirror;
 
         /// <summary>
         /// サイズ比率
@@ -49,10 +49,10 @@ namespace KinectDataSender
         /// <summary>
         /// 向い合っている想定で座標を適用するなら true
         /// </summary>
-        public bool Opposite
+        public bool Mirror
         {
-            get { return _opposite;  }
-            set { _opposite = value; }
+            get { return _mirror;  }
+            set { _mirror = value; }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace KinectDataSender
             _centerX = 0;
             _centerY = 0;
             _centerZ = 0;
-            _opposite = false;
+            _mirror = false;
         }
 
         /// <summary>
