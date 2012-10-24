@@ -30,7 +30,7 @@ class KinectDataReceiver(object):
         self._started = False
 
     def get_user(self, user_no):
-        if not user_no in self._users.keys():
+        if user_no not in self._users.keys():
             return None
         return self._users[user_no]
 
@@ -59,23 +59,24 @@ class KinectDataReceiver(object):
         else:
             return
 
-        if not user_no in self._users.keys():
+        if user_no not in self._users.keys():
             self._users[user_no] = KinectUser(user_no)
 
         user = self._users[user_no]
         user.reset_joints()
 
         while i < length:
-            if length - i >= 4:
-                joint_name = data[i + 0]
-                position_x = float(data[i + 1])
-                position_y = float(data[i + 2])
-                position_z = float(data[i + 3])
-                i = i + 4
-                user.set_joint_location(
-                    joint_name,
-                    [position_x, position_y, position_z]
-                )
+            if length - i < 4:
+                break
+            joint_name = data[i + 0]
+            position_x = float(data[i + 1])
+            position_y = float(data[i + 2])
+            position_z = float(data[i + 3])
+            i += 4
+            user.set_joint_location(
+                joint_name,
+                [position_x, position_y, position_z]
+            )
 
         bpy.amk2b.blender_data_manager.apply_location(user)
         scene = bpy.context.scene
@@ -102,7 +103,7 @@ class KinectUser(object):
         self.joints = dict()
 
     def set_joint_location(self, joint_name, position):
-        if not joint_name in self.joints.keys():
+        if joint_name not in self.joints.keys():
             self.joints[joint_name] = KinectJoint()
 
         joint = self.joints[joint_name]
