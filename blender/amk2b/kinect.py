@@ -1,7 +1,6 @@
 from mathutils import Vector
 from .osc.oscd import Method
 from .osc.oscd import ThreadingServer
-import bpy
 import threading
 
 
@@ -10,7 +9,7 @@ class KinectDataReceiver(object):
     def __init__(self):
         self._server = None
         self._thread = None
-        self._users = dict()
+        self.users = dict()
 
         self._started = False
 
@@ -30,9 +29,9 @@ class KinectDataReceiver(object):
         self._started = False
 
     def get_user(self, user_no):
-        if user_no not in self._users.keys():
+        if user_no not in self.users.keys():
             return None
-        return self._users[user_no]
+        return self.users[user_no]
 
     def _init_osc(self):
         self._server = ThreadingServer(("127.0.0.1", 38040))
@@ -59,10 +58,10 @@ class KinectDataReceiver(object):
         else:
             return
 
-        if user_no not in self._users.keys():
-            self._users[user_no] = KinectUser(user_no)
+        if user_no not in self.users.keys():
+            self.users[user_no] = KinectUser(user_no)
 
-        user = self._users[user_no]
+        user = self.users[user_no]
         user.reset_joints()
 
         while i < length:
@@ -77,11 +76,6 @@ class KinectDataReceiver(object):
                 joint_name,
                 [position_x, position_y, position_z]
             )
-
-        bpy.amk2b.blender_data_manager.apply_location(user)
-        scene = bpy.context.scene
-        if scene.frame_current > (scene.frame_end - 1):
-            self.recording_started = False
 
     class OSCCallback(Method):
 

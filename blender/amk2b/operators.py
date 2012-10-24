@@ -17,6 +17,45 @@ class KinectDataReceivingOperator(bpy.types.Operator):
         return {"FINISHED"}
 
 
+class KinectDataApplyingOperator(bpy.types.Operator):
+
+    bl_idname = "amk2b.kinect_data_applying_operator"
+    bl_label = "Kinect Data Applying To Bone Start and Stop"
+
+    @classmethod
+    def poll(cls, context):
+        return bpy.amk2b.kinect_data_receiving_started
+
+    def execute(self, context):
+        if not bpy.amk2b.kinect_data_applying_started:
+            self._event = context.window_manager.event_timer_add(
+                1 / 60,
+                context.window
+            )
+            context.window_manager.modal_handler_add(self)
+            bpy.amk2b.kinect_data_applying_started = True
+        else:
+            context.window_manager.event_timer_remove(self._event)
+            context.window_manager.modal_handler_remove(self)
+            bpy.amk2b.kinect_data_applying_started = False
+        return {"FINISHED"}
+
+    def modal(self, context, event):
+        if event.type == "TIMER":
+            if bpy.amk2b.kinect_data_applying_started:
+                for user in bpy.amk2b.kinect_data_receiver.users.values():
+                    bpy.amk2b.blender_data_manager.apply_location(user)
+                    scene = bpy.context.scene
+                    if scene.frame_current > (scene.frame_end - 1):
+                        bpy.amk2b.recording_started = False
+            return {"RUNNING_MODAL"}
+        return {"PASS_THROUGH"}
+
+    def invoke(self, context, event):
+        self.execute(context)
+        return {"RUNNING_MODAL"}
+
+
 class RecordingOperator(bpy.types.Operator):
 
     bl_idname = "amk2b.recording_operator"
@@ -28,7 +67,7 @@ class RecordingOperator(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return bpy.amk2b.kinect_data_receiving_started
+        return bpy.amk2b.kinect_data_applying_started
 
     def execute(self, context):
         if not bpy.amk2b.recording_started:

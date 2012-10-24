@@ -23,6 +23,14 @@ class AMK2BPanel(bpy.types.Panel):
             row.operator("amk2b.kinect_data_receiving_operator", text="Stop")
 
         row = layout.row()
+        row.label(text="Apply Kinect Data")
+        row = layout.row()
+        if not bpy.amk2b.kinect_data_applying_started:
+            row.operator("amk2b.kinect_data_applying_operator", text="Start")
+        else:
+            row.operator("amk2b.kinect_data_applying_operator", text="Stop")
+
+        row = layout.row()
         row.label(text="Recording")
         row = layout.row()
         if not bpy.amk2b.recording_started:

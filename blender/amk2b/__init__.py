@@ -1,4 +1,5 @@
 from .common import ComObject
+from .operators import KinectDataApplyingOperator
 from .operators import KinectDataReceivingOperator
 from .operators import RecordingOperator
 from .panels import AMK2BPanel
@@ -21,15 +22,18 @@ bl_info = {
 def register():
     bpy.amk2b = ComObject()
     bpy.amk2b.kinect_data_receiving_started = False
+    bpy.amk2b.kinect_data_applying_started = False
     bpy.amk2b.recording_started = False
 
     bpy.utils.register_class(AMK2BPanel)
     bpy.utils.register_class(KinectDataReceivingOperator)
+    bpy.utils.register_class(KinectDataApplyingOperator)
     bpy.utils.register_class(RecordingOperator)
 
 
 def unregister():
     bpy.utils.unregister_class(RecordingOperator)
+    bpy.utils.unregister_class(KinectDataApplyingOperator)
     bpy.utils.unregister_class(KinectDataReceivingOperator)
     bpy.utils.unregister_class(AMK2BPanel)
     del bpy.amk2b
