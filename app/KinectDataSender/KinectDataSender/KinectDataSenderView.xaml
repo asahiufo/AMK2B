@@ -10,12 +10,10 @@
             <MenuItem Header="ファイル" />
         </Menu>
         <ToolBar DockPanel.Dock="Top">
-            <Button Content="Kinect Start" Height="23" Margin="5,0" Command="{Binding Path=StartKinectCommand}" />
-            <Button Content="Kinect Stop" Height="23" Margin="5,0" Command="{Binding Path=StopKinectCommand}" />
-            <Button Content="Draw On" Height="23" Margin="5,0" />
+            <Button Content="{Binding Path=KinectStartOrStopMenuLabel}" Height="23" Margin="5,0" Command="{Binding Path=StarOrStoptKinectCommand}" />
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
-            ステータスバー
+            <TextBlock Text="{Binding Path=StatusBarMessage}" />
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -95,6 +93,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="False">
@@ -102,6 +101,11 @@
                             <TextBox Height="24" HorizontalAlignment="Right" Margin="5,2" Width="50" Text="{Binding Path=KinectElevationAngle}" />
                             <Slider HorizontalAlignment="Left" Margin="5,2" Width="150" Height="24" Value="{Binding Path=KinectElevationAngle}" Minimum="-27" Maximum="27" SmallChange="1" LargeChange="3" />
                             <Button Content="適用" Height="23" Margin="5,0" Command="{Binding Path=ApplyKinectElevationAngleCommand}" />
+                        </DockPanel>
+                        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ColorDrawEnable}" Content="カメラ画像描画" Padding="4,0" Margin="5,2" />
+                            <CheckBox Height="16" IsChecked="{Binding Path=DepthDrawEnable}" Content="深度画像描画" Padding="4,0" Margin="5,2" />
+                            <CheckBox Height="16" IsChecked="{Binding Path=SkeletonDrawEnable}" Content="スケルトン画像描画" Padding="4,0" Margin="5,2" />
                         </DockPanel>
                     </Grid>
                 </GroupBox>

@@ -108,9 +108,17 @@ namespace KinectDataSender
 
             _kinect = KinectSensor.KinectSensors[(int)_kinectNo - 1];
 
-            _kinect.ColorFrameReady    += new EventHandler<ColorImageFrameReadyEventArgs>(_kinect_ColorFrameReady);
-            _kinect.DepthFrameReady    += new EventHandler<DepthImageFrameReadyEventArgs>(_kinect_DepthFrameReady);
-            _kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(_kinect_SkeletonFrameReady);
+            try
+            {
+                _kinect.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(_kinect_ColorFrameReady);
+                _kinect.DepthFrameReady += new EventHandler<DepthImageFrameReadyEventArgs>(_kinect_DepthFrameReady);
+                _kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(_kinect_SkeletonFrameReady);
+            }
+            catch (Exception)
+            {
+                _kinect = null;
+                throw;
+            }
         }
 
         /// <summary>
@@ -137,8 +145,9 @@ namespace KinectDataSender
             {
                 throw new InvalidOperationException("初期化されていません。");
             }
+
             _kinect.ColorStream.Enable();
-            // TODO: _kinect.DepthStream.Enable();
+            _kinect.DepthStream.Enable();
             _kinect.SkeletonStream.Enable();
 
             _kinect.Start();
@@ -157,7 +166,7 @@ namespace KinectDataSender
             _kinect.Stop();
             // TODO: _kinect.Dispose();
             _kinect.SkeletonStream.Disable();
-            // TODO: _kinect.DepthStream.Disable();
+            _kinect.DepthStream.Disable();
             _kinect.ColorStream.Disable();
         }
 

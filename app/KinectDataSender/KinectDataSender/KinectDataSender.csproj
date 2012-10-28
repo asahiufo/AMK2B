@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BlenderOptions.cs" />
+    <Compile Include="CameraOptions.cs" />
     <Compile Include="ColorUpdateEventArgs.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DepthUpdateEventArgs.cs" />

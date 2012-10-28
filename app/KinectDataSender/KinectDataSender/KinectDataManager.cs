@@ -21,6 +21,7 @@ namespace KinectDataSender
         private BitmapSource _depthSource; // 深度カメラの画像データ
         private ObservableCollection<JointDrawPosition> _jointDrawPositions; // ジョイント描画位置リスト
 
+        private CameraOptions _cameraOptions;
         private BlenderOptions _blenderOptions;
         private JointsOption _jointsOption;
         private SkeletonDataSender _skeletonDataSender;
@@ -55,9 +56,10 @@ namespace KinectDataSender
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        /// <param name="cameraOptions">カメラ設定</param>
         /// <param name="blenderOptions">Blender 側へ反映する際のオプション</param>
         /// <param name="jointsOption">Joint 単位の設定</param>
-        public KinectDataManager(BlenderOptions blenderOptions, JointsOption jointsOption)
+        public KinectDataManager(CameraOptions cameraOptions, BlenderOptions blenderOptions, JointsOption jointsOption)
         {
             _addedEventListener = false;
 
@@ -65,6 +67,7 @@ namespace KinectDataSender
             _depthSource = null;
             _jointDrawPositions = null;
 
+            _cameraOptions = cameraOptions;
             _blenderOptions = blenderOptions;
             _jointsOption = jointsOption;
             _skeletonDataSender = new SkeletonDataSender(IPAddress.Loopback, 38040);
@@ -118,6 +121,13 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         void kinectManager_ColorUpdate(object sender, ColorUpdateEventArgs e)
         {
+            _colorSource = null;
+
+            if (!_cameraOptions.ColorDrawEnable)
+            {
+                return;
+            }
+
             ColorImageFrame colorFrame = e.ColorFrame;
 
             byte[] colorPixel = new byte[colorFrame.PixelDataLength];
@@ -138,6 +148,13 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         void kinectManager_DepthUpdate(object sender, DepthUpdateEventArgs e)
         {
+            _depthSource = null;
+
+            if (!_cameraOptions.DepthDrawEnable)
+            {
+                return;
+            }
+
             DepthImageFrame depthFrame = e.DepthFrame;
 
             _depthSource = BitmapSource.Create(
@@ -156,6 +173,11 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         void kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
+            if (!_cameraOptions.SkeletonDrawEnable)
+            {
+                return;
+            }
+
             KinectSensor kinect = e.Kinect;
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
 

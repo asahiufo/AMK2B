@@ -12,17 +12,19 @@ namespace KinectDataSender
     public class KinectDataSenderViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private KinectManager _kinectManager;
+        private CameraOptions _cameraOptions;
         private JointsOption _jointsOption;
         private BlenderOptions _blenderOptions;
         private OriginPositionAutoSetter _originPositionAutoSetter;
         private KinectDataManager _kinectDataManager;
 
-        private int _kinectElevationAngle;
+        private string _statusBarMessage;
 
-        private ICommand _startKinectCommand; // Kinect スタートコマンド
-        private ICommand _stopKinectCommand;  // Kinect 停止コマンド
+        private ICommand _startOrStopKinectCommand; // Kinect スタートストップコマンド
         private ICommand _applyKinectElevationAngleCommand; // Kinect カメラ角度設定コマンド
         private ICommand _setOriginPositionCommand; // 原点座標設定コマンド
+
+        #region
 
         /// <summary>
         /// 頭名
@@ -666,6 +668,8 @@ namespace KinectDataSender
             }
         }
 
+        #endregion
+
         /// <summary>
         /// サイズ比率
         /// </summary>
@@ -748,20 +752,89 @@ namespace KinectDataSender
             }
         }
 
+        #region
+
         /// <summary>
         /// Kinect のカメラ角度
         /// </summary>
         public int KinectElevationAngle
         {
-            get { return _kinectElevationAngle; }
+            get { return _cameraOptions.ElevationAngle; }
             set
             {
-                if (_kinectElevationAngle == value)
+                if (_cameraOptions.ElevationAngle == value)
                 {
                     return;
                 }
-                _kinectElevationAngle = value;
+                _cameraOptions.ElevationAngle = value;
                 OnPropertyChanged("KinectElevationAngle");
+            }
+        }
+        /// <summary>
+        /// RGB カメラのデータを描画するなら true
+        /// </summary>
+        public bool ColorDrawEnable
+        {
+            get { return _cameraOptions.ColorDrawEnable; }
+            set
+            {
+                if (_cameraOptions.ColorDrawEnable == value)
+                {
+                    return;
+                }
+                _cameraOptions.ColorDrawEnable = value;
+                OnPropertyChanged("ColorDrawEnable");
+            }
+        }
+        /// <summary>
+        /// 深度カメラのデータを描画するなら true
+        /// </summary>
+        public bool DepthDrawEnable
+        {
+            get { return _cameraOptions.DepthDrawEnable; }
+            set
+            {
+                if (_cameraOptions.DepthDrawEnable == value)
+                {
+                    return;
+                }
+                _cameraOptions.DepthDrawEnable = value;
+                OnPropertyChanged("DepthDrawEnable");
+            }
+        }
+        /// <summary>
+        /// スケルトンデータを描画するなら true
+        /// </summary>
+        public bool SkeletonDrawEnable
+        {
+            get { return _cameraOptions.SkeletonDrawEnable; }
+            set
+            {
+                if (_cameraOptions.SkeletonDrawEnable == value)
+                {
+                    return;
+                }
+                _cameraOptions.SkeletonDrawEnable = value;
+                OnPropertyChanged("SkeletonDrawEnable");
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// ステータスバーメッセージ
+        /// </summary>
+        public string StatusBarMessage
+        {
+            get { return _statusBarMessage; }
+            set
+            {
+                if (_statusBarMessage == value)
+                {
+                    return;
+                }
+                _statusBarMessage = value;
+                OnPropertyChanged("StatusBarMessage");
             }
         }
 
@@ -818,19 +891,29 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// Kinect スタートコマンド
+        /// Kinect スタートストップメニューラベル
         /// </summary>
-        public ICommand StartKinectCommand
+        public string KinectStartOrStopMenuLabel
         {
-            get { return _startKinectCommand; }
+            get
+            {
+                if (!_kinectManager.Started)
+                {
+                    return "Kinect Start";
+                }
+                else
+                {
+                    return "Kinect Stop";
+                }
+            }
         }
 
         /// <summary>
-        /// Kinect 停止コマンド
+        /// Kinect スタートストップコマンド
         /// </summary>
-        public ICommand StopKinectCommand
+        public ICommand StarOrStoptKinectCommand
         {
-            get { return _stopKinectCommand; }
+            get { return _startOrStopKinectCommand; }
         }
 
         /// <summary>
@@ -855,20 +938,17 @@ namespace KinectDataSender
         public KinectDataSenderViewModel()
         {
             _kinectManager = new KinectManager();
+            _cameraOptions = new CameraOptions();
             _jointsOption = new JointsOption();
             _blenderOptions = new BlenderOptions();
             _originPositionAutoSetter = new OriginPositionAutoSetter(_jointsOption);
-            _kinectDataManager = new KinectDataManager(_blenderOptions, _jointsOption);
+            _kinectDataManager = new KinectDataManager(_cameraOptions, _blenderOptions, _jointsOption);
 
-            _kinectElevationAngle = 0;
+            _statusBarMessage = "";
 
-            _startKinectCommand = new DelegateCommand(
-                new Action<object>(_StartKinect),
-                new Func<object, bool>(_CanStartKinect)
-            );
-            _stopKinectCommand = new DelegateCommand(
-                new Action<object>(_StopKinect),
-                new Func<object, bool>(_CanStopKinect)
+            _startOrStopKinectCommand = new DelegateCommand(
+                new Action<object>(_StartOrStopKinect),
+                new Func<object, bool>(_CanStartOrStopKinect)
             );
             _applyKinectElevationAngleCommand = new DelegateCommand(
                 new Action<object>(_ApplyKinectElevationAngle),
@@ -925,7 +1005,6 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         private void _kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
-            // TODO: クソ重くてまだ使えない様子。
             //OnPropertyChanged("JointDrawPositions");
         }
 
@@ -1124,43 +1203,49 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// Kinect スタート
+        /// Kinect スタートまたはストップ
         /// </summary>
         /// <param name="param">パラメータ</param>
-        private void _StartKinect(object param)
+        private void _StartOrStopKinect(object param)
         {
-            _kinectManager.Initialize();
-            _kinectManager.Start();
+            try
+            {
+                if (!_kinectManager.Started)
+                {
+                    _kinectManager.Initialize();
+                    try
+                    {
+                        _kinectManager.Start();
+                    }
+                    catch (Exception)
+                    {
+                        _kinectManager.Terminate();
+                        throw;
+                    }
+                    StatusBarMessage = "実行中";
+                }
+                else
+                {
+                    _kinectManager.Stop();
+                    _kinectManager.Terminate();
+                    StatusBarMessage = "";
+                }
+            }
+            catch (Exception e)
+            {
+                StatusBarMessage = e.Message;
+            }
+            OnPropertyChanged("KinectStartOrStopMenuLabel");
             OnPropertyChanged("OriginPositionAutoSetInfo");
         }
         /// <summary>
-        /// Kinect スタート実行可能判定
+        /// Kinect スタートまたはストップ実行可能判定
         /// </summary>
         /// <param name="param">パラメータ</param>
         /// <returns>実行可能なら true</returns>
-        private bool _CanStartKinect(object param)
+        private bool _CanStartOrStopKinect(object param)
         {
-            return !_kinectManager.Started;
-        }
-
-        /// <summary>
-        /// Kinect 停止
-        /// </summary>
-        /// <param name="param">パラメータ</param>
-        private void _StopKinect(object param)
-        {
-            _kinectManager.Stop();
-            _kinectManager.Terminate();
-            OnPropertyChanged("OriginPositionAutoSetInfo");
-        }
-        /// <summary>
-        /// Kinect 停止実行可能判定
-        /// </summary>
-        /// <param name="param">パラメータ</param>
-        /// <returns>実行可能なら true</returns>
-        private bool _CanStopKinect(object param)
-        {
-            return _kinectManager.Started;
+            return true;
         }
 
         /// <summary>
@@ -1169,7 +1254,7 @@ namespace KinectDataSender
         /// <param name="param">パラメータ</param>
         private void _ApplyKinectElevationAngle(object param)
         {
-            _kinectManager.SetElevationAngle(_kinectElevationAngle);
+            _kinectManager.SetElevationAngle(_cameraOptions.ElevationAngle);
         }
         /// <summary>
         ///  Kinect カメラ角度適用実行可能判定
