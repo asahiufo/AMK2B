@@ -203,7 +203,7 @@ namespace KinectDataSender
                     }
 
                     // スケルトンの座標を RGB カメラの座標に変換する
-                    ColorImagePoint point = kinect.MapSkeletonPointToColor(skeleton.Position, kinect.ColorStream.Format);
+                    ColorImagePoint point = kinect.MapSkeletonPointToColor(joint.Position, kinect.ColorStream.Format);
                     // 座標を画面のサイズに変換する
                     // TODO: ダメなハードコーディング
                     point.X = (int)((point.X * 320) / kinect.ColorStream.FrameWidth);

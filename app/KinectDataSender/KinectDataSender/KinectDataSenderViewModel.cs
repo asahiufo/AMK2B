@@ -958,14 +958,6 @@ namespace KinectDataSender
                 new Action<object>(_SetOriginPosition),
                 new Func<object, bool>(_CanSetOriginPosition)
             );
-
-            _originPositionAutoSetter.AddEventListenerTo(_kinectManager);
-            _originPositionAutoSetter.Update += new EventHandler<EventArgs>(_originPositionAutoSetter_Update);
-
-            _kinectDataManager.AddEventListenerTo(_kinectManager);
-            _kinectManager.ColorUpdate += new EventHandler<ColorUpdateEventArgs>(_kinectManager_ColorUpdate);
-            _kinectManager.DepthUpdate += new EventHandler<DepthUpdateEventArgs>(_kinectManager_DepthUpdate);
-            _kinectManager.SkeletonUpdate += new EventHandler<SkeletonUpdateEventArgs>(_kinectManager_SkeletonUpdate);
         }
 
         /// <summary>
@@ -973,11 +965,17 @@ namespace KinectDataSender
         /// </summary>
         ~KinectDataSenderViewModel()
         {
-            _kinectManager.SkeletonUpdate -= _kinectManager_SkeletonUpdate;
-            _kinectManager.DepthUpdate -= _kinectManager_DepthUpdate;
-            _kinectManager.ColorUpdate -= _kinectManager_ColorUpdate;
-            _kinectDataManager.RemoveEventListenerTo(_kinectManager);
-            _originPositionAutoSetter.RemoveEventListenerTo(_kinectManager);
+            if (_kinectManager.Started)
+            {
+                _kinectManager.SkeletonUpdate -= _kinectManager_SkeletonUpdate;
+                _kinectManager.DepthUpdate -= _kinectManager_DepthUpdate;
+                _kinectManager.ColorUpdate -= _kinectManager_ColorUpdate;
+                _kinectDataManager.RemoveEventListenerTo(_kinectManager);
+                _originPositionAutoSetter.RemoveEventListenerTo(_kinectManager);
+
+                _kinectManager.Stop();
+                _kinectManager.Terminate();
+            }
         }
 
         /// <summary>
@@ -1005,7 +1003,7 @@ namespace KinectDataSender
         /// <param name="e">イベント引数</param>
         private void _kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
-            //OnPropertyChanged("JointDrawPositions");
+            OnPropertyChanged("JointDrawPositions");
         }
 
         /// <summary>
@@ -1222,10 +1220,25 @@ namespace KinectDataSender
                         _kinectManager.Terminate();
                         throw;
                     }
+
+                    _originPositionAutoSetter.AddEventListenerTo(_kinectManager);
+                    _originPositionAutoSetter.Update += new EventHandler<EventArgs>(_originPositionAutoSetter_Update);
+
+                    _kinectDataManager.AddEventListenerTo(_kinectManager);
+                    _kinectManager.ColorUpdate += new EventHandler<ColorUpdateEventArgs>(_kinectManager_ColorUpdate);
+                    _kinectManager.DepthUpdate += new EventHandler<DepthUpdateEventArgs>(_kinectManager_DepthUpdate);
+                    _kinectManager.SkeletonUpdate += new EventHandler<SkeletonUpdateEventArgs>(_kinectManager_SkeletonUpdate);
+
                     StatusBarMessage = "実行中";
                 }
                 else
                 {
+                    _kinectManager.SkeletonUpdate -= _kinectManager_SkeletonUpdate;
+                    _kinectManager.DepthUpdate -= _kinectManager_DepthUpdate;
+                    _kinectManager.ColorUpdate -= _kinectManager_ColorUpdate;
+                    _kinectDataManager.RemoveEventListenerTo(_kinectManager);
+                    _originPositionAutoSetter.RemoveEventListenerTo(_kinectManager);
+
                     _kinectManager.Stop();
                     _kinectManager.Terminate();
                     StatusBarMessage = "";

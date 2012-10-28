@@ -5,6 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="900">
+    <UserControl.Resources>
+        <DataTemplate x:Key="MarkerTemplate">
+            <Ellipse Width="5" Height="5" Fill="Blue" />
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="PanelTemplate">
+            <Canvas />
+        </ItemsPanelTemplate>
+        <Style x:Key="ContainerStyle">
+            <Setter Property="Canvas.Top" Value="{Binding Path=Y}" />
+            <Setter Property="Canvas.Left" Value="{Binding Path=X}" />
+        </Style>
+    </UserControl.Resources>
+    
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="ファイル" />
@@ -27,25 +40,11 @@
                     </Grid.ColumnDefinitions>
                     <Image Width="320" Height="240" Source="{Binding Path=ColorSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Name="RGBImage" />
                     <Image Width="320" Height="240" Source="{Binding Path=DepthSource}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Opacity="0.5" />
-                    <!--<Canvas Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" />-->
-                    <ItemsControl ItemsSource="{Binding Path=JointDrawPositions}" Width="{Binding ElementName=RGBImage, Path=ActualWidth}" Height="{Binding ElementName=RGBImage, Path=ActualHeight}" >
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Ellipse Fill="Red" Width="10" Height="10" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemContainerStyle>
-                            <Style>
-                                <Setter Property="Canvas.Top" Value="{Binding Path=Top}" />
-                                <Setter Property="Canvas.Left" Value="{Binding Path=Left}" />
-                            </Style>
-                        </ItemsControl.ItemContainerStyle>
-                    </ItemsControl>
+                    <ItemsControl Grid.Column="0" Grid.Row="0" Margin="20"
+                        ItemsPanel="{StaticResource ResourceKey=PanelTemplate}"
+                        ItemContainerStyle="{StaticResource ResourceKey=ContainerStyle}"
+                        ItemTemplate="{StaticResource ResourceKey=MarkerTemplate}"
+                        ItemsSource="{Binding Path=JointDrawPositions}"/>
                 </Grid>
                 <GroupBox Header="全体設定">
                     <Grid>
