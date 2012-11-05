@@ -5,8 +5,9 @@ using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using KinectDataSender.Models.Events;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// Kinect データを見える形へ変換するクラス

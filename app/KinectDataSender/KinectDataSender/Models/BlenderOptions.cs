@@ -1,5 +1,5 @@
 ﻿
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// Blender 側へ反映する際のオプション

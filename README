@@ -2,11 +2,16 @@
   Kinect to Blender.
 
  * Licensing
-  * Bespoke Open Sound Control Library
-    Bespoke.Common.dll
-    Bespoke.Common.Osc.dll
-    * URL
-      http://www.bespokesoftware.org/wordpress/?page_id=69
-    * License
-      Microsoft Public License (MS-PL)
-      http://opensource.org/licenses/ms-pl.html
+   * Bespoke Open Sound Control Library
+     Bespoke.Common.Osc.dll
+     * URL
+       http://www.bespokesoftware.org/wordpress/?page_id=69
+     * License
+       Microsoft Public License (MS-PL)
+       http://opensource.org/licenses/ms-pl.html
+
+ * Livet
+   * URL
+     http://ugaya40.net/livet
+   * Licensing
+     zlib/libpng

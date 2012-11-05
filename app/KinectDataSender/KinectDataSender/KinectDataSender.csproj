@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7B1413A8-E85F-4E2A-AD93-196CEF1B59D5}</ProjectGuid>
+    <ProjectGuid>{6515230C-930B-4BF3-9936-B9F4A5A819BF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KinectDataSender</RootNamespace>
@@ -15,9 +15,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>4.0.20621.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,7 +27,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,15 +35,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bespoke.Common.Osc">
-      <HintPath>libs\Bespoke.Common.Osc.dll</HintPath>
+    <Reference Include="Bespoke.Common.Osc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=843a094264521388, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>InfrastructureAssemblies\Bespoke.Common.Osc.dll</HintPath>
+    </Reference>
+    <Reference Include="Livet">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\ufo\AppData\Local\Temporary Projects\KinectDataSender\InfrastructureAssemblies\Livet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\ufo\AppData\Local\Temporary Projects\KinectDataSender\InfrastructureAssemblies\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Kinect, Version=1.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Practices.Prism.Interactivity">
-      <HintPath>libs\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\ufo\AppData\Local\Temporary Projects\KinectDataSender\InfrastructureAssemblies\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,26 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BlenderOptions.cs" />
-    <Compile Include="CameraOptions.cs" />
-    <Compile Include="ColorUpdateEventArgs.cs" />
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="DepthUpdateEventArgs.cs" />
-    <Compile Include="JointDrawPosition.cs" />
-    <Compile Include="JointsOption.cs" />
-    <Compile Include="KinectDataSenderView.xaml.cs">
-      <DependentUpon>KinectDataSenderView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KinectDataSenderViewModel.cs" />
-    <Compile Include="KinectDataManager.cs" />
-    <Compile Include="OriginPositionAutoSetter.cs" />
-    <Compile Include="SkeletonDataSender.cs" />
-    <Compile Include="SkeletonUpdateEventArgs.cs" />
-    <Page Include="KinectDataSenderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -89,8 +79,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="KinectManager.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Models\BlenderOptions.cs" />
+    <Compile Include="Models\CameraOptions.cs" />
+    <Compile Include="Models\Events\ColorUpdateEventArgs.cs" />
+    <Compile Include="Models\Events\DepthUpdateEventArgs.cs" />
+    <Compile Include="Models\Events\SkeletonUpdateEventArgs.cs" />
+    <Compile Include="Models\JointDrawPosition.cs" />
+    <Compile Include="Models\JointsOption.cs" />
+    <Compile Include="Models\KinectDataManager.cs" />
+    <Compile Include="Models\KinectManager.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\OriginPositionAutoSetter.cs" />
+    <Compile Include="Models\SkeletonDataSender.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -120,7 +122,12 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Content Include="InfrastructureAssemblies\Bespoke.Common.Osc.dll" />
+    <Content Include="InfrastructureAssemblies\Design\Livet.Design.dll" />
+    <Content Include="InfrastructureAssemblies\Livet.dll" />
+    <Resource Include="InfrastructureAssemblies\Livet.XML" />
+    <Content Include="InfrastructureAssemblies\Microsoft.Expression.Interactions.dll" />
+    <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,8 +1,0 @@
-﻿<Window x:Class="KinectDataSender.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Kinect Data Sender" Width="900" Height="700">
-    <Grid>
-        <ContentPresenter Content="{Binding}" />
-    </Grid>
-</Window>

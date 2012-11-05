@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Kinect;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// Joint 単位の設定

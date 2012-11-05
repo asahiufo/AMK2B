@@ -1,5 +1,5 @@
 ﻿
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// ジョイント描画位置

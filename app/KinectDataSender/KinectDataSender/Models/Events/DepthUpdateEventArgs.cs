@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Kinect;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models.Events
 {
     public class DepthUpdateEventArgs : EventArgs
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.Kinect;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models.Events
 {
-    public class SkeletonUpdateEventArgs : EventArgs
+    public class ColorUpdateEventArgs : EventArgs
     {
         private KinectSensor _kinect;
-        private SkeletonFrame _skeletonFrame;
+        private ColorImageFrame _colorFrame;
 
         /// <summary>
         /// Kinect センサー
@@ -18,27 +18,27 @@ namespace KinectDataSender
         }
 
         /// <summary>
-        /// スケルトンのフレームデータ
+        /// RGB カメラのフレームデータ
         /// </summary>
-        public SkeletonFrame SkeletonFrame
+        public ColorImageFrame ColorFrame
         {
-            get { return _skeletonFrame;  }
-            set { _skeletonFrame = value; }
+            get { return _colorFrame;  }
+            set { _colorFrame = value; }
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public SkeletonUpdateEventArgs()
+        public ColorUpdateEventArgs()
         {
-            _kinect        = null;
-            _skeletonFrame = null;
+            _kinect     = null;
+            _colorFrame = null;
         }
 
         /// <summary>
         /// デストラクタ
         /// </summary>
-        ~SkeletonUpdateEventArgs()
+        ~ColorUpdateEventArgs()
         {
         }
     }

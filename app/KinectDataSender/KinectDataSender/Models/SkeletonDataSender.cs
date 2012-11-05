@@ -2,7 +2,7 @@
 using Bespoke.Common.Osc;
 using Microsoft.Kinect;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// スケルトンデータセンダー

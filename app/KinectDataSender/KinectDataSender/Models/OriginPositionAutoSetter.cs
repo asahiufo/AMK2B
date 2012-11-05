@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 using System.Threading;
+using KinectDataSender.Models.Events;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// 原点座標を自動設定するクラス

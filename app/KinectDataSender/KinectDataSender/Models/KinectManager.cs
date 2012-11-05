@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Media;
 using Microsoft.Kinect;
+using KinectDataSender.Models.Events;
 
-namespace KinectDataSender
+namespace KinectDataSender.Models
 {
     /// <summary>
     /// Kinectマネージャー

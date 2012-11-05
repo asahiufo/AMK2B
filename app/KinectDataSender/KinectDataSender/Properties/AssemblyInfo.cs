@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("KinectDataSender")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("FJ-USER")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("KinectDataSender")]
-[assembly: AssemblyCopyright("Copyright © FJ-USER 2012")]
+[assembly: AssemblyCopyright("Copyright c  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
