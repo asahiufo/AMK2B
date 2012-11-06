@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-
+using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
+using KinectDataSender.Models;
+using KinectDataSender.Models.Events;
 using Livet;
 using Livet.Commands;
-using Livet.Messaging;
-using Livet.Messaging.IO;
-using Livet.EventListeners;
-using Livet.Messaging.Windows;
-
-using KinectDataSender.Models;
-using System.Windows.Media.Imaging;
-using System.Collections.ObjectModel;
-using KinectDataSender.Models.Events;
 
 namespace KinectDataSender.ViewModels
 {
@@ -1101,8 +1091,37 @@ namespace KinectDataSender.ViewModels
             }
             RaisePropertyChanged("KinectStartOrStopButtonLabel");
             RaisePropertyChanged("OriginPositionAutoSetInfo");
+            SetOriginPositionCommand.RaiseCanExecuteChanged();
+            ApplyKinectElevationAngleCommand.RaiseCanExecuteChanged();
         }
 
+        #region SetOriginPositionCommand
+        private ViewModelCommand _setOriginPositionCommand;
+        /// <summary>
+        /// 原点座標設定コマンド
+        /// </summary>
+        public ViewModelCommand SetOriginPositionCommand
+        {
+            get
+            {
+                if (_setOriginPositionCommand == null)
+                {
+                    _setOriginPositionCommand = new ViewModelCommand(SetOriginPosition, CanSetOriginPosition);
+                }
+                return _setOriginPositionCommand;
+            }
+        }
+        /// <summary>
+        ///  原点座標設定実行可能判定
+        /// </summary>
+        /// <returns>実行可能なら true</returns>
+        public bool CanSetOriginPosition()
+        {
+            return (
+                _kinectManager.Started &&
+                _originPositionAutoSetter.Status == OriginPositionAutoSetter.OriginPositionAutoSetterStatus.NOT_STARTING
+            );
+        }
         /// <summary>
         /// 原点座標設定
         /// </summary>
@@ -1110,7 +1129,32 @@ namespace KinectDataSender.ViewModels
         {
             _originPositionAutoSetter.StartAutoSetting();
         }
+        #endregion
 
+        #region ApplyKinectElevationAngleCommand
+        private ViewModelCommand _applyKinectElevationAngleCommand;
+        /// <summary>
+        /// Kinect カメラ角度適用コマンド
+        /// </summary>
+        public ViewModelCommand ApplyKinectElevationAngleCommand
+        {
+            get
+            {
+                if (_applyKinectElevationAngleCommand == null)
+                {
+                    _applyKinectElevationAngleCommand = new ViewModelCommand(ApplyKinectElevationAngle, CanApplyKinectElevationAngle);
+                }
+                return _applyKinectElevationAngleCommand;
+            }
+        }
+        /// <summary>
+        ///  Kinect カメラ角度適用実行可能判定
+        /// </summary>
+        /// <returns>実行可能なら true</returns>
+        public bool CanApplyKinectElevationAngle()
+        {
+            return _kinectManager.Started;
+        }
         /// <summary>
         /// Kinect カメラ角度適用
         /// </summary>
@@ -1118,5 +1162,177 @@ namespace KinectDataSender.ViewModels
         {
             _kinectManager.SetElevationAngle(_cameraOptions.ElevationAngle);
         }
+        #endregion
+
+        /* TODO
+        /// <summary>
+        /// エラー処理
+        /// </summary>
+        public string Error
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// エラーチェック
+        /// </summary>
+        /// <param name="columnName">項目名</param>
+        /// <returns>エラーメッセージ</returns>
+        public string this[string columnName]
+        {
+            get
+            {
+                try
+                {
+                    if (columnName == "HeadName")
+                    {
+                        if (HeadEnable && string.IsNullOrEmpty(HeadName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderCenterName")
+                    {
+                        if (ShoulderCenterEnable && string.IsNullOrEmpty(ShoulderCenterName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderRightName")
+                    {
+                        if (ShoulderRightEnable && string.IsNullOrEmpty(ShoulderRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ElbowRightName")
+                    {
+                        if (ElbowRightEnable && string.IsNullOrEmpty(ElbowRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "WristRightName")
+                    {
+                        if (WristRightEnable && string.IsNullOrEmpty(WristRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HandRightName")
+                    {
+                        if (HandRightEnable && string.IsNullOrEmpty(HandRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ShoulderLeftName")
+                    {
+                        if (ShoulderLeftEnable && string.IsNullOrEmpty(ShoulderLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "ElbowLeftName")
+                    {
+                        if (ElbowLeftEnable && string.IsNullOrEmpty(ElbowLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "WristLeftName")
+                    {
+                        if (WristLeftEnable && string.IsNullOrEmpty(WristLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HandLeftName")
+                    {
+                        if (HandLeftEnable && string.IsNullOrEmpty(HandLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "SpineName")
+                    {
+                        if (SpineEnable && string.IsNullOrEmpty(SpineName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipCenterName")
+                    {
+                        if (HipCenterEnable && string.IsNullOrEmpty(HipCenterName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipRightName")
+                    {
+                        if (HipRightEnable && string.IsNullOrEmpty(HipRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "KneeRightName")
+                    {
+                        if (KneeRightEnable && string.IsNullOrEmpty(KneeRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "AnkleRightName")
+                    {
+                        if (AnkleRightEnable && string.IsNullOrEmpty(AnkleRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "FootRightName")
+                    {
+                        if (FootRightEnable && string.IsNullOrEmpty(FootRightName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "HipLeftName")
+                    {
+                        if (HipLeftEnable && string.IsNullOrEmpty(HipLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "KneeLeftName")
+                    {
+                        if (KneeLeftEnable && string.IsNullOrEmpty(KneeLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "AnkleLeftName")
+                    {
+                        if (AnkleLeftEnable && string.IsNullOrEmpty(AnkleLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    if (columnName == "FootLeftName")
+                    {
+                        if (FootLeftEnable && string.IsNullOrEmpty(FootLeftName))
+                        {
+                            return "*";
+                        }
+                    }
+                    return null;
+                }
+                finally
+                {
+                    // CanExecuteChanged イベントの発行
+                    CommandManager.InvalidateRequerySuggested();
+                }
+            }
+        }
+        */
     }
 }

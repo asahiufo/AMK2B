@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Kinect;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using KinectDataSender.Models.Events;
+using Microsoft.Kinect;
 
 namespace KinectDataSender.Models
 {

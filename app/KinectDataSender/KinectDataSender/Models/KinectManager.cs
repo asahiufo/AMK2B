@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Windows.Media;
-using Microsoft.Kinect;
 using KinectDataSender.Models.Events;
+using Microsoft.Kinect;
 
 namespace KinectDataSender.Models
 {

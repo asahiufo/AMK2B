@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Kinect;
 using System.Threading;
 using KinectDataSender.Models.Events;
+using Microsoft.Kinect;
 
 namespace KinectDataSender.Models
 {

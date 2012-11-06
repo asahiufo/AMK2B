@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bespoke.Common">
+      <HintPath>InfrastructureAssemblies\Bespoke.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Bespoke.Common.Osc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=843a094264521388, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\Bespoke.Common.Osc.dll</HintPath>
