@@ -43,14 +43,22 @@
                 <MenuItem Header="パラメータファイルを開く">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="SaveParamFile"/>
+                            <l:OpenFileDialogInteractionMessageAction>
+                                <l:DirectInteractionMessage CallbackCommand="{Binding Path=OpenParamFileCommand, Mode=OneWay}">
+                                    <l:OpeningFileSelectionMessage Filter="AMK2Bパラメータファイル(*.amk2b)|*.amk2b" Title="パラメータファイルを開く"/>
+                                </l:DirectInteractionMessage>
+                            </l:OpenFileDialogInteractionMessageAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
                 <MenuItem Header="パラメータファイルを保存">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="LoadParamFile"/>
+                            <l:SaveFileDialogInteractionMessageAction>
+                                <l:DirectInteractionMessage CallbackCommand="{Binding Path=SaveParamFileCommand, Mode=OneWay}">
+                                    <l:SavingFileSelectionMessage Filter="AMK2Bパラメータファイル(*.amk2b)|*.amk2b" Title="パラメータファイルを保存"/>
+                                </l:DirectInteractionMessage>
+                            </l:SaveFileDialogInteractionMessageAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>

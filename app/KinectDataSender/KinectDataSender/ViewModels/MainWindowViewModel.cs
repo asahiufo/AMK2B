@@ -5,10 +5,12 @@ using KinectDataSender.Models;
 using KinectDataSender.Models.Events;
 using Livet;
 using Livet.Commands;
+using System.ComponentModel;
+using Livet.Messaging.IO;
 
 namespace KinectDataSender.ViewModels
 {
-    public class MainWindowViewModel : ViewModel
+    public class MainWindowViewModel : ViewModel, IDataErrorInfo
     {
         /* コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -1026,21 +1028,59 @@ namespace KinectDataSender.ViewModels
             // TODO: 自動設定ボタンのセンシティビティが自動で元に戻らない。（画面をクリックしたら戻る。）
         }
 
-        /// <summary>
-        /// パラメータファイル保存
-        /// </summary>
-        public void SaveParamFile()
-        {
-            System.Console.WriteLine("SaveParamFile");
-        }
 
+        #region OpenParamFileCommand
+        private ListenerCommand<OpeningFileSelectionMessage> _openParamFileCommand;
+        /// <summary>
+        /// パラメータファイル読込コマンド
+        /// </summary>
+        public ListenerCommand<OpeningFileSelectionMessage> OpenParamFileCommand
+        {
+            get
+            {
+                if (_openParamFileCommand == null)
+                {
+                    _openParamFileCommand = new ListenerCommand<OpeningFileSelectionMessage>(OpenParamFile);
+                }
+                return _openParamFileCommand;
+            }
+        }
         /// <summary>
         /// パラメータファイル読込
         /// </summary>
-        public void LoadParamFile()
+        /// <param name="parameter">パラメータ</param>
+        public void OpenParamFile(OpeningFileSelectionMessage parameter)
         {
-            System.Console.WriteLine("LoadParamFile");
+            System.Console.WriteLine("OpenParamFile" + parameter.ToString());
         }
+        #endregion
+
+
+        #region SaveParamFileCommand
+        private ListenerCommand<SavingFileSelectionMessage> _saveParamFileCommand;
+        /// <summary>
+        /// パラメータファイル保存コマンド
+        /// </summary>
+        public ListenerCommand<SavingFileSelectionMessage> SaveParamFileCommand
+        {
+            get
+            {
+                if (_saveParamFileCommand == null)
+                {
+                    _saveParamFileCommand = new ListenerCommand<SavingFileSelectionMessage>(SaveParamFile);
+                }
+                return _saveParamFileCommand;
+            }
+        }
+        /// <summary>
+        /// パラメータファイル保存
+        /// </summary>
+        /// <param name="parameter">パラメータ</param>
+        public void SaveParamFile(SavingFileSelectionMessage parameter)
+        {
+            System.Console.WriteLine("SaveParamFile" + parameter.ToString());
+        }
+        #endregion
 
         /// <summary>
         /// Kinect スタートまたはストップ
@@ -1164,15 +1204,16 @@ namespace KinectDataSender.ViewModels
         }
         #endregion
 
-        /* TODO
         /// <summary>
         /// エラー処理
         /// </summary>
         public string Error
         {
-            get { return null; }
+            get
+            {
+                return null;
+            }
         }
-
         /// <summary>
         /// エラーチェック
         /// </summary>
@@ -1329,10 +1370,9 @@ namespace KinectDataSender.ViewModels
                 finally
                 {
                     // CanExecuteChanged イベントの発行
-                    CommandManager.InvalidateRequerySuggested();
+                    //CommandManager.InvalidateRequerySuggested();
                 }
             }
         }
-        */
     }
 }
