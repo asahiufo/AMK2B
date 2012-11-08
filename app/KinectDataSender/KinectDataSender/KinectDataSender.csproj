@@ -87,12 +87,13 @@
     <Compile Include="Models\Events\ColorUpdateEventArgs.cs" />
     <Compile Include="Models\Events\DepthUpdateEventArgs.cs" />
     <Compile Include="Models\Events\SkeletonUpdateEventArgs.cs" />
+    <Compile Include="Models\IParameterFileData.cs" />
     <Compile Include="Models\JointDrawPosition.cs" />
     <Compile Include="Models\JointsOption.cs" />
     <Compile Include="Models\KinectDataManager.cs" />
     <Compile Include="Models\KinectManager.cs" />
-    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\OriginPositionAutoSetter.cs" />
+    <Compile Include="Models\ParameterFileManager.cs" />
     <Compile Include="Models\SkeletonDataSender.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -128,6 +129,7 @@
     <Content Include="InfrastructureAssemblies\Bespoke.Common.Osc.dll" />
     <Content Include="InfrastructureAssemblies\Design\Livet.Design.dll" />
     <Content Include="InfrastructureAssemblies\Livet.dll" />
+    <Resource Include="Resources\Da_Vinci_Vitruve_Luc_Viatour.jpg" />
     <Resource Include="InfrastructureAssemblies\Livet.XML" />
     <Content Include="InfrastructureAssemblies\Microsoft.Expression.Interactions.dll" />
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />

@@ -10,7 +10,7 @@ using Livet.Messaging.IO;
 
 namespace KinectDataSender.ViewModels
 {
-    public class MainWindowViewModel : ViewModel, IDataErrorInfo
+    public class MainWindowViewModel : ViewModel, IDataErrorInfo, IParameterFileData
     {
         /* コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -60,6 +60,7 @@ namespace KinectDataSender.ViewModels
         private BlenderOptions _blenderOptions;
         private OriginPositionAutoSetter _originPositionAutoSetter;
         private KinectDataManager _kinectDataManager;
+        private ParameterFileManager _parameterFileManager;
         private string _statusBarMessage;
 
         #region ツールバー用変更通知プロパティ
@@ -959,6 +960,7 @@ namespace KinectDataSender.ViewModels
             _blenderOptions = new BlenderOptions();
             _originPositionAutoSetter = new OriginPositionAutoSetter(_jointsOption);
             _kinectDataManager = new KinectDataManager(_cameraOptions, _blenderOptions, _jointsOption);
+            _parameterFileManager = new ParameterFileManager(this);
 
             _statusBarMessage = "";
         }
@@ -1051,10 +1053,13 @@ namespace KinectDataSender.ViewModels
         /// <param name="parameter">パラメータ</param>
         public void OpenParamFile(OpeningFileSelectionMessage parameter)
         {
-            System.Console.WriteLine("OpenParamFile" + parameter.ToString());
+            if (parameter.Response == null || parameter.Response.Length < 1)
+            {
+                return;
+            }
+            _parameterFileManager.load(parameter.Response[0]);
         }
         #endregion
-
 
         #region SaveParamFileCommand
         private ListenerCommand<SavingFileSelectionMessage> _saveParamFileCommand;
@@ -1078,7 +1083,11 @@ namespace KinectDataSender.ViewModels
         /// <param name="parameter">パラメータ</param>
         public void SaveParamFile(SavingFileSelectionMessage parameter)
         {
-            System.Console.WriteLine("SaveParamFile" + parameter.ToString());
+            if (parameter.Response == null || parameter.Response.Length < 1)
+            {
+                return;
+            }
+            _parameterFileManager.save(parameter.Response[0]);
         }
         #endregion
 
