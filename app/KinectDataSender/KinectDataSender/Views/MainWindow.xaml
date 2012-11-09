@@ -1,0 +1,268 @@
+﻿<Window x:Class="KinectDataSender.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+        xmlns:v="clr-namespace:KinectDataSender.Views"
+        xmlns:vm="clr-namespace:KinectDataSender.ViewModels"
+        Title="Kinect Data Sender" Height="700" Width="900">
+    
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    
+    <i:Interaction.Triggers>
+        <!--WindowのContentRenderedイベントのタイミングでViewModelのInitializeメソッドが呼ばれます-->
+        <i:EventTrigger EventName="ContentRendered">
+            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize"/>
+        </i:EventTrigger>
+        <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
+        <i:EventTrigger EventName="Closed">
+            <l:DataContextDisposeAction/>
+        </i:EventTrigger>
+        <!--WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください-->
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <DataTemplate x:Key="MarkerTemplate">
+            <Ellipse Width="5" Height="5" Fill="Blue" />
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="PanelTemplate">
+            <Canvas />
+        </ItemsPanelTemplate>
+        <Style x:Key="ContainerStyle">
+            <Setter Property="Canvas.Top" Value="{Binding Path=Y}" />
+            <Setter Property="Canvas.Left" Value="{Binding Path=X}" />
+        </Style>
+        <BitmapImage x:Key="SkeletonImage" UriSource="..\Resources\Da_Vinci_Vitruve_Luc_Viatour.jpg" />
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="ファイル">
+                <MenuItem Header="パラメータファイルを開く">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <l:OpenFileDialogInteractionMessageAction>
+                                <l:DirectInteractionMessage CallbackCommand="{Binding Path=OpenParamFileCommand, Mode=OneWay}">
+                                    <l:OpeningFileSelectionMessage Filter="AMK2Bパラメータファイル(*.amk2b)|*.amk2b" Title="パラメータファイルを開く"/>
+                                </l:DirectInteractionMessage>
+                            </l:OpenFileDialogInteractionMessageAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+                <MenuItem Header="パラメータファイルを保存">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <l:SaveFileDialogInteractionMessageAction>
+                                <l:DirectInteractionMessage CallbackCommand="{Binding Path=SaveParamFileCommand, Mode=OneWay}">
+                                    <l:SavingFileSelectionMessage Filter="AMK2Bパラメータファイル(*.amk2b)|*.amk2b" Title="パラメータファイルを保存"/>
+                                </l:DirectInteractionMessage>
+                            </l:SaveFileDialogInteractionMessageAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="{Binding Path=KinectStartOrStopButtonLabel}" Height="23" Margin="5,0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="StartOrStopKinect"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding Path=StatusBarMessage}" />
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" Grid.Row="0">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Grid.Row="0" Width="320" Height="240" Source="{Binding Path=ColorSource}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
+                    <Image Grid.Column="0" Grid.Row="0" Width="320" Height="240" Source="{Binding Path=DepthSource}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Opacity="0.5" />
+                    <ItemsControl Grid.Column="0" Grid.Row="0" Margin="20"
+                        ItemsPanel="{StaticResource ResourceKey=PanelTemplate}"
+                        ItemContainerStyle="{StaticResource ResourceKey=ContainerStyle}"
+                        ItemTemplate="{StaticResource ResourceKey=MarkerTemplate}"
+                        ItemsSource="{Binding Path=JointDrawPositions}" />
+                </Grid>
+                <GroupBox Header="全体設定">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label     Grid.Column="0"                     Grid.Row="0"                  Content="原点座標" Height="28" Margin="5,2" />
+                        <Button    Grid.Column="2"                     Grid.Row="0"                  Content="自動設定" Height="23" Margin="5,2" Command="{Binding Path=SetOriginPositionCommand}" />
+                        <TextBlock Grid.Column="3"                     Grid.Row="0"                  Height="23" HorizontalAlignment="Left" Margin="5,2" Text="{Binding Path=OriginPositionAutoSetInfo}" VerticalAlignment="Center" Padding="0,3" />
+                        <Label     Grid.Column="0"                     Grid.Row="1"                  Content="サイズ比率" Height="28" Margin="5,2" />
+                        <TextBox   Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"                  Height="24" HorizontalAlignment="Right" Margin="5,2" Width="50" Text="{Binding Path=SizeProportion}" />
+                        <Slider    Grid.Column="3"                     Grid.Row="1"                  HorizontalAlignment="Left" Margin="5,2" Width="150" Value="{Binding Path=SizeProportion}" Maximum="10" SmallChange="0.01" LargeChange="0.1" />
+                        <Label     Grid.Column="0"                     Grid.Row="2" Grid.RowSpan="3" Content="中心座標" Height="28" Margin="5,2" VerticalAlignment="Top" />
+                        <Label     Grid.Column="1"                     Grid.Row="2"                  Content="X" Height="28" Margin="5,2" />
+                        <TextBox   Grid.Column="2"                     Grid.Row="2"                  Height="24" Width="50" HorizontalAlignment="Right" Margin="5,2" Text="{Binding Path=CenterX}" />
+                        <Slider    Grid.Column="3"                     Grid.Row="2"                  Height="24" HorizontalAlignment="Left" Margin="5,2" Width="150" Value="{Binding Path=CenterX}" Maximum="500" Minimum="-500" SmallChange="0.01" LargeChange="0.1" />
+                        <Label     Grid.Column="1"                     Grid.Row="3"                  Content="Y" Height="28" Margin="5,2" />
+                        <TextBox   Grid.Column="2"                     Grid.Row="3"                  Height="24" Width="50" HorizontalAlignment="Right" Margin="5,2" Text="{Binding Path=CenterY}" />
+                        <Slider    Grid.Column="3"                     Grid.Row="3"                  Height="24" HorizontalAlignment="Left" Margin="5,2" Width="150" Value="{Binding Path=CenterY}" Maximum="500" Minimum="-500" SmallChange="0.01" LargeChange="0.1" />
+                        <Label     Grid.Column="1"                     Grid.Row="4"                  Content="Z" Height="28" Margin="5,2" />
+                        <TextBox   Grid.Column="2"                     Grid.Row="4"                  Height="24" Width="50" HorizontalAlignment="Right" Margin="5,2" Text="{Binding Path=CenterZ}" />
+                        <Slider    Grid.Column="3"                     Grid.Row="4"                  Height="24" HorizontalAlignment="Left" Margin="5,2" Width="150" Value="{Binding Path=CenterZ}" Maximum="500" Minimum="-500" SmallChange="0.01" LargeChange="0.1" />
+                        <Label     Grid.Column="0"                     Grid.Row="5"                  Content="ミラー" Height="28" Margin="5,2" />
+                        <CheckBox  Grid.Column="2"                     Grid.Row="5"                  IsChecked="{Binding Path=Mirror}" Margin="10" />
+                    </Grid>
+                </GroupBox>
+            </DockPanel>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox Header="カメラ設定" Grid.Column="0" Grid.Row="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="False">
+                            <Label Content="角度" Height="28" Margin="5,2" />
+                            <TextBox Height="24" HorizontalAlignment="Right" Margin="5,2" Width="50" Text="{Binding Path=KinectElevationAngle}" />
+                            <Slider HorizontalAlignment="Left" Margin="5,2" Width="150" Height="24" Value="{Binding Path=KinectElevationAngle}" Minimum="-27" Maximum="27" SmallChange="1" LargeChange="3" />
+                            <Button Content="適用" Height="23" Margin="5,0" Command="{Binding Path=ApplyKinectElevationAngleCommand}" />
+                        </DockPanel>
+                        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ColorDrawEnable}" Content="カメラ画像描画" Padding="4,0" Margin="5,2" />
+                            <CheckBox Height="16" IsChecked="{Binding Path=DepthDrawEnable}" Content="深度画像描画" Padding="4,0" Margin="5,2" />
+                            <CheckBox Height="16" IsChecked="{Binding Path=SkeletonDrawEnable}" Content="スケルトン画像描画" Padding="4,0" Margin="5,2" />
+                        </DockPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="詳細設定" Grid.Row="1">
+                    <Canvas Width="480" Height="480">
+                        <Image Canvas.Left="0" Canvas.Top="0" Source="{StaticResource ResourceKey=SkeletonImage}" Width="480" Height="480" Opacity="0.5" />
+                        <DockPanel Canvas.Left="156" Canvas.Top="30">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HeadEnable}" Content="Head" Padding="4,0" />
+                            <TextBox Name="HeadNameTextBox" Height="24" Width="120" Text="{Binding Path=HeadName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HeadEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HeadNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="137" Canvas.Top="136">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ShoulderCenterEnable}" Content="ShoulderCenter" Padding="4,0" />
+                            <TextBox Name="ShoulderCenterNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderCenterEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=ShoulderCenterNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="9" Canvas.Top="164">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ShoulderRightEnable}" Content="ShoulderRight" Padding="4,0" />
+                            <TextBox Name="ShoulderRightNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=ShoulderRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="18" Canvas.Top="110">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ElbowRightEnable}" Content="ElbowRight" Padding="4,0" />
+                            <TextBox Name="ElbowRightNameTextBox" Height="24" Width="120" Text="{Binding Path=ElbowRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=ElbowRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="4" Canvas.Top="84">
+                            <CheckBox Height="16" IsChecked="{Binding Path=WristRightEnable}" Content="WristRight" Padding="4,0" />
+                            <TextBox Name="WristRightNameTextBox" Height="24" Width="120" Text="{Binding Path=WristRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=WristRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="4" Canvas.Top="57">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HandRightEnable}" Content="HandRight" Padding="4,0" />
+                            <TextBox Name="HandRightNameTextBox" Height="24" Width="120" Text="{Binding Path=HandRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HandRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="254" Canvas.Top="164">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ShoulderLeftEnable}" Content="ShoulderLeft" Padding="4,0" />
+                            <TextBox Name="ShoulderLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=ShoulderLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="259" Canvas.Top="110">
+                            <CheckBox Height="16" IsChecked="{Binding Path=ElbowLeftEnable}" Content="ElbowLeft" Padding="4,0" />
+                            <TextBox Name="ElbowLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=ElbowLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=ElbowLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="270" Canvas.Top="83">
+                            <CheckBox Height="16" IsChecked="{Binding Path=WristLeftEnable}" Content="WristLeft" Padding="4,0" />
+                            <TextBox Name="WristLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=WristLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=WristLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="270" Canvas.Top="57">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HandLeftEnable}" Content="HandLeft" Padding="4,0" />
+                            <TextBox Name="HandLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=HandLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HandLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="155" Canvas.Top="217">
+                            <CheckBox Height="16" IsChecked="{Binding Path=SpineEnable}" Content="Spine" Padding="4,0" />
+                            <TextBox Name="SpineNameTextBox" Height="24" Width="120" Text="{Binding Path=SpineName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=SpineEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=SpineNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="143" Canvas.Top="253">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HipCenterEnable}" Content="HipCenter" Padding="4,0" />
+                            <TextBox Name="HipCenterNameTextBox" Height="24" Width="120" Text="{Binding Path=HipCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipCenterEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HipCenterNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="43" Canvas.Top="283">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HipRightEnable}" Content="HipRight" Padding="4,0" />
+                            <TextBox Name="HipRightNameTextBox" Height="24" Width="120" Text="{Binding Path=HipRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HipRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="25" Canvas.Top="346">
+                            <CheckBox Height="16" IsChecked="{Binding Path=KneeRightEnable}" Content="KneeRight" Padding="4,0" />
+                            <TextBox Name="KneeRightNameTextBox" Height="24" Width="120" Text="{Binding Path=KneeRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=KneeRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="20" Canvas.Top="413">
+                            <CheckBox Height="16" IsChecked="{Binding Path=AnkleRightEnable}" Content="AnkleRight" Padding="4,0" />
+                            <TextBox Name="AnkleRightNameTextBox" Height="24" Width="120" Text="{Binding Path=AnkleRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=AnkleRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="6" Canvas.Top="440">
+                            <CheckBox Height="16" IsChecked="{Binding Path=FootRightEnable}" Content="FootRight" Padding="4,0" />
+                            <TextBox Name="FootRightNameTextBox" Height="24" Width="120" Text="{Binding Path=FootRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootRightEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=FootRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="254" Canvas.Top="283">
+                            <CheckBox Height="16" IsChecked="{Binding Path=HipLeftEnable}" Content="HipLeft" Padding="4,0" />
+                            <TextBox Name="HipLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=HipLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=HipLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="260" Canvas.Top="346">
+                            <CheckBox Height="16" IsChecked="{Binding Path=KneeLeftEnable}" Content="KneeLeft" Padding="4,0" />
+                            <TextBox Name="KneeLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=KneeLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=KneeLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="248" Canvas.Top="413">
+                            <CheckBox Height="16" IsChecked="{Binding Path=AnkleLeftEnable}" Content="AnkleLeft" Padding="4,0" />
+                            <TextBox Name="AnkleLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=AnkleLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=AnkleLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                        <DockPanel Canvas.Left="275" Canvas.Top="440">
+                            <CheckBox Height="16" IsChecked="{Binding Path=FootLeftEnable}" Content="FootLeft" Padding="4,0" />
+                            <TextBox Name="FootLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=FootLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootLeftEnable}" />
+                            <TextBlock Height="23" Text="{Binding ElementName=FootLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
+                        </DockPanel>
+                    </Canvas>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

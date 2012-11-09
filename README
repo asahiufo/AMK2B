@@ -1,2 +1,76 @@
  * 概要
   Kinect to Blender.
+
+ * 実行環境
+   * Microsoft Windows 7 以上
+   * .NET Framework 4 Client Profile
+     http://www.microsoft.com/ja-jp/net/netfx4/download.aspx
+   * Kinect for Windows
+   * Kinect for Windows Runtime v1.5
+     http://www.microsoft.com/en-us/download/details.aspx?id=34810
+   * Blender 2.64 以上（2.5以上なら大丈夫かも？）
+
+ * インストール
+   * Blender へアドオン追加
+     以下の手順で Blender へアドオンを追加します。
+     
+     1. 「AMK2B/amk2b」フォルダを「<Blenderのインストールディレクトリ>/2.64/scripts/addons」へコピーします。
+     2. Blender を起動し、「File ＞ User Preferences...」をクリックします。
+     3. 「Addons ＞ Categories ＞ Development」と順にクリックします。
+     4. 「Development: AMK2B - Kinect Data Receiver」の右端のボックスをチェックします。
+     5. この結果、「3D View」の左に「AMK2B」パネルが追加されていれば成功です。
+
+ * アンインストール
+   * Blender へ追加した「amk2b」フォルダを削除します。
+   * ダウンロードした「AMK2B」をまるごと削除します。
+
+ * 使い方
+   * 前提
+     * あらかじめモーションを付けたいモデルを Blender で作成しておく。
+       （今回の説明では、「AMK2B/sample.blend」を使います。）
+     * Kinect for Windows が動くこと。
+   
+   1. 「AMK2B/KinectDataSender/KinectDataSender.exe」を起動します。
+   2. 「詳細設定」で、Skeleton データを送信したい部位にチェックを入れます。
+   3. チェックを入れたチェックボックスに対応するテキストボックスへ、座標情報を適用する Blender のボーン名を入力します。
+      入力内容を保存する場合は、「ファイル ＞ パラメータファイルを保存」でファイル出力できます。
+   4. Blender を起動し、「AMK2B/sample.blend」を開いておきます。
+   5. 「Kinect Data Sender」画面の「Kinect Start」ボタンを押下します。
+      （Kinect が正常に作動した場合、左上にカメラ画像が表示されます。
+      　表示されない場合、「カメラ設定」の「カメラ画像描画」をチェックして下さい。）
+   6. 「全体設定」の「自動設定」ボタンを押下します。
+      カウントダウンが始まりますので、Kinect に向かって Blender 上のモデルと同じポーズをとります。
+      （"前回設定時間"が表示されれば成功です。）
+   6. Blender の「AMK2B」パネルの「Receive Kinect Data」ボタンを押下します。
+   7. 続いて「Apply Kinect Data」ボタンを押下します。
+      これにより、Kinect の Skeleton 情報が Blender 上のモデルへ適用されます。
+      （体を動かすのと合わせてモデルも動けば成功です。）
+      なお、「Kinect Data Sender」の「ミラー」にチェックを入れると、
+      モデルに対して、鏡の前でポーズをとるように動かすことが出来るようになります。
+      他、「Kinect Data Sender」の設定や、モデルのボーンの設定などを見直し、
+      思うようなモーションキャプチャがとれるようになれるまで調整します。
+   8. Blender の「AMK2B」パネルの「Recording」ボタンを押下します。
+      カウントダウンが開始され、0 になるとモーションの録画が始まります。
+      録画は最初のフレームから最後のフレームまで行われ、停止します。
+   9. 出来上がったモデルとアニメーションデータを煮るなり焼くなり、Flash で使うなり。
+
+ * Licensing
+   GNU General Public License v3
+   http://www.gnu.org/licenses/gpl-3.0.txt
+   
+   * Livet
+     * URL
+       http://ugaya40.net/livet
+     * License
+       zlib/libpng
+       http://opensource.org/licenses/zlib-license.php
+   * Bespoke Open Sound Control Library
+     * URL
+       http://www.bespokesoftware.org/wordpress/?page_id=69
+     * License
+       Microsoft Public License (MS-PL)
+       http://opensource.org/licenses/ms-pl.html
+   * python-osc
+     * License
+       GNU General Public License
+       http://www.gnu.org/licenses/
