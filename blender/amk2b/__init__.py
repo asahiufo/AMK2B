@@ -9,7 +9,7 @@ bl_info = {
     "name": "AMK2B - Kinect Data Receiver",
     "description": "for KinectDataSender.",
     "author": "asahiufo@AM902",
-    "version": (0, 1),
+    "version": (0, 9, 0, 0),
     "blender": (2, 64, 0),
     "location": "3D View > Tool Shelf > AMK2B Panel",
     "warning": "",
