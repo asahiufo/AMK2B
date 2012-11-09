@@ -33,7 +33,13 @@ class AMK2BPanel(bpy.types.Panel):
         row = layout.row()
         row.label(text="Recording")
         row = layout.row()
-        if not bpy.amk2b.recording_started:
+        if not bpy.amk2b.recording_pre_started:
             row.operator("amk2b.recording_operator", text="Start")
         else:
-            row.operator("amk2b.recording_operator", text="Stop")
+            if not bpy.amk2b.recording_started:
+                row.operator(
+                    "amk2b.recording_operator",
+                    text="waiting..." + str(bpy.amk2b.recording_wait_time)
+                )
+            else:
+                row.operator("amk2b.recording_operator", text="Stop")

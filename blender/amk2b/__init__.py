@@ -23,6 +23,7 @@ def register():
     bpy.amk2b = ComObject()
     bpy.amk2b.kinect_data_receiving_started = False
     bpy.amk2b.kinect_data_applying_started = False
+    bpy.amk2b.recording_pre_started = False
     bpy.amk2b.recording_started = False
 
     bpy.utils.register_class(AMK2BPanel)

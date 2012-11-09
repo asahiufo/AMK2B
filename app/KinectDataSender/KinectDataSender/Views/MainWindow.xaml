@@ -159,7 +159,7 @@
                 </GroupBox>
                 <GroupBox Header="詳細設定" Grid.Row="1">
                     <Canvas Width="480" Height="480">
-                        <Image Canvas.Left="0" Canvas.Top="0" Source="{StaticResource ResourceKey=SkeletonImage}" Width="480" Height="480" />
+                        <Image Canvas.Left="0" Canvas.Top="0" Source="{StaticResource ResourceKey=SkeletonImage}" Width="480" Height="480" Opacity="0.5" />
                         <DockPanel Canvas.Left="156" Canvas.Top="30">
                             <CheckBox Height="16" IsChecked="{Binding Path=HeadEnable}" Content="Head" Padding="4,0" />
                             <TextBox Name="HeadNameTextBox" Height="24" Width="120" Text="{Binding Path=HeadName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HeadEnable}" />
