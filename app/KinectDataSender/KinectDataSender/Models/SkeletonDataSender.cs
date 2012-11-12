@@ -111,7 +111,7 @@ namespace KinectDataSender.Models
                     else
                     {
                         locationX = (joint.Position.X - centerX - originX) * sizeProportionX * -1;
-                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportionZ  * -1;
+                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportionZ * -1;
                         locationZ = (joint.Position.Y - centerY - originY) * sizeProportionY;
                     }
 
