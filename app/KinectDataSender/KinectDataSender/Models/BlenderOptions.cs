@@ -78,9 +78,9 @@ namespace KinectDataSender.Models
         /// </summary>
         public BlenderOptions()
         {
-            _sizeProportionX = 5;
-            _sizeProportionY = 5;
-            _sizeProportionZ = 4;
+            _sizeProportionX = 7;
+            _sizeProportionY = 7;
+            _sizeProportionZ = 7;
             _centerX = 0;
             _centerY = 0;
             _centerZ = 0;
