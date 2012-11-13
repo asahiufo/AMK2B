@@ -13,6 +13,13 @@ namespace KinectDataSender.Models
     /// </summary>
     public class ParameterFileManager
     {
+        /*
+         * Format001 対応プログラムで Format000 を読み込んだとしても、特別な変換処理は不要。
+         */
+        private const String _PARAMETER_FORMAT_000 = "";
+        private const String _PARAMETER_FORMAT_001 = "001";
+        private const String _CURRENT_PARAMETER_FORMAT_VERSION = _PARAMETER_FORMAT_001;
+
         private IParameterFileData _fileData;
 
         /// <summary>
@@ -39,12 +46,14 @@ namespace KinectDataSender.Models
         {
             XmlTextReader reader = null;
 
+            string paramFileFormat = _PARAMETER_FORMAT_000;
+
             try
             {
                 reader = new XmlTextReader(filePath);
                 while (reader.Read())
                 {
-                    if (reader.NodeType == XmlNodeType.EndElement)
+                    if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "AMK2BOptions")
                     {
                         break;
                     }
@@ -53,11 +62,16 @@ namespace KinectDataSender.Models
                         continue;
                     }
 
+                    if (reader.LocalName == "FormatVersion")
+                    {
+                        paramFileFormat = reader.ReadElementContentAsString();
+                    }
+
                     if (reader.LocalName == "TotalOptions")
                     {
                         while (reader.Read())
                         {
-                            if (reader.NodeType == XmlNodeType.EndElement)
+                            if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "TotalOptions")
                             {
                                 break;
                             }
@@ -66,9 +80,17 @@ namespace KinectDataSender.Models
                                 continue;
                             }
 
-                            if (reader.LocalName == "SizeProportion")
+                            if (reader.LocalName == "SizeProportionX")
                             {
-                                _fileData.SizeProportion = reader.ReadElementContentAsDouble();
+                                _fileData.SizeProportionX = reader.ReadElementContentAsDouble();
+                            }
+                            if (reader.LocalName == "SizeProportionY")
+                            {
+                                _fileData.SizeProportionY = reader.ReadElementContentAsDouble();
+                            }
+                            if (reader.LocalName == "SizeProportionZ")
+                            {
+                                _fileData.SizeProportionZ = reader.ReadElementContentAsDouble();
                             }
                             if (reader.LocalName == "CenterX")
                             {
@@ -93,7 +115,7 @@ namespace KinectDataSender.Models
                     {
                         while (reader.Read())
                         {
-                            if (reader.NodeType == XmlNodeType.EndElement)
+                            if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "CameraOptions")
                             {
                                 break;
                             }
@@ -125,7 +147,7 @@ namespace KinectDataSender.Models
                     {
                         while (reader.Read())
                         {
-                            if (reader.NodeType == XmlNodeType.EndElement)
+                            if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "DetailOptions")
                             {
                                 break;
                             }
@@ -299,9 +321,9 @@ namespace KinectDataSender.Models
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.Message);
+                throw;
             }
             finally
             {
@@ -324,8 +346,12 @@ namespace KinectDataSender.Models
             writer.WriteStartDocument();
             writer.WriteStartElement("AMK2BOptions");
 
+            writer.WriteStartElement("FormatVersion"); writer.WriteValue(_CURRENT_PARAMETER_FORMAT_VERSION); writer.WriteEndElement();
+
             writer.WriteStartElement("TotalOptions");
-            writer.WriteStartElement("SizeProportion"); writer.WriteValue(_fileData.SizeProportion); writer.WriteEndElement();
+            writer.WriteStartElement("SizeProportionX"); writer.WriteValue(_fileData.SizeProportionX); writer.WriteEndElement();
+            writer.WriteStartElement("SizeProportionY"); writer.WriteValue(_fileData.SizeProportionY); writer.WriteEndElement();
+            writer.WriteStartElement("SizeProportionZ"); writer.WriteValue(_fileData.SizeProportionZ); writer.WriteEndElement();
             writer.WriteStartElement("CenterX"); writer.WriteValue(_fileData.CenterX); writer.WriteEndElement();
             writer.WriteStartElement("CenterY"); writer.WriteValue(_fileData.CenterY); writer.WriteEndElement();
             writer.WriteStartElement("CenterZ"); writer.WriteValue(_fileData.CenterZ); writer.WriteEndElement();

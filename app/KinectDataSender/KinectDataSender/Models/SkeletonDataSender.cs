@@ -39,7 +39,9 @@ namespace KinectDataSender.Models
         /// <param name="jointsOption">Joint 単位の設定</param>
         public void Send(Skeleton skeleton, uint userNo, BlenderOptions blenderOptions, JointsOption jointsOption)
         {
-            double sizeProportion = blenderOptions.SizeProportion;
+            double sizeProportionX = blenderOptions.SizeProportionX;
+            double sizeProportionY = blenderOptions.SizeProportionY;
+            double sizeProportionZ = blenderOptions.SizeProportionZ;
             double centerX = blenderOptions.CenterX;
             double centerY = blenderOptions.CenterY;
             double centerZ = blenderOptions.CenterZ;
@@ -102,15 +104,15 @@ namespace KinectDataSender.Models
                     double locationZ = 0;
                     if (!mirror)
                     {
-                        locationX = (joint.Position.X - centerX - originX) * sizeProportion;
-                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportion;
-                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportion;
+                        locationX = (joint.Position.X - centerX - originX) * sizeProportionX;
+                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportionZ;
+                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportionY;
                     }
                     else
                     {
-                        locationX = (joint.Position.X - centerX - originX) * sizeProportion * -1;
-                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportion * -1;
-                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportion;
+                        locationX = (joint.Position.X - centerX - originX) * sizeProportionX * -1;
+                        locationY = (joint.Position.Z - centerZ - originZ) * sizeProportionZ * -1;
+                        locationZ = (joint.Position.Y - centerY - originY) * sizeProportionY;
                     }
 
                     message.Append(locationX.ToString());

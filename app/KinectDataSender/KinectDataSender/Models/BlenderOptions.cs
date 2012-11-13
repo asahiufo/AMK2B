@@ -6,19 +6,37 @@ namespace KinectDataSender.Models
     /// </summary>
     public class BlenderOptions
     {
-        private double _sizeProportion;
+        private double _sizeProportionX;
+        private double _sizeProportionY;
+        private double _sizeProportionZ;
         private double _centerX;
         private double _centerY;
         private double _centerZ;
         private bool _mirror;
 
         /// <summary>
-        /// サイズ比率
+        /// X 座標サイズ比率
         /// </summary>
-        public double SizeProportion
+        public double SizeProportionX
         {
-            get { return _sizeProportion;  }
-            set { _sizeProportion = value; }
+            get { return _sizeProportionX; }
+            set { _sizeProportionX = value; }
+        }
+        /// <summary>
+        /// Y 座標サイズ比率
+        /// </summary>
+        public double SizeProportionY
+        {
+            get { return _sizeProportionY; }
+            set { _sizeProportionY = value; }
+        }
+        /// <summary>
+        /// Z 座標サイズ比率
+        /// </summary>
+        public double SizeProportionZ
+        {
+            get { return _sizeProportionZ; }
+            set { _sizeProportionZ = value; }
         }
 
         /// <summary>
@@ -60,7 +78,9 @@ namespace KinectDataSender.Models
         /// </summary>
         public BlenderOptions()
         {
-            _sizeProportion = 5;
+            _sizeProportionX = 7;
+            _sizeProportionY = 7;
+            _sizeProportionZ = 7;
             _centerX = 0;
             _centerY = 0;
             _centerZ = 0;
