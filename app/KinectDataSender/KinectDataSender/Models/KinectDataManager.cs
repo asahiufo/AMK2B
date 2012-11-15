@@ -174,11 +174,6 @@ namespace KinectDataSender.Models
         /// <param name="e">イベント引数</param>
         void kinectManager_SkeletonUpdate(object sender, SkeletonUpdateEventArgs e)
         {
-            if (!_cameraOptions.SkeletonDrawEnable)
-            {
-                return;
-            }
-
             KinectSensor kinect = e.Kinect;
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
 
@@ -195,25 +190,28 @@ namespace KinectDataSender.Models
                     continue;
                 }
 
-                // 描画
-                foreach (Joint joint in skeleton.Joints)
+                if (_cameraOptions.SkeletonDrawEnable)
                 {
-                    if (joint.TrackingState == JointTrackingState.NotTracked)
+                    // 描画
+                    foreach (Joint joint in skeleton.Joints)
                     {
-                        continue;
+                        if (joint.TrackingState == JointTrackingState.NotTracked)
+                        {
+                            continue;
+                        }
+
+                        // スケルトンの座標を RGB カメラの座標に変換する
+                        ColorImagePoint point = kinect.MapSkeletonPointToColor(joint.Position, kinect.ColorStream.Format);
+                        // 座標を画面のサイズに変換する
+                        // TODO: ダメなハードコーディング
+                        point.X = (int)((point.X * 320) / kinect.ColorStream.FrameWidth);
+                        point.Y = (int)((point.Y * 240) / kinect.ColorStream.FrameHeight);
+
+                        JointDrawPosition jointDrawPosition = new JointDrawPosition();
+                        jointDrawPosition.X = point.X;
+                        jointDrawPosition.Y = point.Y;
+                        jointDrawPositionList.Add(jointDrawPosition);
                     }
-
-                    // スケルトンの座標を RGB カメラの座標に変換する
-                    ColorImagePoint point = kinect.MapSkeletonPointToColor(joint.Position, kinect.ColorStream.Format);
-                    // 座標を画面のサイズに変換する
-                    // TODO: ダメなハードコーディング
-                    point.X = (int)((point.X * 320) / kinect.ColorStream.FrameWidth);
-                    point.Y = (int)((point.Y * 240) / kinect.ColorStream.FrameHeight);
-
-                    JointDrawPosition jointDrawPosition = new JointDrawPosition();
-                    jointDrawPosition.X = point.X;
-                    jointDrawPosition.Y = point.Y;
-                    jointDrawPositionList.Add(jointDrawPosition);
                 }
 
                 // 送信
