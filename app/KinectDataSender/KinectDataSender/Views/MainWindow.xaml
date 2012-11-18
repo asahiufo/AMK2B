@@ -171,102 +171,102 @@
                         <Image Canvas.Left="0" Canvas.Top="0" Source="{StaticResource ResourceKey=SkeletonImage}" Width="480" Height="480" Opacity="0.5" />
                         <DockPanel Canvas.Left="156" Canvas.Top="30">
                             <CheckBox Height="16" IsChecked="{Binding Path=HeadEnable}" Content="Head" Padding="4,0" />
-                            <TextBox Name="HeadNameTextBox" Height="24" Width="120" Text="{Binding Path=HeadName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HeadEnable}" />
+                            <TextBox Name="HeadNameTextBox" Height="24" Width="140" Text="{Binding Path=HeadName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HeadEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HeadNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="137" Canvas.Top="136">
+                        <DockPanel Canvas.Left="121" Canvas.Top="66">
                             <CheckBox Height="16" IsChecked="{Binding Path=ShoulderCenterEnable}" Content="ShoulderCenter" Padding="4,0" />
-                            <TextBox Name="ShoulderCenterNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderCenterEnable}" />
+                            <TextBox Name="ShoulderCenterNameTextBox" Height="24" Width="140" Text="{Binding Path=ShoulderCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderCenterEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=ShoulderCenterNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="9" Canvas.Top="164">
+                        <DockPanel Canvas.Left="-12" Canvas.Top="100">
                             <CheckBox Height="16" IsChecked="{Binding Path=ShoulderRightEnable}" Content="ShoulderRight" Padding="4,0" />
-                            <TextBox Name="ShoulderRightNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderRightEnable}" />
+                            <TextBox Name="ShoulderRightNameTextBox" Height="24" Width="140" Text="{Binding Path=ShoulderRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=ShoulderRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="18" Canvas.Top="110">
+                        <DockPanel Canvas.Left="5" Canvas.Top="126">
                             <CheckBox Height="16" IsChecked="{Binding Path=ElbowRightEnable}" Content="ElbowRight" Padding="4,0" />
-                            <TextBox Name="ElbowRightNameTextBox" Height="24" Width="120" Text="{Binding Path=ElbowRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowRightEnable}" />
+                            <TextBox Name="ElbowRightNameTextBox" Height="24" Width="140" Text="{Binding Path=ElbowRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=ElbowRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="4" Canvas.Top="84">
+                        <DockPanel Canvas.Left="9" Canvas.Top="152">
                             <CheckBox Height="16" IsChecked="{Binding Path=WristRightEnable}" Content="WristRight" Padding="4,0" />
-                            <TextBox Name="WristRightNameTextBox" Height="24" Width="120" Text="{Binding Path=WristRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristRightEnable}" />
+                            <TextBox Name="WristRightNameTextBox" Height="24" Width="140" Text="{Binding Path=WristRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=WristRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="4" Canvas.Top="57">
+                        <DockPanel Canvas.Left="9" Canvas.Top="178">
                             <CheckBox Height="16" IsChecked="{Binding Path=HandRightEnable}" Content="HandRight" Padding="4,0" />
-                            <TextBox Name="HandRightNameTextBox" Height="24" Width="120" Text="{Binding Path=HandRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandRightEnable}" />
+                            <TextBox Name="HandRightNameTextBox" Height="24" Width="140" Text="{Binding Path=HandRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HandRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="254" Canvas.Top="164">
+                        <DockPanel Canvas.Left="248" Canvas.Top="100">
                             <CheckBox Height="16" IsChecked="{Binding Path=ShoulderLeftEnable}" Content="ShoulderLeft" Padding="4,0" />
-                            <TextBox Name="ShoulderLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=ShoulderLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderLeftEnable}" />
+                            <TextBox Name="ShoulderLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=ShoulderLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ShoulderLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=ShoulderLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="259" Canvas.Top="110">
+                        <DockPanel Canvas.Left="265" Canvas.Top="126">
                             <CheckBox Height="16" IsChecked="{Binding Path=ElbowLeftEnable}" Content="ElbowLeft" Padding="4,0" />
-                            <TextBox Name="ElbowLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=ElbowLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowLeftEnable}" />
+                            <TextBox Name="ElbowLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=ElbowLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ElbowLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=ElbowLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="270" Canvas.Top="83">
+                        <DockPanel Canvas.Left="269" Canvas.Top="151">
                             <CheckBox Height="16" IsChecked="{Binding Path=WristLeftEnable}" Content="WristLeft" Padding="4,0" />
-                            <TextBox Name="WristLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=WristLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristLeftEnable}" />
+                            <TextBox Name="WristLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=WristLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=WristLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=WristLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="270" Canvas.Top="57">
+                        <DockPanel Canvas.Left="269" Canvas.Top="178">
                             <CheckBox Height="16" IsChecked="{Binding Path=HandLeftEnable}" Content="HandLeft" Padding="4,0" />
-                            <TextBox Name="HandLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=HandLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandLeftEnable}" />
+                            <TextBox Name="HandLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=HandLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HandLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HandLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="155" Canvas.Top="217">
+                        <DockPanel Canvas.Left="154" Canvas.Top="217">
                             <CheckBox Height="16" IsChecked="{Binding Path=SpineEnable}" Content="Spine" Padding="4,0" />
-                            <TextBox Name="SpineNameTextBox" Height="24" Width="120" Text="{Binding Path=SpineName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=SpineEnable}" />
+                            <TextBox Name="SpineNameTextBox" Height="24" Width="140" Text="{Binding Path=SpineName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=SpineEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=SpineNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="143" Canvas.Top="253">
+                        <DockPanel Canvas.Left="142" Canvas.Top="253">
                             <CheckBox Height="16" IsChecked="{Binding Path=HipCenterEnable}" Content="HipCenter" Padding="4,0" />
-                            <TextBox Name="HipCenterNameTextBox" Height="24" Width="120" Text="{Binding Path=HipCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipCenterEnable}" />
+                            <TextBox Name="HipCenterNameTextBox" Height="24" Width="140" Text="{Binding Path=HipCenterName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipCenterEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HipCenterNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="43" Canvas.Top="283">
+                        <DockPanel Canvas.Left="28" Canvas.Top="283">
                             <CheckBox Height="16" IsChecked="{Binding Path=HipRightEnable}" Content="HipRight" Padding="4,0" />
-                            <TextBox Name="HipRightNameTextBox" Height="24" Width="120" Text="{Binding Path=HipRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipRightEnable}" />
+                            <TextBox Name="HipRightNameTextBox" Height="24" Width="140" Text="{Binding Path=HipRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HipRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="25" Canvas.Top="346">
+                        <DockPanel Canvas.Left="17" Canvas.Top="346">
                             <CheckBox Height="16" IsChecked="{Binding Path=KneeRightEnable}" Content="KneeRight" Padding="4,0" />
-                            <TextBox Name="KneeRightNameTextBox" Height="24" Width="120" Text="{Binding Path=KneeRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeRightEnable}" />
+                            <TextBox Name="KneeRightNameTextBox" Height="24" Width="140" Text="{Binding Path=KneeRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=KneeRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="20" Canvas.Top="413">
+                        <DockPanel Canvas.Left="5" Canvas.Top="413">
                             <CheckBox Height="16" IsChecked="{Binding Path=AnkleRightEnable}" Content="AnkleRight" Padding="4,0" />
-                            <TextBox Name="AnkleRightNameTextBox" Height="24" Width="120" Text="{Binding Path=AnkleRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleRightEnable}" />
+                            <TextBox Name="AnkleRightNameTextBox" Height="24" Width="140" Text="{Binding Path=AnkleRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=AnkleRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="6" Canvas.Top="440">
+                        <DockPanel Canvas.Left="12" Canvas.Top="440">
                             <CheckBox Height="16" IsChecked="{Binding Path=FootRightEnable}" Content="FootRight" Padding="4,0" />
-                            <TextBox Name="FootRightNameTextBox" Height="24" Width="120" Text="{Binding Path=FootRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootRightEnable}" />
+                            <TextBox Name="FootRightNameTextBox" Height="24" Width="140" Text="{Binding Path=FootRightName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootRightEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=FootRightNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="254" Canvas.Top="283">
+                        <DockPanel Canvas.Left="257" Canvas.Top="283">
                             <CheckBox Height="16" IsChecked="{Binding Path=HipLeftEnable}" Content="HipLeft" Padding="4,0" />
-                            <TextBox Name="HipLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=HipLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipLeftEnable}" />
+                            <TextBox Name="HipLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=HipLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=HipLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=HipLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="260" Canvas.Top="346">
+                        <DockPanel Canvas.Left="253" Canvas.Top="346">
                             <CheckBox Height="16" IsChecked="{Binding Path=KneeLeftEnable}" Content="KneeLeft" Padding="4,0" />
-                            <TextBox Name="KneeLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=KneeLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeLeftEnable}" />
+                            <TextBox Name="KneeLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=KneeLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=KneeLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=KneeLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="248" Canvas.Top="413">
+                        <DockPanel Canvas.Left="253" Canvas.Top="413">
                             <CheckBox Height="16" IsChecked="{Binding Path=AnkleLeftEnable}" Content="AnkleLeft" Padding="4,0" />
-                            <TextBox Name="AnkleLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=AnkleLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleLeftEnable}" />
+                            <TextBox Name="AnkleLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=AnkleLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=AnkleLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=AnkleLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
-                        <DockPanel Canvas.Left="275" Canvas.Top="440">
+                        <DockPanel Canvas.Left="260" Canvas.Top="440">
                             <CheckBox Height="16" IsChecked="{Binding Path=FootLeftEnable}" Content="FootLeft" Padding="4,0" />
-                            <TextBox Name="FootLeftNameTextBox" Height="24" Width="120" Text="{Binding Path=FootLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootLeftEnable}" />
+                            <TextBox Name="FootLeftNameTextBox" Height="24" Width="140" Text="{Binding Path=FootLeftName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=FootLeftEnable}" />
                             <TextBlock Height="23" Text="{Binding ElementName=FootLeftNameTextBox, Path=(Validation.Errors).CurrentItem.ErrorContent}" Foreground="Red" Margin="4,0,0,0" />
                         </DockPanel>
                     </Canvas>
