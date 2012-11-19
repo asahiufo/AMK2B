@@ -7,6 +7,8 @@ class KinectDataReceivingOperator(bpy.types.Operator):
     bl_label = "Kinect Data Receiving Start and Stop"
 
     def execute(self, context):
+        if context.area.type == 'VIEW_3D':
+            context.area.tag_redraw()
         if not bpy.amk2b.kinect_data_receiving_started:
             bpy.amk2b.kinect_data_receiver.start()
             bpy.amk2b.kinect_data_receiving_started = True
@@ -40,6 +42,8 @@ class KinectDataApplyingOperator(bpy.types.Operator):
         return {"FINISHED"}
 
     def modal(self, context, event):
+        if context.area.type == 'VIEW_3D':
+            context.area.tag_redraw()
         if event.type == "TIMER":
             if bpy.amk2b.kinect_data_applying_started:
                 for user in bpy.amk2b.kinect_data_receiver.users.values():
