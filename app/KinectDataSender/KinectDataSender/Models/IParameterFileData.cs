@@ -11,9 +11,17 @@ namespace KinectDataSender.Models
     public interface IParameterFileData
     {
         /// <summary>
-        /// サイズ比率
+        /// X 座標サイズ比率
         /// </summary>
-        double SizeProportion { get; set; }
+        double SizeProportionX { get; set; }
+        /// <summary>
+        /// Y 座標サイズ比率
+        /// </summary>
+        double SizeProportionY { get; set; }
+        /// <summary>
+        /// Z 座標サイズ比率
+        /// </summary>
+        double SizeProportionZ { get; set; }
         /// <summary>
         /// 中心 x 座標
         /// </summary>

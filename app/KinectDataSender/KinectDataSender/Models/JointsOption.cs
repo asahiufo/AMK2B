@@ -359,7 +359,7 @@ namespace KinectDataSender.Models
         public JointsOption()
         {
             _head = new JointSetting("ctl_Head", false);
-            _shoulderCenter = new JointSetting("ctl_Neck", false);
+            _shoulderCenter = new JointSetting("ctl_Shoulder_Center", false);
             _shoulderRight = new JointSetting("ctl_Shoulder_R", false);
             _elbowRight = new JointSetting("ctl_Elbow_R", false);
             _wristRight = new JointSetting("ctl_Wrist_R", false);
@@ -368,7 +368,7 @@ namespace KinectDataSender.Models
             _elbowLeft = new JointSetting("ctl_Elbow_L", false);
             _wristLeft = new JointSetting("ctl_Wrist_L", false);
             _handLeft = new JointSetting("ctl_Hand_L", false);
-            _spine = new JointSetting("ctl_Torso", false);
+            _spine = new JointSetting("ctl_Spine", false);
             _hipCenter = new JointSetting("ctl_Hip_Center", false);
             _hipRight = new JointSetting("ctl_Hip_R", false);
             _kneeRight = new JointSetting("ctl_Knee_R", false);

@@ -157,19 +157,51 @@ namespace KinectDataSender.ViewModels
             }
         }
         /// <summary>
-        /// サイズ比率
+        /// X 座標サイズ比率
         /// </summary>
-        public double SizeProportion
+        public double SizeProportionX
         {
-            get { return _blenderOptions.SizeProportion; }
+            get { return _blenderOptions.SizeProportionX; }
             set
             {
-                if (_blenderOptions.SizeProportion == value)
+                if (_blenderOptions.SizeProportionX == value)
                 {
                     return;
                 }
-                _blenderOptions.SizeProportion = value;
-                RaisePropertyChanged("SizeProportion");
+                _blenderOptions.SizeProportionX = value;
+                RaisePropertyChanged("SizeProportionX");
+            }
+        }
+        /// <summary>
+        /// Y 座標サイズ比率
+        /// </summary>
+        public double SizeProportionY
+        {
+            get { return _blenderOptions.SizeProportionY; }
+            set
+            {
+                if (_blenderOptions.SizeProportionY == value)
+                {
+                    return;
+                }
+                _blenderOptions.SizeProportionY = value;
+                RaisePropertyChanged("SizeProportionY");
+            }
+        }
+        /// <summary>
+        /// Z 座標サイズ比率
+        /// </summary>
+        public double SizeProportionZ
+        {
+            get { return _blenderOptions.SizeProportionZ; }
+            set
+            {
+                if (_blenderOptions.SizeProportionZ == value)
+                {
+                    return;
+                }
+                _blenderOptions.SizeProportionZ = value;
+                RaisePropertyChanged("SizeProportionZ");
             }
         }
         /// <summary>
@@ -988,7 +1020,6 @@ namespace KinectDataSender.ViewModels
         /// </summary>
         public void Initialize()
         {
-            System.Console.WriteLine("Initialize");
         }
 
         /// <summary>
@@ -1057,7 +1088,15 @@ namespace KinectDataSender.ViewModels
             {
                 return;
             }
-            _parameterFileManager.load(parameter.Response[0]);
+
+            try
+            {
+                _parameterFileManager.load(parameter.Response[0]);
+            }
+            catch (Exception e)
+            {
+                StatusBarMessage = e.Message;
+            }
         }
         #endregion
 
@@ -1087,7 +1126,15 @@ namespace KinectDataSender.ViewModels
             {
                 return;
             }
-            _parameterFileManager.save(parameter.Response[0]);
+
+            try
+            {
+                _parameterFileManager.save(parameter.Response[0]);
+            }
+            catch (Exception e)
+            {
+                StatusBarMessage = e.Message;
+            }
         }
         #endregion
 
