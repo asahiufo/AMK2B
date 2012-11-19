@@ -68,3 +68,8 @@ Open Source Licensing
   Licensed under the [Microsoft Public License (MS-PL)][MS-PL]
 * python-osc  
   Licensed under the [GNU General Public License][GNU]
+
+[GNU v3]: http://www.gnu.org/licenses/gpl-3.0.txt
+[zlib/libpng]: http://opensource.org/licenses/zlib-license.php
+[MS-PL]: http://opensource.org/licenses/ms-pl.html
+[GNU]: http://www.gnu.org/licenses/
