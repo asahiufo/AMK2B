@@ -29,7 +29,7 @@ Kinect の スケルトンデータを Blender へ送信し、Blender の bone �
 
 使い方
 ------
-1. 「`AMK2B/KinectDataSender/KinectDataSender.exe`」を起動します。  
+1. 「`AMK2B/KinectDataSender/<お使いの環境>/KinectDataSender.exe`」を起動します。  
    「`Kinect Data Sender`」画面が開きます。
 1. 「`Kinect Data Sender`」画面の「`詳細設定`」で、Skeleton データを送信したい部位にチェックを入れます。
 1. チェックを入れたチェックボックスに対応するテキストボックスへ、座標情報を適用する Blender のボーン名を入力します。  
@@ -54,6 +54,16 @@ Kinect の スケルトンデータを Blender へ送信し、Blender の bone �
    カウントダウンが開始され、0 になるとモーションの録画が始まります。  
    録画は最初のフレームから最後のフレームまで行われ、停止します。
 1. 出来上がったモデルとアニメーションデータを煮るなり焼くなり、Flash で使うなり。
+
+ソースから実行する場合
+------
+お使いの環境に合わせて、「Bespoke.Common.dll」と「Bespoke.Common.Osc.dll」の参照を切り替えた上で実行して下さい。
+* x86対応  
+  AMK2B\app\KinectDataSender\KinectDataSender\InfrastructureAssemblies\x86\Bespoke.Common.dll  
+  AMK2B\app\KinectDataSender\KinectDataSender\InfrastructureAssemblies\x86\Bespoke.Common.Osc.dll
+* x64対応  
+  AMK2B\app\KinectDataSender\KinectDataSender\InfrastructureAssemblies\x64\Bespoke.Common.dll  
+  AMK2B\app\KinectDataSender\KinectDataSender\InfrastructureAssemblies\x64\Bespoke.Common.Osc.dll
 
 Licensing
 ---------
